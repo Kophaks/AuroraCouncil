@@ -10,11 +10,11 @@ function AuroraLootMasterFrame:Export()
     local lootCouncilFrame = {};
     local lootCouncilItemEntries = {};
 
-    ITEM_ENTRY_COUNT = 16;
-    ITEM_ENTRY_HEIGHT = 16;
-    LOOT_COUNCIL_FRAME_WIDTH = 200;
-    LOOT_COUNCIL_FRAME_HEIGHT_EXTRA = 70;
-    LOOT_COUNCIL_FRAME_TITLE = "Aurora LootCouncil";
+    local ITEM_ENTRY_COUNT = 16;
+    local ITEM_ENTRY_HEIGHT = 16;
+    local LOOT_COUNCIL_FRAME_WIDTH = 200;
+    local LOOT_COUNCIL_FRAME_HEIGHT_EXTRA = 70;
+    local LOOT_COUNCIL_FRAME_TITLE = "Aurora LootCouncil";
 
     -- PRIVATE END
 
