@@ -1,14 +1,10 @@
-AuroraCouncilUI = {}
-
--- IMPORTS
-local councilFrame = AuroraLootMasterFrame:Export()
-
+AuroraCouncilUI = {};
 
 function AuroraCouncilUI:Export()
-    local _ui = {}
+    local _ui = {};
 
     -- PUBLIC
-    _ui.councilFrame = councilFrame;
+    _ui.LootMasterFrame = AuroraCouncilLootMasterFrame:Export();
 
     -- PUBLIC END
 

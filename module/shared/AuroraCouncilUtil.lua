@@ -2,7 +2,7 @@ AuroraCouncilUtil = {};
 
 -- EXPORT
 function AuroraCouncilUtil:Export()
-    local _util = {}
+    local _util = {};
 
     -- PUBLIC
     function _util:GetItemId(link)

@@ -1,4 +1,4 @@
-AuroraCouncilMessage = {}
+AuroraCouncilMessage = {};
 
 function AuroraCouncilMessage:Export()
     local _message = {};

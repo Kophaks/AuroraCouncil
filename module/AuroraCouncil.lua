@@ -1,8 +1,8 @@
-AuroraCouncil = {}
+AuroraCouncil = {};
 
 function AuroraCouncil:Export()
     local _auroraCouncil = {};
-    local LootMasterFrame = AuroraLootMasterFrame:Export();
+    local UI = AuroraCouncilUI:Export();
     local Message = AuroraCouncilMessage:Export();
     local Util = AuroraCouncilUtil:Export();
 
@@ -14,13 +14,13 @@ function AuroraCouncil:Export()
 
     -- PUBLIC
     function _auroraCouncil:LootOpened()
-        LootMasterFrame:OpenLootMasterFrame();
+        UI.LootMasterFrame:OpenLootMasterFrame();
         local itemCount = self:InitializeCouncil();
-        LootMasterFrame:ResizeLootMasterFrame(itemCount);
+        UI.LootMasterFrame:ResizeLootMasterFrame(itemCount);
     end
 
     function _auroraCouncil:LootClosed()
-        LootMasterFrame:CloseLootMasterFrame();
+        UI.LootMasterFrame:CloseLootMasterFrame();
     end
 
     function _auroraCouncil:ChatMsgAddon(prefix, message, sender)
@@ -55,7 +55,7 @@ function AuroraCouncil:Export()
         for key, value in pairs(lootTable) do
             local _, itemLink = unpack(value);
             Message:SendShowItemInfo(itemLink, "RAID")
-            LootMasterFrame:SetItemEntry(key, itemLink);
+            UI.LootMasterFrame:SetItemEntry(key, itemLink);
         end
         return numItems;
     end
