@@ -21,5 +21,7 @@ function AuroraCouncilMessage:Export()
     end
 
     -- PUBLIC END
+
+
     return _message;
 end

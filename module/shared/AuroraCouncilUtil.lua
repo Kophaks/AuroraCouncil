@@ -1,6 +1,5 @@
 AuroraCouncilUtil = {};
 
--- EXPORT
 function AuroraCouncilUtil:Export()
     local _util = {};
 
@@ -15,9 +14,10 @@ function AuroraCouncilUtil:Export()
         if string == nil then
             string = "nil"
         end
-        DEFAULT_CHAT_FRAME:AddMessage("AuroraCouncil | " .. string);
+        DEFAULT_CHAT_FRAME:AddMessage("|cFFFFFC59| AuroraCouncil | |r" .. string);
     end
     -- PUBLIC END
+
 
     return _util;
 end

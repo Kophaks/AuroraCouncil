@@ -19,9 +19,7 @@ function AuroraCouncilLootMasterFrame:Export()
     -- PRIVATE END
 
 
-
-
-
+    --PUBLIC
     function _frame:OpenLootMasterFrame()
         local frame = tremove(lootCouncilFrame)
         if not frame then
