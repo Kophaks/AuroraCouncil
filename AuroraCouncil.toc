@@ -1,0 +1,18 @@
+## Interface: 11200
+## Title: AuroraCouncil
+## Notes: Helps your LootCouncil do the counseling
+## Author: Mithnar
+## Version: 0.1
+       ## X-Category: Raid
+
+lib\AceLibrary\AceLibrary.lua
+lib\AceOO-2.0\AceOO-2.0.lua
+lib\AceAddon-2.0\AceAddon-2.0.lua
+lib\AceEvent-2.0\AceEvent-2.0.lua
+
+module\shared\AuroraCouncilUtil.lua
+module\shared\AuroraCouncilMessage.lua
+module\ui\AuroraCouncilUi
+module\ui\AuroraLootMasterFrame.lua
+module\AuroraCouncil.lua
+Core.lua
