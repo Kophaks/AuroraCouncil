@@ -84,6 +84,10 @@ function AuroraCouncil:Export()
         StaticPopup_Show ("EXAMPLE_HELLOWORLD")
     end
 
+    function _auroraCouncil:ShowStartupMessage()
+        Util:Print("Enabled!")
+    end
+
     -- PUBLIC END
 
 

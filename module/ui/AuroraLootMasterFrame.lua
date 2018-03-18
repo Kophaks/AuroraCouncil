@@ -85,7 +85,6 @@ function AuroraLootMasterFrame:Export()
         local curPos = (entryId*-20)-30
         itemLinkFrame:SetWidth(LOOT_COUNCIL_FRAME_WIDTH);
         itemLinkFrame:SetHeight(ITEM_ENTRY_HEIGHT);
-        itemLinkFrame:SetBackdropColor(0, 0, 1, 1);
         itemLinkFrame:SetPoint("TOPLEFT", ITEM_ENTRY_HEIGHT, curPos);
         itemLinkFrame.text = itemLinkFrame:CreateFontString("AUCO_CouncilFrameItem" .. entryId, "OVERLAY", "GameFontNormal");
         itemLinkFrame.text:SetText(nil);

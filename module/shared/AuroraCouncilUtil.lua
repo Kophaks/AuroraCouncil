@@ -15,7 +15,7 @@ function AuroraCouncilUtil:Export()
         if string == nil then
             string = "nil"
         end
-        DEFAULT_CHAT_FRAME:AddMessage(string);
+        DEFAULT_CHAT_FRAME:AddMessage("AuroraCouncil | " .. string);
     end
     -- PUBLIC END
 

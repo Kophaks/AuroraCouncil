@@ -5,7 +5,7 @@ function Core:OnInitialize()
 end
 
 function Core:OnEnable()
-    --self:Print("enabled!")
+    AuroraCouncil:ShowStartupMessage();
     self:RegisterEvent("CHAT_MSG_ADDON");
     self:RegisterEvent("LOOT_OPENED");
     self:RegisterEvent("LOOT_CLOSED");
