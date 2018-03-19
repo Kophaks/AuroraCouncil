@@ -24,14 +24,14 @@ function AuroraCouncil:Export()
     end
 
     function _auroraCouncil:ChatMsgAddon(prefix, message, sender)
-       -- if sender ~= (UnitName("player")) then
+        if sender ~= (UnitName("player")) then
             if prefix == Message.SESSION_START then
                 self:HandleStartMessage();
             end
             if prefix == Message.SHOW_ITEM then
                 self:HandleItemMessage(message);
             end
-        --end
+        end
         if prefix == Message.OFFER_ITEM then
             self:HandleLootMessage(message);
         end
@@ -47,9 +47,9 @@ function AuroraCouncil:Export()
         self.items = {}
         for itemIndex = 1, GetNumLootItems(), 1 do
             if LootSlotIsItem(itemIndex) then
-                numItems = numItems+1;
+                numItems = numItems + 1;
                 local itemLink = GetLootSlotLink(itemIndex);
-                lootTable[numItems] = {itemIndex, itemLink};
+                lootTable[numItems] = { itemIndex, itemLink };
             end
         end
         for key, value in pairs(lootTable) do
@@ -64,13 +64,13 @@ function AuroraCouncil:Export()
         Util:Print("Loot Distribution Started!");
     end
 
-    function _auroraCouncil:HandleItemMessage(message)
-        Util:Print("Item: " .. message);
+    function _auroraCouncil:HandleItemMessage(itemLink)
+        Util:Print("Item: " .. itemLink);
     end
 
-    function _auroraCouncil:HandleLootMessage(message)
-        StaticPopupDialogs["EXAMPLE_HELLOWORLD"] = {
-            text = "Do you need " .. message .. " ?",
+    function _auroraCouncil:HandleLootMessage(itemLink)
+        StaticPopupDialogs["DUMMY_OFFER_WINDOW"] = {
+            text = "Do you need " .. itemLink .. " ?",
             button1 = "Yes",
             button2 = "No",
             OnAccept = function()
@@ -81,7 +81,7 @@ function AuroraCouncil:Export()
             hideOnEscape = true,
             preferredIndex = 3
         }
-        StaticPopup_Show ("EXAMPLE_HELLOWORLD")
+        StaticPopup_Show("DUMMY_OFFER_WINDOW")
     end
 
     function _auroraCouncil:ShowStartupMessage()

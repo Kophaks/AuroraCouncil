@@ -16,6 +16,7 @@ function AuroraCouncilUtil:Export()
         end
         DEFAULT_CHAT_FRAME:AddMessage("|cFFFFFC59| AuroraCouncil | |r" .. string);
     end
+
     -- PUBLIC END
 
 

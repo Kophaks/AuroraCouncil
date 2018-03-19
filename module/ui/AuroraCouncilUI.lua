@@ -5,6 +5,8 @@ function AuroraCouncilUI:Export()
 
     -- PUBLIC
     _ui.LootMasterFrame = AuroraCouncilLootMasterFrame:Export();
+    _ui.LootOfferFrame = AuroraCouncilLootOfferFrame:Export();
+    _ui.RaidResponseFrame = AuroraCouncilRaidResponseFrame:Export();
 
     -- PUBLIC END
 

@@ -7,21 +7,39 @@ function AuroraCouncilLootMasterFrame:Export()
     local _frame = {}
 
     -- PRIVATE
-    local lootCouncilFrame = {};
-    local lootCouncilItemEntries = {};
+    local frameBuffer = {};
+    local entryBuffer = {};
 
     local ITEM_ENTRY_COUNT = 16;
-    local ITEM_ENTRY_HEIGHT = 16;
-    local LOOT_COUNCIL_FRAME_WIDTH = 200;
+    local ITEM_ENTRY_HEIGHT = 26;
+    local LOOT_COUNCIL_FRAME_WIDTH = 300;
     local LOOT_COUNCIL_FRAME_HEIGHT_EXTRA = 70;
     local LOOT_COUNCIL_FRAME_TITLE = "Aurora LootCouncil";
+
+    local itemBackground = {
+        bgFile = "Interface/Tooltips/UI-Tooltip-Background",
+        edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
+        tile = true,
+        tileSize = 16,
+        edgeSize = 16,
+        insets = { left = 4, right = 4, top = 4, bottom = 4 }
+    }
+
+    local frameBackground = {
+        bgFile = "Interface/Tooltips/UI-Tooltip-Background",
+        edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
+        tile = true,
+        tileSize = 16,
+        edgeSize = 16,
+        insets = { left = 4, right = 4, top = 4, bottom = 4 }
+    }
 
     -- PRIVATE END
 
 
     --PUBLIC
     function _frame:OpenLootMasterFrame()
-        local frame = tremove(lootCouncilFrame)
+        local frame = tremove(frameBuffer)
         if not frame then
             self:CreateLootMasterFrame();
             for entry = 1, ITEM_ENTRY_COUNT do
@@ -39,17 +57,13 @@ function AuroraCouncilLootMasterFrame:Export()
         AUCO_CouncilFrame:SetHeight(LOOT_COUNCIL_FRAME_HEIGHT_EXTRA);
         AUCO_CouncilFrame:SetPoint("CENTER", 0, 0);
         AUCO_CouncilFrame:SetMovable(true);
-        AUCO_CouncilFrame:SetBackdrop({
-            bgFile = "Interface/Tooltips/UI-Tooltip-Background",
-            edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
-            tile = true, tileSize = 16, edgeSize = 16,
-            insets = { left = 4, right = 4, top = 4, bottom = 4 }});
-        AUCO_CouncilFrame:SetBackdropColor(0, 0, 0, 1);
+        AUCO_CouncilFrame:SetBackdrop(frameBackground);
+        AUCO_CouncilFrame:SetBackdropColor(0.1, 0.1, 0.5, 1);
         AUCO_CouncilFrame:EnableMouse(true);
         AUCO_CouncilFrame:SetClampedToScreen(true);
         AUCO_CouncilFrame:RegisterForDrag("LeftButton");
         AUCO_CouncilFrame.title = AUCO_CouncilFrame:CreateFontString("AUCO_CouncilFrame_Title", "OVERLAY", "GameFontNormal");
-        AUCO_CouncilFrame.title:SetPoint("TOPLEFT", 20, -ITEM_ENTRY_HEIGHT);
+        AUCO_CouncilFrame.title:SetPoint("TOP", 0, -ITEM_ENTRY_HEIGHT);
         AUCO_CouncilFrame.title:SetText(LOOT_COUNCIL_FRAME_TITLE);
         AUCO_CouncilFrame:Show();
         AUCO_CouncilFrame:SetScript("OnDragStart", function()
@@ -71,7 +85,7 @@ function AuroraCouncilLootMasterFrame:Export()
 
     function _frame:CloseLootMasterFrame()
         AUCO_CouncilFrame:Hide()
-        tinsert(lootCouncilFrame, AUCO_CouncilFrame)
+        tinsert(frameBuffer, AUCO_CouncilFrame)
     end
 
     function _frame:ResizeLootMasterFrame(itemCount)
@@ -80,23 +94,26 @@ function AuroraCouncilLootMasterFrame:Export()
 
     function _frame:CreateItemEntry(entryId)
         local itemLinkFrame = CreateFrame("Button", "AUCO_ItemLink" .. entryId, AUCO_CouncilFrame);
-        local curPos = (entryId*-20)-30
-        itemLinkFrame:SetWidth(LOOT_COUNCIL_FRAME_WIDTH);
+        local curPos = (entryId * -ITEM_ENTRY_HEIGHT) - 30
+        itemLinkFrame:SetWidth(LOOT_COUNCIL_FRAME_WIDTH-14);
         itemLinkFrame:SetHeight(ITEM_ENTRY_HEIGHT);
-        itemLinkFrame:SetPoint("TOPLEFT", ITEM_ENTRY_HEIGHT, curPos);
+        itemLinkFrame:SetBackdrop(nil);
+        itemLinkFrame:SetPoint("TOP", 0, curPos);
         itemLinkFrame.text = itemLinkFrame:CreateFontString("AUCO_CouncilFrameItem" .. entryId, "OVERLAY", "GameFontNormal");
         itemLinkFrame.text:SetText(nil);
-        itemLinkFrame.text:SetPoint("LEFT", 0, 0);
-        lootCouncilItemEntries[entryId] = itemLinkFrame;
+        itemLinkFrame.text:SetPoint("CENTER", 0, 0);
+        entryBuffer[entryId] = itemLinkFrame;
     end
 
     function _frame:ResetItemEntry(entryId)
-        local itemLinkFrame = lootCouncilItemEntries[entryId];
+        local itemLinkFrame = entryBuffer[entryId];
         itemLinkFrame.text:SetText(nil);
     end
 
     function _frame:SetItemEntry(position, itemLink)
-        local itemLinkFrame = lootCouncilItemEntries[position];
+        local itemLinkFrame = entryBuffer[position];
+        itemLinkFrame:SetBackdrop(itemBackground);
+        itemLinkFrame:SetBackdropColor(0,0,0,1);
         itemLinkFrame:SetScript("OnClick", function()
             local text = this.text:GetText();
             if text ~= nil then
