@@ -12,7 +12,7 @@ function AuroraCouncilLootMasterFrame:Export()
 
     local ITEM_ENTRY_COUNT = 16;
     local ITEM_ENTRY_HEIGHT = 26;
-    local LOOT_COUNCIL_FRAME_WIDTH = 300;
+    local LOOT_COUNCIL_FRAME_WIDTH = 250;
     local LOOT_COUNCIL_FRAME_HEIGHT_EXTRA = 70;
     local LOOT_COUNCIL_FRAME_TITLE = "Aurora LootCouncil";
 
@@ -38,76 +38,25 @@ function AuroraCouncilLootMasterFrame:Export()
 
 
     --PUBLIC
-    function _frame:OpenLootMasterFrame()
+    function _frame:OpenFrame()
         local frame = tremove(frameBuffer)
         if not frame then
-            self:CreateLootMasterFrame();
+            self:CreateFrame();
             for entry = 1, ITEM_ENTRY_COUNT do
                 self:CreateItemEntry(entry);
             end
         else
-            self:ResetLootMasterFrame();
+            self:ResetFrame();
         end
     end
 
-    function _frame:CreateLootMasterFrame()
-        CreateFrame("Frame", "AUCO_CouncilFrame", UIParent);
-        AUCO_CouncilFrame:ClearAllPoints();
-        AUCO_CouncilFrame:SetWidth(LOOT_COUNCIL_FRAME_WIDTH);
-        AUCO_CouncilFrame:SetHeight(LOOT_COUNCIL_FRAME_HEIGHT_EXTRA);
-        AUCO_CouncilFrame:SetPoint("CENTER", 0, 0);
-        AUCO_CouncilFrame:SetMovable(true);
-        AUCO_CouncilFrame:SetBackdrop(frameBackground);
-        AUCO_CouncilFrame:SetBackdropColor(0.1, 0.1, 0.5, 1);
-        AUCO_CouncilFrame:EnableMouse(true);
-        AUCO_CouncilFrame:SetClampedToScreen(true);
-        AUCO_CouncilFrame:RegisterForDrag("LeftButton");
-        AUCO_CouncilFrame.title = AUCO_CouncilFrame:CreateFontString("AUCO_CouncilFrame_Title", "OVERLAY", "GameFontNormal");
-        AUCO_CouncilFrame.title:SetPoint("TOP", 0, -ITEM_ENTRY_HEIGHT);
-        AUCO_CouncilFrame.title:SetText(LOOT_COUNCIL_FRAME_TITLE);
-        AUCO_CouncilFrame:Show();
-        AUCO_CouncilFrame:SetScript("OnDragStart", function()
-            this:StartMoving();
-            this.isMoving = true;
-        end)
-        AUCO_CouncilFrame:SetScript("OnDragStop", function()
-            this:StopMovingOrSizing();
-            this.isMoving = false;
-        end)
-    end
-
-    function _frame:ResetLootMasterFrame()
-        for entry = 1, ITEM_ENTRY_COUNT do
-            self:ResetItemEntry(entry);
-        end
-        AUCO_CouncilFrame:Show();
-    end
-
-    function _frame:CloseLootMasterFrame()
+    function _frame:CloseFrame()
         AUCO_CouncilFrame:Hide()
         tinsert(frameBuffer, AUCO_CouncilFrame)
     end
 
-    function _frame:ResizeLootMasterFrame(itemCount)
+    function _frame:ResizeFrame(itemCount)
         AUCO_CouncilFrame:SetHeight((itemCount * ITEM_ENTRY_HEIGHT) + LOOT_COUNCIL_FRAME_HEIGHT_EXTRA);
-    end
-
-    function _frame:CreateItemEntry(entryId)
-        local itemLinkFrame = CreateFrame("Button", "AUCO_ItemLink" .. entryId, AUCO_CouncilFrame);
-        local curPos = (entryId * -ITEM_ENTRY_HEIGHT) - 30
-        itemLinkFrame:SetWidth(LOOT_COUNCIL_FRAME_WIDTH-14);
-        itemLinkFrame:SetHeight(ITEM_ENTRY_HEIGHT);
-        itemLinkFrame:SetBackdrop(nil);
-        itemLinkFrame:SetPoint("TOP", 0, curPos);
-        itemLinkFrame.text = itemLinkFrame:CreateFontString("AUCO_CouncilFrameItem" .. entryId, "OVERLAY", "GameFontNormal");
-        itemLinkFrame.text:SetText(nil);
-        itemLinkFrame.text:SetPoint("CENTER", 0, 0);
-        entryBuffer[entryId] = itemLinkFrame;
-    end
-
-    function _frame:ResetItemEntry(entryId)
-        local itemLinkFrame = entryBuffer[entryId];
-        itemLinkFrame.text:SetText(nil);
     end
 
     function _frame:SetItemEntry(position, itemLink)
@@ -133,6 +82,59 @@ function AuroraCouncilLootMasterFrame:Export()
             GameTooltip:Hide()
         end)
         itemLinkFrame.text:SetText(itemLink);
+    end
+
+    function _frame:CreateFrame()
+        CreateFrame("Frame", "AUCO_CouncilFrame", UIParent);
+        AUCO_CouncilFrame:ClearAllPoints();
+        AUCO_CouncilFrame:SetWidth(LOOT_COUNCIL_FRAME_WIDTH);
+        AUCO_CouncilFrame:SetHeight(LOOT_COUNCIL_FRAME_HEIGHT_EXTRA);
+        AUCO_CouncilFrame:SetPoint("TOP", -310, 0);
+        AUCO_CouncilFrame:SetMovable(true);
+        AUCO_CouncilFrame:SetBackdrop(frameBackground);
+        AUCO_CouncilFrame:SetBackdropColor(0.1, 0.1, 0.5, 0.5);
+        AUCO_CouncilFrame:EnableMouse(true);
+        AUCO_CouncilFrame:SetClampedToScreen(true);
+        AUCO_CouncilFrame:RegisterForDrag("LeftButton");
+        AUCO_CouncilFrame.title = AUCO_CouncilFrame:CreateFontString("AUCO_CouncilFrame_Title", "OVERLAY", "GameFontNormal");
+        AUCO_CouncilFrame.title:SetPoint("TOP", 0, -ITEM_ENTRY_HEIGHT);
+        AUCO_CouncilFrame.title:SetText(LOOT_COUNCIL_FRAME_TITLE);
+        AUCO_CouncilFrame:SetFrameLevel(3);
+        AUCO_CouncilFrame:Show();
+        AUCO_CouncilFrame:SetScript("OnDragStart", function()
+            this:StartMoving();
+            this.isMoving = true;
+        end)
+        AUCO_CouncilFrame:SetScript("OnDragStop", function()
+            this:StopMovingOrSizing();
+            this.isMoving = false;
+        end)
+    end
+
+    function _frame:ResetFrame()
+        for entry = 1, ITEM_ENTRY_COUNT do
+            ResetItemEntry(entry);
+        end
+        AUCO_CouncilFrame:Show();
+    end
+
+    function _frame:CreateItemEntry(entryId)
+        local itemLinkFrame = CreateFrame("Button", "AUCO_ItemLink" .. entryId, AUCO_CouncilFrame);
+        local curPos = (entryId * -ITEM_ENTRY_HEIGHT) - 30
+        itemLinkFrame:SetWidth(LOOT_COUNCIL_FRAME_WIDTH-10);
+        itemLinkFrame:SetHeight(ITEM_ENTRY_HEIGHT);
+        itemLinkFrame:SetBackdrop(nil);
+        itemLinkFrame:SetPoint("TOP", 0, curPos);
+        itemLinkFrame.text = itemLinkFrame:CreateFontString("AUCO_CouncilFrameItem" .. entryId, "OVERLAY", "GameFontNormalSmall");
+        itemLinkFrame.text:SetText(nil);
+        itemLinkFrame.text:SetPoint("CENTER", 0, 0);
+        entryBuffer[entryId] = itemLinkFrame;
+    end
+
+    function _frame:ResetItemEntry(entryId)
+        local itemLinkFrame = entryBuffer[entryId];
+        itemLinkFrame.text:SetText(nil);
+        itemLinkFrame:SetBackdrop(nil);
     end
 
     -- PUBLIC END

@@ -16,6 +16,7 @@ function AuroraCouncilLootOfferFrame:Export()
 
     function _frame:CreateLootOfferFrame()
         CreateFrame("Frame", "AUCO_LootOfferFrame", UIParent);
+        AUCO_LootOfferFrame:ClearAllPoints();
     end
 
     function _frame:ResetLootOfferFrame()

@@ -14,13 +14,15 @@ function AuroraCouncil:Export()
 
     -- PUBLIC
     function _auroraCouncil:LootOpened()
-        UI.LootMasterFrame:OpenLootMasterFrame();
+        UI.LootMasterFrame:OpenFrame();
+        UI.RaidResponseFrame:OpenFrame();
         local itemCount = self:InitializeCouncil();
-        UI.LootMasterFrame:ResizeLootMasterFrame(itemCount);
+        UI.LootMasterFrame:ResizeFrame(itemCount);
     end
 
     function _auroraCouncil:LootClosed()
-        UI.LootMasterFrame:CloseLootMasterFrame();
+        UI.LootMasterFrame:CloseFrame();
+        UI.RaidResponseFrame:CloseFrame();
     end
 
     function _auroraCouncil:ChatMsgAddon(prefix, message, sender)
