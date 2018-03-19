@@ -113,7 +113,7 @@ function AuroraCouncilLootMasterFrame:Export()
 
     function _frame:ResetFrame()
         for entry = 1, ITEM_ENTRY_COUNT do
-            ResetItemEntry(entry);
+            self:ResetItemEntry(entry);
         end
         AUCO_CouncilFrame:Show();
     end

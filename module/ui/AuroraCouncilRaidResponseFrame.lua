@@ -11,7 +11,7 @@ function AuroraCouncilRaidResponseFrame:Export()
     local RAID_RESPONSE_FRAME_HEIGHT_EXTRA = 12;
     local RAID_RESPONSE_FRAME_TEXT_OFFSET = 8;
     local PLAYER_ENTRY_COUNT = 40;
-    local PLAYER_ENTRY_HEIGHT = 15;
+    local PLAYER_ENTRY_HEIGHT = 14;
     local PLAYER_STATUS_WIDTH = 60;
     local PLAYER_NAME_WIDTH = 100;
     local PLAYER_ITEM_WIDTH = 200;
