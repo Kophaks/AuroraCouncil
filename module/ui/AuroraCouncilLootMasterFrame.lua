@@ -6,15 +6,14 @@ function AuroraCouncilLootMasterFrame:Export()
 
     local _frame = {}
 
-    -- PRIVATE
     local frameBuffer = {};
     local entryBuffer = {};
 
     local ITEM_ENTRY_COUNT = 16;
     local ITEM_ENTRY_HEIGHT = 26;
-    local LOOT_COUNCIL_FRAME_WIDTH = 250;
-    local LOOT_COUNCIL_FRAME_HEIGHT_EXTRA = 70;
-    local LOOT_COUNCIL_FRAME_TITLE = "Aurora LootCouncil";
+    local FRAME_WIDTH = 250;
+    local FRAME_HEIGHT_EXTRA = 70;
+    local FRAME_TITLE = "Aurora LootCouncil";
 
     local itemBackground = {
         bgFile = "Interface/Tooltips/UI-Tooltip-Background",
@@ -34,10 +33,6 @@ function AuroraCouncilLootMasterFrame:Export()
         insets = { left = 4, right = 4, top = 4, bottom = 4 }
     }
 
-    -- PRIVATE END
-
-
-    --PUBLIC
     function _frame:OpenFrame()
         local frame = tremove(frameBuffer)
         if not frame then
@@ -56,7 +51,7 @@ function AuroraCouncilLootMasterFrame:Export()
     end
 
     function _frame:ResizeFrame(itemCount)
-        AUCO_CouncilFrame:SetHeight((itemCount * ITEM_ENTRY_HEIGHT) + LOOT_COUNCIL_FRAME_HEIGHT_EXTRA);
+        AUCO_CouncilFrame:SetHeight((itemCount * ITEM_ENTRY_HEIGHT) + FRAME_HEIGHT_EXTRA);
     end
 
     function _frame:SetItemEntry(position, itemLink)
@@ -87,8 +82,8 @@ function AuroraCouncilLootMasterFrame:Export()
     function _frame:CreateFrame()
         CreateFrame("Frame", "AUCO_CouncilFrame", UIParent);
         AUCO_CouncilFrame:ClearAllPoints();
-        AUCO_CouncilFrame:SetWidth(LOOT_COUNCIL_FRAME_WIDTH);
-        AUCO_CouncilFrame:SetHeight(LOOT_COUNCIL_FRAME_HEIGHT_EXTRA);
+        AUCO_CouncilFrame:SetWidth(FRAME_WIDTH);
+        AUCO_CouncilFrame:SetHeight(FRAME_HEIGHT_EXTRA);
         AUCO_CouncilFrame:SetPoint("TOP", -310, 0);
         AUCO_CouncilFrame:SetMovable(true);
         AUCO_CouncilFrame:SetBackdrop(frameBackground);
@@ -98,7 +93,7 @@ function AuroraCouncilLootMasterFrame:Export()
         AUCO_CouncilFrame:RegisterForDrag("LeftButton");
         AUCO_CouncilFrame.title = AUCO_CouncilFrame:CreateFontString("AUCO_CouncilFrame_Title", "OVERLAY", "GameFontNormal");
         AUCO_CouncilFrame.title:SetPoint("TOP", 0, -ITEM_ENTRY_HEIGHT);
-        AUCO_CouncilFrame.title:SetText(LOOT_COUNCIL_FRAME_TITLE);
+        AUCO_CouncilFrame.title:SetText(FRAME_TITLE);
         AUCO_CouncilFrame:SetFrameLevel(3);
         AUCO_CouncilFrame:Show();
         AUCO_CouncilFrame:SetScript("OnDragStart", function()
@@ -121,7 +116,7 @@ function AuroraCouncilLootMasterFrame:Export()
     function _frame:CreateItemEntry(entryId)
         local itemLinkFrame = CreateFrame("Button", "AUCO_ItemLink" .. entryId, AUCO_CouncilFrame);
         local curPos = (entryId * -ITEM_ENTRY_HEIGHT) - 30
-        itemLinkFrame:SetWidth(LOOT_COUNCIL_FRAME_WIDTH-10);
+        itemLinkFrame:SetWidth(FRAME_WIDTH -10);
         itemLinkFrame:SetHeight(ITEM_ENTRY_HEIGHT);
         itemLinkFrame:SetBackdrop(nil);
         itemLinkFrame:SetPoint("TOP", 0, curPos);
@@ -136,8 +131,6 @@ function AuroraCouncilLootMasterFrame:Export()
         itemLinkFrame.text:SetText(nil);
         itemLinkFrame:SetBackdrop(nil);
     end
-
-    -- PUBLIC END
 
 
     return _frame;

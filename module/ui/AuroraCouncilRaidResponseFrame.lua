@@ -8,15 +8,15 @@ function AuroraCouncilRaidResponseFrame:Export()
     local frameBuffer = {};
     local entryBuffer = {}
 
-    local RAID_RESPONSE_FRAME_HEIGHT_EXTRA = 12;
-    local RAID_RESPONSE_FRAME_TEXT_OFFSET = 8;
+    local FRAME_HEIGHT_EXTRA = 12;
+    local FRAME_TEXT_OFFSET = 8;
     local PLAYER_ENTRY_COUNT = 40;
     local PLAYER_ENTRY_HEIGHT = 14;
     local PLAYER_STATUS_WIDTH = 60;
     local PLAYER_NAME_WIDTH = 100;
     local PLAYER_ITEM_WIDTH = 200;
-    local RAID_RESPONSE_FRAME_WIDTH = PLAYER_STATUS_WIDTH + PLAYER_NAME_WIDTH
-            + PLAYER_ITEM_WIDTH + RAID_RESPONSE_FRAME_TEXT_OFFSET*2;
+    local FRAME_WIDTH = PLAYER_STATUS_WIDTH + PLAYER_NAME_WIDTH
+            + PLAYER_ITEM_WIDTH + FRAME_TEXT_OFFSET *2;
 
     local frameBackground = {
         bgFile = "Interface/Tooltips/UI-Tooltip-Background",
@@ -27,7 +27,6 @@ function AuroraCouncilRaidResponseFrame:Export()
         insets = { left = 4, right = 4, top = 4, bottom = 4 }
     }
 
-    -- PUBLIC
     function _frame:OpenFrame()
         local frame = tremove(frameBuffer)
         if not frame then
@@ -49,8 +48,8 @@ function AuroraCouncilRaidResponseFrame:Export()
     function _frame:CreateFrame()
         CreateFrame("Frame", "AUCO_RaidResponseFrame", UIParent);
         AUCO_RaidResponseFrame:ClearAllPoints();
-        AUCO_RaidResponseFrame:SetWidth(RAID_RESPONSE_FRAME_WIDTH);
-        AUCO_RaidResponseFrame:SetHeight(PLAYER_ENTRY_COUNT * PLAYER_ENTRY_HEIGHT + RAID_RESPONSE_FRAME_HEIGHT_EXTRA);
+        AUCO_RaidResponseFrame:SetWidth(FRAME_WIDTH);
+        AUCO_RaidResponseFrame:SetHeight(PLAYER_ENTRY_COUNT * PLAYER_ENTRY_HEIGHT + FRAME_HEIGHT_EXTRA);
         AUCO_RaidResponseFrame:SetPoint("TOP", 0, 0);
         AUCO_RaidResponseFrame:SetMovable(true);
         AUCO_RaidResponseFrame:SetBackdrop(frameBackground);
@@ -77,17 +76,17 @@ function AuroraCouncilRaidResponseFrame:Export()
     function _frame:CreatePlayerEntry(entryId)
         local itemLinkFrame = CreateFrame("Button", "AUCO_PlayerEntry" .. entryId, AUCO_RaidResponseFrame);
         local curPos = (entryId * -PLAYER_ENTRY_HEIGHT) + PLAYER_ENTRY_HEIGHT - 5
-        itemLinkFrame:SetWidth(RAID_RESPONSE_FRAME_WIDTH - RAID_RESPONSE_FRAME_TEXT_OFFSET*2);
+        itemLinkFrame:SetWidth(FRAME_WIDTH - FRAME_TEXT_OFFSET *2);
         itemLinkFrame:SetHeight(PLAYER_ENTRY_HEIGHT);
         itemLinkFrame:SetBackdropColor(0,0,0,1);
         itemLinkFrame:SetPoint("TOP", 0, curPos);
         itemLinkFrame.status = itemLinkFrame:CreateFontString("AUCO_RaidResponseFrameStatus" .. entryId, "OVERLAY", "GameFontNormalSmall");
-        itemLinkFrame.status:SetText("NeedGreed");
+        itemLinkFrame.status:SetText("Need");
         itemLinkFrame.status:SetWidth(PLAYER_STATUS_WIDTH)
         itemLinkFrame.status:SetPoint("LEFT", 0, 0);
         itemLinkFrame.status:SetJustifyH("LEFT");
         itemLinkFrame.player = itemLinkFrame:CreateFontString("AUCO_RaidResponseFramePlayer" .. entryId, "OVERLAY", "GameFontNormalSmall");
-        itemLinkFrame.player:SetText("playerplayerp" .. entryId);
+        itemLinkFrame.player:SetText("player" .. entryId);
         itemLinkFrame.player:SetWidth(PLAYER_NAME_WIDTH)
         itemLinkFrame.player:SetPoint("LEFT",PLAYER_STATUS_WIDTH,0);
         itemLinkFrame.player:SetJustifyH("CENTER");
@@ -100,7 +99,7 @@ function AuroraCouncilRaidResponseFrame:Export()
             local text = this.item:GetText();
             if text ~= nil then
                 local itemId = Util:GetItemId(text);
-                GameTooltip:SetOwner(this, "ANCHOR_RIGHT", RAID_RESPONSE_FRAME_TEXT_OFFSET);
+                GameTooltip:SetOwner(this, "ANCHOR_RIGHT", FRAME_TEXT_OFFSET);
                 GameTooltip:SetHyperlink(itemId);
                 GameTooltip:Show();
             end
@@ -110,8 +109,6 @@ function AuroraCouncilRaidResponseFrame:Export()
         end)
         entryBuffer[entryId] = itemLinkFrame;
     end
-
-    --PUBLIC END
 
 
     return _frame;

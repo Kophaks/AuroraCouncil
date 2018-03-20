@@ -15,13 +15,13 @@ function Core:OnDisable()
 end
 
 function Core:LOOT_OPENED()
-    AuroraCouncil:LootOpened()
+    AuroraCouncil:LootOpened();
 end
 
 function Core:LOOT_CLOSED()
-    AuroraCouncil:LootClosed()
+    AuroraCouncil:LootClosed();
 end
 
 function Core:CHAT_MSG_ADDON(prefix, message, _, sender)
-    AuroraCouncil:ChatMsgAddon(prefix, message, sender)
+    AuroraCouncil:ChatMsgAddon(prefix, message, sender);
 end

@@ -6,16 +6,12 @@ function AuroraCouncil:Export()
     local Message = AuroraCouncilMessage:Export();
     local Util = AuroraCouncilUtil:Export();
 
-    -- PRIVATE
     local lootTable;
 
-    -- PRIVATE END
-
-
-    -- PUBLIC
     function _auroraCouncil:LootOpened()
         UI.LootMasterFrame:OpenFrame();
         UI.RaidResponseFrame:OpenFrame();
+        UI.LootOfferFrame:OpenFrame();
         local itemCount = self:InitializeCouncil();
         UI.LootMasterFrame:ResizeFrame(itemCount);
     end
@@ -89,8 +85,6 @@ function AuroraCouncil:Export()
     function _auroraCouncil:ShowStartupMessage()
         Util:Print("Enabled!")
     end
-
-    -- PUBLIC END
 
 
     return _auroraCouncil;
