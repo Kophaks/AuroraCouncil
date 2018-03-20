@@ -84,7 +84,7 @@ function AuroraCouncilLootMasterFrame:Export()
         AUCO_CouncilFrame:ClearAllPoints();
         AUCO_CouncilFrame:SetWidth(FRAME_WIDTH);
         AUCO_CouncilFrame:SetHeight(FRAME_HEIGHT_EXTRA);
-        AUCO_CouncilFrame:SetPoint("TOP", -310, 0);
+        AUCO_CouncilFrame:SetPoint("TOP", 0, 0);
         AUCO_CouncilFrame:SetMovable(true);
         AUCO_CouncilFrame:SetBackdrop(frameBackground);
         AUCO_CouncilFrame:SetBackdropColor(0.1, 0.1, 0.5, 0.5);

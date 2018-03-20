@@ -19,6 +19,7 @@ function AuroraCouncil:Export()
     function _auroraCouncil:LootClosed()
         UI.LootMasterFrame:CloseFrame();
         UI.RaidResponseFrame:CloseFrame();
+        UI.LootOfferFrame:CloseFrame();
     end
 
     function _auroraCouncil:ChatMsgAddon(prefix, message, sender)

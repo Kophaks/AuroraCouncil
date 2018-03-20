@@ -50,7 +50,7 @@ function AuroraCouncilRaidResponseFrame:Export()
         AUCO_RaidResponseFrame:ClearAllPoints();
         AUCO_RaidResponseFrame:SetWidth(FRAME_WIDTH);
         AUCO_RaidResponseFrame:SetHeight(PLAYER_ENTRY_COUNT * PLAYER_ENTRY_HEIGHT + FRAME_HEIGHT_EXTRA);
-        AUCO_RaidResponseFrame:SetPoint("TOP", 0, 0);
+        AUCO_RaidResponseFrame:SetPoint("TOP", 320, 0);
         AUCO_RaidResponseFrame:SetMovable(true);
         AUCO_RaidResponseFrame:SetBackdrop(frameBackground);
         AUCO_RaidResponseFrame:SetBackdropColor(0.1, 0.1, 0.5, 0.5);

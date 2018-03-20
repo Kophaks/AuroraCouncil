@@ -43,14 +43,14 @@ function AuroraCouncilLootOfferFrame:Export()
         AUCO_LootOfferFrame:ClearAllPoints();
         AUCO_LootOfferFrame:SetWidth(FRAME_WIDTH);
         AUCO_LootOfferFrame:SetHeight((4 * ITEM_ENTRY_HEIGHT) + FRAME_HEIGHT_EXTRA);
-        AUCO_LootOfferFrame:SetPoint("TOP", 0, 0);
+        AUCO_LootOfferFrame:SetPoint("CENTER", 0, 0);
         AUCO_LootOfferFrame:SetMovable(true);
         AUCO_LootOfferFrame:SetBackdrop(frameBackground);
         AUCO_LootOfferFrame:SetBackdropColor(0.1, 0.1, 0.5, 0.5);
         AUCO_LootOfferFrame:EnableMouse(true);
         AUCO_LootOfferFrame:SetClampedToScreen(true);
         AUCO_LootOfferFrame:RegisterForDrag("LeftButton");
-        AUCO_LootOfferFrame:SetFrameLevel(3);
+        AUCO_LootOfferFrame:SetFrameLevel(4);
         AUCO_LootOfferFrame.title = AUCO_LootOfferFrame:CreateFontString("AUCO_CouncilFrame_Title", "OVERLAY", "GameFontNormal");
         AUCO_LootOfferFrame.title:SetPoint("TOP", 0, -ITEM_ENTRY_HEIGHT);
         AUCO_LootOfferFrame.title:SetText(FRAME_TITLE);
