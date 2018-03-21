@@ -128,7 +128,6 @@ function AuroraCouncilLootOfferFrame:Export()
     end
 
     function _frame:SetItem(itemLink)
-        Util:Print(AUCO_LootOfferTitleFrame.title:GetText());
         AUCO_LootOfferTitleFrame.title:SetText(itemLink);
         AUCO_LootOfferTitleFrame:SetScript("OnEnter", function()
             if itemLink ~= nil then
