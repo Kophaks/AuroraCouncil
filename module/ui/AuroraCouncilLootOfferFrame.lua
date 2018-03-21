@@ -30,6 +30,9 @@ function AuroraCouncilLootOfferFrame:Export()
     }
 
     function _frame:OpenFrame()
+        if (AUCO_LootOfferFrame ~= nil) then
+            self:CloseFrame();
+        end
         local frame = tremove(frameBuffer)
         if not frame then
             self:CreateFrame();

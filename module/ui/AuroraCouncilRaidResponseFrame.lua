@@ -28,6 +28,9 @@ function AuroraCouncilRaidResponseFrame:Export()
     }
 
     function _frame:OpenFrame()
+        if (AUCO_RaidResponseFrame ~= nil) then
+            self:CloseFrame();
+        end
         local frame = tremove(frameBuffer)
         if not frame then
             self:CreateFrame();

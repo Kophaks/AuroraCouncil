@@ -34,6 +34,9 @@ function AuroraCouncilLootMasterFrame:Export()
     }
 
     function _frame:OpenFrame()
+        if (AUCO_CouncilFrame ~= nil) then
+            self:CloseFrame();
+        end
         local frame = tremove(frameBuffer)
         if not frame then
             self:CreateFrame();
