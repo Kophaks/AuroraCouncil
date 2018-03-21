@@ -1,14 +1,15 @@
 AuroraCouncilLootOfferFrame = {}
 
 function AuroraCouncilLootOfferFrame:Export()
-    local _frame = {}
+    local Util = AuroraCouncilUtil:Export();
+
+    local _frame = {};
 
     local frameBuffer = {};
 
     local ITEM_ENTRY_HEIGHT = 26;
     local FRAME_WIDTH = 250;
     local FRAME_HEIGHT_EXTRA = 70;
-    local FRAME_TITLE = "[Crappy Purple Item]";
 
     local itemBackground = {
         bgFile = "Interface/Tooltips/UI-Tooltip-Background",
@@ -51,9 +52,14 @@ function AuroraCouncilLootOfferFrame:Export()
         AUCO_LootOfferFrame:SetClampedToScreen(true);
         AUCO_LootOfferFrame:RegisterForDrag("LeftButton");
         AUCO_LootOfferFrame:SetFrameLevel(4);
-        AUCO_LootOfferFrame.title = AUCO_LootOfferFrame:CreateFontString("AUCO_CouncilFrame_Title", "OVERLAY", "GameFontNormal");
-        AUCO_LootOfferFrame.title:SetPoint("TOP", 0, -ITEM_ENTRY_HEIGHT);
-        AUCO_LootOfferFrame.title:SetText(FRAME_TITLE);
+        CreateFrame("Button", "AUCO_LootOfferTitleFrame", AUCO_LootOfferFrame);
+        AUCO_LootOfferTitleFrame:SetWidth(FRAME_WIDTH -10);
+        AUCO_LootOfferTitleFrame:SetHeight(ITEM_ENTRY_HEIGHT);
+        AUCO_LootOfferTitleFrame:SetBackdropColor(0,0,0,1);
+        AUCO_LootOfferTitleFrame:SetPoint("TOP", 0, -ITEM_ENTRY_HEIGHT)
+        AUCO_LootOfferTitleFrame.title = AUCO_LootOfferTitleFrame:CreateFontString("AUCO_LootOfferTitleFrame", "OVERLAY", "GameFontNormal");
+        AUCO_LootOfferTitleFrame.title:SetPoint("CENTER", 0, 0);
+        AUCO_LootOfferTitleFrame.title:SetText("TEST");
         AUCO_LootOfferFrame:Show();
         AUCO_LootOfferFrame:SetScript("OnDragStart", function()
             this:StartMoving();
@@ -112,12 +118,29 @@ function AuroraCouncilLootOfferFrame:Export()
     end
 
     function _frame:ResetFrame()
+        AUCO_LootOfferTitleFrame.title:SetText(nil);
         AUCO_LootOfferFrame:Show();
     end
 
     function _frame:CloseFrame()
         AUCO_LootOfferFrame:Hide()
         tinsert(frameBuffer, AUCO_LootOfferFrame)
+    end
+
+    function _frame:SetItem(itemLink)
+        Util:Print(AUCO_LootOfferTitleFrame.title:GetText());
+        AUCO_LootOfferTitleFrame.title:SetText(itemLink);
+        AUCO_LootOfferTitleFrame:SetScript("OnEnter", function()
+            if itemLink ~= nil then
+                local itemId = Util:GetItemId(itemLink);
+                GameTooltip:SetOwner(this, "ANCHOR_CURSOR");
+                GameTooltip:SetHyperlink(itemId);
+                GameTooltip:Show();
+            end
+        end)
+        AUCO_LootOfferTitleFrame:SetScript("OnLeave", function()
+            GameTooltip:Hide()
+        end)
     end
 
     return _frame;

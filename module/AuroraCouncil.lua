@@ -11,7 +11,6 @@ function AuroraCouncil:Export()
     function _auroraCouncil:LootOpened()
         UI.LootMasterFrame:OpenFrame();
         UI.RaidResponseFrame:OpenFrame();
-        UI.LootOfferFrame:OpenFrame();
         local itemCount = self:InitializeCouncil();
         UI.LootMasterFrame:ResizeFrame(itemCount);
     end
@@ -68,19 +67,8 @@ function AuroraCouncil:Export()
     end
 
     function _auroraCouncil:HandleLootMessage(itemLink)
-        StaticPopupDialogs["DUMMY_OFFER_WINDOW"] = {
-            text = "Do you need " .. itemLink .. " ?",
-            button1 = "Yes",
-            button2 = "No",
-            OnAccept = function()
-                Util:Print("Good for you");
-            end,
-            timeout = 0,
-            whileDead = true,
-            hideOnEscape = true,
-            preferredIndex = 3
-        }
-        StaticPopup_Show("DUMMY_OFFER_WINDOW")
+        UI.LootOfferFrame:OpenFrame();
+        UI.LootOfferFrame:SetItem(itemLink);
     end
 
     function _auroraCouncil:ShowStartupMessage()

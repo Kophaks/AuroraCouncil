@@ -13,7 +13,7 @@ function AuroraCouncilUtil:Export()
         if string == nil then
             string = "nil"
         end
-        DEFAULT_CHAT_FRAME:AddMessage("|cFFFFFC59| AuroraCouncil | |r" .. string);
+        DEFAULT_CHAT_FRAME:AddMessage("|cFFFFFC59|| AuroraCouncil || |r" .. string);
     end
 
 
