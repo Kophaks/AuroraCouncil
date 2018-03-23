@@ -2,6 +2,7 @@ AuroraCouncilLootOfferFrame = {}
 
 function AuroraCouncilLootOfferFrame:Export()
     local Util = AuroraCouncilUtil:Export();
+    local Message = AuroraCouncilMessage:Export();
 
     local _frame = {};
 
@@ -90,6 +91,12 @@ function AuroraCouncilLootOfferFrame:Export()
         optionFrame.text:SetText(optionName);
         optionFrame:SetBackdrop(itemBackground);
         self:ResizeFrame(nextOption)
+        optionFrame:SetScript("OnClick", function()
+            local text = this.text:GetText();
+            if text ~= nil then
+                Message:SendSelectOptionRequest(text, "RAID");
+            end
+        end)
         nextOption = nextOption + 1;
     end
 

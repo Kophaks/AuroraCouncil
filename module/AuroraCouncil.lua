@@ -38,6 +38,9 @@ function AuroraCouncil:Export()
         if prefix == Message.ADD_OPTION then
             self:AddLootOption(message);
         end
+        if prefix == Message.SELECT_OPTION then
+            self:SelectOption(message)
+        end
     end
 
     function _auroraCouncil:InitializeCouncil()
@@ -57,7 +60,7 @@ function AuroraCouncil:Export()
         end
         for key, value in pairs(lootTable) do
             local _, itemLink = unpack(value);
-            Message:SendShowItemInfo(itemLink, "RAID")
+            Message:SendShowItemInfo(itemLink, "RAID");
             UI.LootMasterFrame:SetItemEntry(key, itemLink);
         end
         return numItems;
@@ -78,11 +81,15 @@ function AuroraCouncil:Export()
     end
 
     function _auroraCouncil:ShowStartupMessage()
-        Util:Print("Enabled!")
+        Util:Print("Enabled!");
     end
 
     function _auroraCouncil:AddLootOption(option)
-        UI.LootOfferFrame:AddOption(option)
+        UI.LootOfferFrame:AddOption(option);
+    end
+
+    function _auroraCouncil:SelectOption(option)
+        Util:Print("Option Selected:" .. option);
     end
 
 

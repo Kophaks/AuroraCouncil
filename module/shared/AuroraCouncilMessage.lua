@@ -8,7 +8,7 @@ function AuroraCouncilMessage:Export()
     _message.SHOW_ITEM = "AUCO-ITEM";
     _message.OFFER_ITEM = "AUCO-OFFER";
     _message.ADD_OPTION = "AUCO-ADDOPTION"
-    _message.SELECT_OPTION = "AUCO-ADDOPTION"
+    _message.SELECT_OPTION = "AUCO-SELECTOPTION"
 
     function _message:SendShowItemInfo(itemLink, channel)
         SendAddonMessage(self.SHOW_ITEM, itemLink, channel);
