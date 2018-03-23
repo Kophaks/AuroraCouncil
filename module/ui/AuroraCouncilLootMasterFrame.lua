@@ -65,6 +65,11 @@ function AuroraCouncilLootMasterFrame:Export()
             local text = this.text:GetText();
             if text ~= nil then
                 Message:SendOfferItemRequest(itemLink, "RAID");
+                Message:SendAddOptionRequest("BiS", "RAID");
+                Message:SendAddOptionRequest("Need", "RAID");
+                Message:SendAddOptionRequest("Offspec", "RAID");
+                Message:SendAddOptionRequest("Pass", "RAID");
+                Message:SendAddOptionRequest("Give Mithnar", "RAID");
             end
         end)
         itemLinkFrame:SetScript("OnEnter", function()

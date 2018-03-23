@@ -13,6 +13,8 @@ function AuroraCouncil:Export()
         UI.RaidResponseFrame:OpenFrame();
         local itemCount = self:InitializeCouncil();
         UI.LootMasterFrame:ResizeFrame(itemCount);
+        UI.LootOfferFrame:OpenFrame();
+        UI.LootOfferFrame:CloseFrame();
     end
 
     function _auroraCouncil:LootClosed()
@@ -32,6 +34,9 @@ function AuroraCouncil:Export()
         end
         if prefix == Message.OFFER_ITEM then
             self:HandleLootMessage(message);
+        end
+        if prefix == Message.ADD_OPTION then
+            self:AddLootOption(message);
         end
     end
 
@@ -67,12 +72,17 @@ function AuroraCouncil:Export()
     end
 
     function _auroraCouncil:HandleLootMessage(itemLink)
+        Util:Print("Item: " .. itemLink);
         UI.LootOfferFrame:OpenFrame();
         UI.LootOfferFrame:SetItem(itemLink);
     end
 
     function _auroraCouncil:ShowStartupMessage()
         Util:Print("Enabled!")
+    end
+
+    function _auroraCouncil:AddLootOption(option)
+        UI.LootOfferFrame:AddOption(option)
     end
 
 

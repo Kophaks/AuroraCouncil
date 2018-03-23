@@ -6,10 +6,13 @@ function AuroraCouncilLootOfferFrame:Export()
     local _frame = {};
 
     local frameBuffer = {};
+    local optionsBuffer = {};
 
     local ITEM_ENTRY_HEIGHT = 26;
     local FRAME_WIDTH = 250;
     local FRAME_HEIGHT_EXTRA = 70;
+
+    local NUM_BUTTONS = 5;
 
     local itemBackground = {
         bgFile = "Interface/Tooltips/UI-Tooltip-Background",
@@ -20,16 +23,19 @@ function AuroraCouncilLootOfferFrame:Export()
         insets = { left = 4, right = 4, top = 4, bottom = 4 }
     }
 
+
     local frameBackground = {
-        bgFile = "Interface/Tooltips/UI-Tooltip-Background",
-        edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
-        tile = true,
-        tileSize = 16,
-        edgeSize = 16,
-        insets = { left = 4, right = 4, top = 4, bottom = 4 }
+    bgFile = "Interface/Tooltips/UI-Tooltip-Background",
+    edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
+    tile = true,
+    tileSize = 16,
+    edgeSize = 16,
+    insets = { left = 4, right = 4, top = 4, bottom = 4 }
     }
+    local nextOption = 1;
 
     function _frame:OpenFrame()
+        nextOption = 1;
         if (AUCO_LootOfferFrame ~= nil) then
             self:CloseFrame();
         end
@@ -40,6 +46,7 @@ function AuroraCouncilLootOfferFrame:Export()
         else
             self:ResetFrame();
         end
+        self:ResizeFrame(0);
     end
 
     function _frame:CreateFrame()
@@ -74,50 +81,42 @@ function AuroraCouncilLootOfferFrame:Export()
         end)
     end
 
+    function _frame:ResizeFrame(options)
+        AUCO_LootOfferFrame:SetHeight(options * ITEM_ENTRY_HEIGHT + FRAME_HEIGHT_EXTRA);
+    end
+
+    function _frame:AddOption(optionName)
+        local optionFrame = optionsBuffer[nextOption];
+        optionFrame.text:SetText(optionName);
+        optionFrame:SetBackdrop(itemBackground);
+        self:ResizeFrame(nextOption)
+        nextOption = nextOption + 1;
+    end
+
     function _frame:CreateButtons()
-        CreateFrame("Button", "AUCO_OfferButton1", AUCO_LootOfferFrame);
-        local curPos = -ITEM_ENTRY_HEIGHT - 30;
-        AUCO_OfferButton1:SetWidth(FRAME_WIDTH -10);
-        AUCO_OfferButton1:SetHeight(ITEM_ENTRY_HEIGHT);
-        AUCO_OfferButton1:SetBackdrop(itemBackground);
-        AUCO_OfferButton1:SetBackdropColor(0,0,0,1);
-        AUCO_OfferButton1:SetPoint("TOP", 0, curPos);
-        AUCO_OfferButton1.text = AUCO_OfferButton1:CreateFontString("AUCO_OfferButton1Text", "OVERLAY", "GameFontNormalSmall");
-        AUCO_OfferButton1.text:SetText("BiS");
-        AUCO_OfferButton1.text:SetPoint("CENTER", 0, 0);
+        for buttonId = 1, NUM_BUTTONS do
+            self:CreateButton(buttonId);
+        end
+    end
 
-        CreateFrame("Button", "AUCO_OfferButton2", AUCO_LootOfferFrame);
-        curPos = curPos - ITEM_ENTRY_HEIGHT;
-        AUCO_OfferButton2:SetWidth(FRAME_WIDTH -10);
-        AUCO_OfferButton2:SetHeight(ITEM_ENTRY_HEIGHT);
-        AUCO_OfferButton2:SetBackdrop(itemBackground);
-        AUCO_OfferButton2:SetBackdropColor(0,0,0,1);
-        AUCO_OfferButton2:SetPoint("TOP", 0, curPos);
-        AUCO_OfferButton2.text = AUCO_OfferButton2:CreateFontString("AUCO_OfferButton2Text", "OVERLAY", "GameFontNormalSmall");
-        AUCO_OfferButton2.text:SetText("Need");
-        AUCO_OfferButton2.text:SetPoint("CENTER", 0, 0);
+    function _frame:CreateButton(buttonId)
+        local optionFrame = CreateFrame("Button", "AUCO_OfferButton" .. buttonId, AUCO_LootOfferFrame);
+        local curPos = buttonId * -ITEM_ENTRY_HEIGHT - ITEM_ENTRY_HEIGHT;
+        optionFrame:SetWidth(FRAME_WIDTH -10);
+        optionFrame:SetHeight(ITEM_ENTRY_HEIGHT);
+        optionFrame:SetBackdrop(nil);
+        optionFrame:SetBackdropColor(0,0,0,1);
+        optionFrame:SetPoint("TOP", 0, curPos);
+        optionFrame.text = optionFrame:CreateFontString("AUCO_OfferButton1Text", "OVERLAY", "GameFontNormalSmall");
+        optionFrame.text:SetText(nil);
+        optionFrame.text:SetPoint("CENTER", 0, 0);
+        optionsBuffer[buttonId] = optionFrame;
+    end
 
-        CreateFrame("Button", "AUCO_OfferButton3", AUCO_LootOfferFrame);
-        curPos = curPos - ITEM_ENTRY_HEIGHT;
-        AUCO_OfferButton3:SetWidth(FRAME_WIDTH -10);
-        AUCO_OfferButton3:SetHeight(ITEM_ENTRY_HEIGHT);
-        AUCO_OfferButton3:SetBackdrop(itemBackground);
-        AUCO_OfferButton3:SetBackdropColor(0,0,0,1);
-        AUCO_OfferButton3:SetPoint("TOP", 0, curPos);
-        AUCO_OfferButton3.text = AUCO_OfferButton3:CreateFontString("AUCO_OfferButton3Text", "OVERLAY", "GameFontNormalSmall");
-        AUCO_OfferButton3.text:SetText("Offspec");
-        AUCO_OfferButton3.text:SetPoint("CENTER", 0, 0);
-
-        CreateFrame("Button", "AUCO_OfferButton4", AUCO_LootOfferFrame);
-        curPos = curPos - ITEM_ENTRY_HEIGHT;
-        AUCO_OfferButton4:SetWidth(FRAME_WIDTH -10);
-        AUCO_OfferButton4:SetHeight(ITEM_ENTRY_HEIGHT);
-        AUCO_OfferButton4:SetBackdrop(itemBackground);
-        AUCO_OfferButton4:SetBackdropColor(0,0,0,1);
-        AUCO_OfferButton4:SetPoint("TOP", 0, curPos);
-        AUCO_OfferButton4.text = AUCO_OfferButton4:CreateFontString("AUCO_OfferButton4Text", "OVERLAY", "GameFontNormalSmall");
-        AUCO_OfferButton4.text:SetText("Pass");
-        AUCO_OfferButton4.text:SetPoint("CENTER", 0, 0);
+    function _frame:ResetButton(optionId)
+        local optionFrame = optionsBuffer[optionId];
+        optionFrame.text:SetText(nil);
+        optionFrame:SetBackdrop(nil);
     end
 
     function _frame:ResetFrame()
