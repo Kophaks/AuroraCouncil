@@ -16,6 +16,13 @@ function AuroraCouncilUtil:Export()
         DEFAULT_CHAT_FRAME:AddMessage("|cFFFFFC59|| AuroraCouncil || |r" .. inputString);
     end
 
+    function _util:Debug(inputString)
+        if inputString == nil then
+            inputString = "nil"
+        end
+        DEFAULT_CHAT_FRAME:AddMessage("|cFFFFFC59|| AC-DEBUG || |r" .. inputString);
+    end
+
     function _util:SplitString(inputString, seperator)
         local resultArray={} ;
         local pos=1;

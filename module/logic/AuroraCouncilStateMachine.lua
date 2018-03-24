@@ -25,52 +25,52 @@ function AuroraCouncilStateMachine:Export()
     _state.current = AuroraCouncilStateMachine.StateWaiting;
 
     function AuroraCouncilStateMachine.StateWaiting:LootItem()
-        Util:Print("Waiting -> Loot");
+        Util:Debug("Waiting -> Loot");
         _state.current = AuroraCouncilStateMachine.StateLoot;
     end
 
     function AuroraCouncilStateMachine.StateLoot:NoLoot()
-        Util:Print("Loot -> Waiting");
+        Util:Debug("Loot -> Waiting");
         _state.current = AuroraCouncilStateMachine.StateWaiting;
     end
 
     function AuroraCouncilStateMachine.StateLoot:SomeLoot(lootMaster)
         if lootMaster then
-            Util:Print("Loot -> MasterLooting");
+            Util:Debug("Loot -> MasterLooting");
             _state.current = AuroraCouncilStateMachine.StateMasterLooting;
         else
-            Util:Print("Loot -> AwaitItem");
+            Util:Debug("Loot -> AwaitItem");
             _state.current = AuroraCouncilStateMachine.StateAwaitItem;
         end
     end
 
     function AuroraCouncilStateMachine.StateMasterLooting:ChooseItem()
-        Util:Print("MasterLooting -> MasterSelectOption");
+        Util:Debug("MasterLooting -> MasterSelectOption");
         _state.current = AuroraCouncilStateMachine.StateMasterSelectOption;
     end
 
     function AuroraCouncilStateMachine.StateMasterSelectOption:ChooseOption()
-        Util:Print("MasterSelectOption -> MasterDecision");
+        Util:Debug("MasterSelectOption -> MasterDecision");
         _state.current = AuroraCouncilStateMachine.StateMasterDecision;
     end
 
     function AuroraCouncilStateMachine.StateMasterDecision:AssignItem()
-        Util:Print("MasterDecision -> Loot");
+        Util:Debug("MasterDecision -> Loot");
         _state.current = AuroraCouncilStateMachine.StateLoot;
     end
 
     function AuroraCouncilStateMachine.StateAwaitItem:ReceiveOptions()
-        Util:Print("AwaitItem -> SelectOption");
+        Util:Debug("AwaitItem -> SelectOption");
         _state.current = AuroraCouncilStateMachine.StateSelectOption;
     end
 
     function AuroraCouncilStateMachine.StateSelectOption:ChooseOption()
-        Util:Print("SelectOption -> AwaitDecision");
+        Util:Debug("SelectOption -> AwaitDecision");
         _state.current = AuroraCouncilStateMachine.StateAwaitDecision;
     end
 
     function AuroraCouncilStateMachine.StateAwaitDecision:AssignItem()
-        Util:Print("AwaitDecision -> Loot");
+        Util:Debug("AwaitDecision -> Loot");
         _state.current = AuroraCouncilStateMachine.StateLoot;
     end
 
