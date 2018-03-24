@@ -46,6 +46,7 @@ function AuroraCouncilLootOfferFrame:Export()
             self:CreateButtons();
         else
             self:ResetFrame();
+            self:ResetButtons();
         end
         self:ResizeFrame(0);
     end
@@ -120,10 +121,11 @@ function AuroraCouncilLootOfferFrame:Export()
         optionsBuffer[buttonId] = optionFrame;
     end
 
-    function _frame:ResetButton(optionId)
-        local optionFrame = optionsBuffer[optionId];
-        optionFrame.text:SetText(nil);
-        optionFrame:SetBackdrop(nil);
+    function _frame:ResetButtons()
+        for buttonId = 1, NUM_BUTTONS do
+            optionFrame.text:SetText(nil);
+            optionFrame:SetBackdrop(nil);
+        end
     end
 
     function _frame:ResetFrame()
