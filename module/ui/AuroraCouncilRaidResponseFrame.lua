@@ -12,10 +12,10 @@ function AuroraCouncilRaidResponseFrame:Export()
     local FRAME_TEXT_OFFSET = 8;
     local PLAYER_ENTRY_COUNT = 40;
     local PLAYER_ENTRY_HEIGHT = 14;
-    local PLAYER_STATUS_WIDTH = 60;
+    local PLAYER_OPTION_WIDTH = 60;
     local PLAYER_NAME_WIDTH = 100;
     local PLAYER_ITEM_WIDTH = 200;
-    local FRAME_WIDTH = PLAYER_STATUS_WIDTH + PLAYER_NAME_WIDTH
+    local FRAME_WIDTH = PLAYER_OPTION_WIDTH + PLAYER_NAME_WIDTH
             + PLAYER_ITEM_WIDTH + FRAME_TEXT_OFFSET *2;
 
     local frameBackground = {
@@ -27,7 +27,10 @@ function AuroraCouncilRaidResponseFrame:Export()
         insets = { left = 4, right = 4, top = 4, bottom = 4 }
     }
 
+    local nextOption = 1;
+
     function _frame:OpenFrame()
+        nextOption = 1;
         if (AUCO_RaidResponseFrame ~= nil) then
             self:CloseFrame();
         end
@@ -36,7 +39,9 @@ function AuroraCouncilRaidResponseFrame:Export()
             self:CreateFrame();
             for entry = 1, PLAYER_ENTRY_COUNT do
                 self:CreatePlayerEntry(entry);
+                self:ResetPlayerEntry(entry);
             end
+            self:ResizeFrame(0);
         else
             self:ResetFrame();
         end
@@ -83,20 +88,20 @@ function AuroraCouncilRaidResponseFrame:Export()
         itemLinkFrame:SetHeight(PLAYER_ENTRY_HEIGHT);
         itemLinkFrame:SetBackdropColor(0,0,0,1);
         itemLinkFrame:SetPoint("TOP", 0, curPos);
-        itemLinkFrame.status = itemLinkFrame:CreateFontString("AUCO_RaidResponseFrameStatus" .. entryId, "OVERLAY", "GameFontNormalSmall");
-        itemLinkFrame.status:SetText("Need");
-        itemLinkFrame.status:SetWidth(PLAYER_STATUS_WIDTH)
-        itemLinkFrame.status:SetPoint("LEFT", 0, 0);
-        itemLinkFrame.status:SetJustifyH("LEFT");
+        itemLinkFrame.option = itemLinkFrame:CreateFontString("AUCO_RaidResponseFrameOption" .. entryId, "OVERLAY", "GameFontNormalSmall");
+        itemLinkFrame.option:SetText("Need");
+        itemLinkFrame.option:SetWidth(PLAYER_OPTION_WIDTH)
+        itemLinkFrame.option:SetPoint("LEFT", 0, 0);
+        itemLinkFrame.option:SetJustifyH("LEFT");
         itemLinkFrame.player = itemLinkFrame:CreateFontString("AUCO_RaidResponseFramePlayer" .. entryId, "OVERLAY", "GameFontNormalSmall");
         itemLinkFrame.player:SetText("player" .. entryId);
         itemLinkFrame.player:SetWidth(PLAYER_NAME_WIDTH)
-        itemLinkFrame.player:SetPoint("LEFT",PLAYER_STATUS_WIDTH,0);
+        itemLinkFrame.player:SetPoint("LEFT", PLAYER_OPTION_WIDTH,0);
         itemLinkFrame.player:SetJustifyH("CENTER");
         itemLinkFrame.item = itemLinkFrame:CreateFontString("AUCO_RaidResponseFrameItem" .. entryId, "OVERLAY", "GameFontNormalSmall");
         itemLinkFrame.item:SetText(GetInventoryItemLink("player",GetInventorySlotInfo("MainHandSlot")));
         itemLinkFrame.item:SetWidth(PLAYER_ITEM_WIDTH)
-        itemLinkFrame.item:SetPoint("LEFT",PLAYER_STATUS_WIDTH+PLAYER_NAME_WIDTH,0);
+        itemLinkFrame.item:SetPoint("LEFT", PLAYER_OPTION_WIDTH +PLAYER_NAME_WIDTH,0);
         itemLinkFrame.item:SetJustifyH("LEFT");
         itemLinkFrame:SetScript("OnEnter", function()
             local text = this.item:GetText();
@@ -113,6 +118,27 @@ function AuroraCouncilRaidResponseFrame:Export()
         entryBuffer[entryId] = itemLinkFrame;
     end
 
+    function _frame:ResetPlayerEntry(entryId)
+        local itemLinkFrame = entryBuffer[entryId];
+        itemLinkFrame.option:SetText(nil);
+        itemLinkFrame.player:SetText(nil);
+        itemLinkFrame.item:SetText(nil);
+        itemLinkFrame:SetBackdrop(nil);
+    end
+
+    function _frame:AddPlayerEntry(option, player, item)
+        local entryFrame = entryBuffer[nextOption];
+        entryFrame:SetBackdropColor(0,0,0,1);
+        entryFrame.option:SetText(option);
+        entryFrame.player:SetText(player);
+        entryFrame.item:SetText(item);
+        self:ResizeFrame(nextOption)
+        nextOption = nextOption + 1;
+    end
+
+    function _frame:ResizeFrame(entryCount)
+        AUCO_RaidResponseFrame:SetHeight(entryCount * PLAYER_ENTRY_HEIGHT + FRAME_HEIGHT_EXTRA);
+    end
 
     return _frame;
 end

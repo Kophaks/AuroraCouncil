@@ -39,7 +39,7 @@ function AuroraCouncil:Export()
             self:AddLootOption(message);
         end
         if prefix == Message.SELECT_OPTION then
-            self:SelectOption(message)
+            self:SelectOption(message, sender)
         end
     end
 
@@ -75,7 +75,6 @@ function AuroraCouncil:Export()
     end
 
     function _auroraCouncil:HandleLootMessage(itemLink)
-        Util:Print("Item: " .. itemLink);
         UI.LootOfferFrame:OpenFrame();
         UI.LootOfferFrame:SetItem(itemLink);
     end
@@ -88,8 +87,9 @@ function AuroraCouncil:Export()
         UI.LootOfferFrame:AddOption(option);
     end
 
-    function _auroraCouncil:SelectOption(option)
-        Util:Print("Option Selected:" .. option);
+    function _auroraCouncil:SelectOption(response, player)
+        local option, item = Message:SplitSelectOptionResponse(response);
+        UI.RaidResponseFrame:AddPlayerEntry(option, player, item)
     end
 
 

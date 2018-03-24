@@ -15,7 +15,7 @@ function AuroraCouncilLootOfferFrame:Export()
 
     local NUM_BUTTONS = 5;
 
-    local itemBackground = {
+    local optionBackground = {
         bgFile = "Interface/Tooltips/UI-Tooltip-Background",
         edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
         tile = true,
@@ -90,12 +90,13 @@ function AuroraCouncilLootOfferFrame:Export()
     function _frame:AddOption(optionName)
         local optionFrame = optionsBuffer[nextOption];
         optionFrame.text:SetText(optionName);
-        optionFrame:SetBackdrop(itemBackground);
+        optionFrame:SetBackdrop(optionBackground);
+        optionFrame:SetBackdropColor(0,0,0,1);
         self:ResizeFrame(nextOption)
         optionFrame:SetScript("OnClick", function()
             local text = this.text:GetText();
             if text ~= nil then
-                Message:SendSelectOptionRequest(text, "RAID");
+                Message:SendSelectOptionRequest(text, GetInventoryItemLink("player",GetInventorySlotInfo("MainHandSlot"), "RAID"));
             end
         end)
         nextOption = nextOption + 1;
@@ -109,7 +110,7 @@ function AuroraCouncilLootOfferFrame:Export()
 
     function _frame:CreateButton(buttonId)
         local optionFrame = CreateFrame("Button", "AUCO_OfferButton" .. buttonId, AUCO_LootOfferFrame);
-        local curPos = buttonId * -ITEM_ENTRY_HEIGHT - ITEM_ENTRY_HEIGHT;
+        local curPos = buttonId * -ITEM_ENTRY_HEIGHT - 30;
         optionFrame:SetWidth(FRAME_WIDTH -10);
         optionFrame:SetHeight(ITEM_ENTRY_HEIGHT);
         optionFrame:SetBackdrop(nil);
@@ -123,6 +124,7 @@ function AuroraCouncilLootOfferFrame:Export()
 
     function _frame:ResetButtons()
         for buttonId = 1, NUM_BUTTONS do
+            local optionFrame = optionsBuffer[buttonId];
             optionFrame.text:SetText(nil);
             optionFrame:SetBackdrop(nil);
         end

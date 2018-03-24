@@ -16,6 +16,16 @@ function AuroraCouncilUtil:Export()
         DEFAULT_CHAT_FRAME:AddMessage("|cFFFFFC59|| AuroraCouncil || |r" .. string);
     end
 
+    function _util:SplitString(inputString, seperator)
+        local resultArray={} ;
+        local pos=1;
+        for str in string.gfind(inputString, "([^"..seperator.."]+)") do
+            resultArray[pos] = str
+            pos = pos + 1
+        end
+        return resultArray
+    end
+
 
     return _util;
 end

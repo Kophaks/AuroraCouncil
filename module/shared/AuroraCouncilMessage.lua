@@ -1,5 +1,7 @@
 AuroraCouncilMessage = {};
 
+local Util = AuroraCouncilUtil:Export();
+
 function AuroraCouncilMessage:Export()
 
     local _message = {};
@@ -26,8 +28,15 @@ function AuroraCouncilMessage:Export()
         SendAddonMessage(self.ADD_OPTION, option, channel);
     end
 
-    function _message:SendSelectOptionRequest(option, channel)
-        SendAddonMessage(self.SELECT_OPTION, option, channel);
+    function _message:SendSelectOptionRequest(option, currentItem, channel)
+        SendAddonMessage(self.SELECT_OPTION, option .. ';' .. currentItem, channel);
+    end
+
+    function _message:SplitSelectOptionResponse(response)
+        local responseArray = Util:SplitString(response, ";")
+        local option = responseArray[1];
+        local item = responseArray[2];
+        return option, item;
     end
 
     return _message;
