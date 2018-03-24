@@ -9,11 +9,11 @@ function AuroraCouncilUtil:Export()
         return Ltype .. ":" .. Id;
     end
 
-    function _util:Print(string)
-        if string == nil then
-            string = "nil"
+    function _util:Print(inputString)
+        if inputString == nil then
+            inputString = "nil"
         end
-        DEFAULT_CHAT_FRAME:AddMessage("|cFFFFFC59|| AuroraCouncil || |r" .. string);
+        DEFAULT_CHAT_FRAME:AddMessage("|cFFFFFC59|| AuroraCouncil || |r" .. inputString);
     end
 
     function _util:SplitString(inputString, seperator)

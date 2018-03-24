@@ -12,6 +12,7 @@ lib\AceEvent-2.0\AceEvent-2.0.lua
 
 module\shared\AuroraCouncilUtil.lua
 module\shared\AuroraCouncilMessage.lua
+module\logic\AuroraCouncilStateMachine.lua
 module\ui\AuroraCouncilLootMasterFrame.lua
 module\ui\AuroraCouncilLootOfferFrame.lua
 module\ui\AuroraCouncilRaidResponseFrame.lua

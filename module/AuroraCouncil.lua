@@ -1,6 +1,7 @@
 local UI = AuroraCouncilUI:Export();
 local Message = AuroraCouncilMessage:Export();
 local Util = AuroraCouncilUtil:Export();
+local StateMachine = AuroraCouncilStateMachine:Export();
 
 AuroraCouncil = {};
 
@@ -21,6 +22,19 @@ function AuroraCouncil:Export()
         UI.LootMasterFrame:CloseFrame();
         UI.RaidResponseFrame:CloseFrame();
         UI.LootOfferFrame:CloseFrame();
+    end
+
+    function _auroraCouncil:init()
+        StateMachine.current:LootItem();
+        StateMachine.current:SomeLoot(true);
+        StateMachine.current:ChooseItem();
+        StateMachine.current:ChooseOption();
+        StateMachine.current:AssignItem();
+        StateMachine.current:SomeLoot(false);
+        StateMachine.current:ReceiveOptions();
+        StateMachine.current:ChooseOption();
+        StateMachine.current:AssignItem();
+        StateMachine.current:NoLoot();
     end
 
     function _auroraCouncil:ChatMsgAddon(prefix, message, sender)

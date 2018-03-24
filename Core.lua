@@ -9,6 +9,7 @@ function Core:OnEnable()
     self:RegisterEvent("CHAT_MSG_ADDON");
     self:RegisterEvent("LOOT_OPENED");
     self:RegisterEvent("LOOT_CLOSED");
+    AuroraCouncil.init();
 end
 
 function Core:OnDisable()
