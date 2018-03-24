@@ -1,9 +1,9 @@
+local Util = AuroraCouncilUtil:Export();
+local Message = AuroraCouncilMessage:Export();
+
 AuroraCouncilLootMasterFrame = {};
 
 function AuroraCouncilLootMasterFrame:Export()
-    local Util = AuroraCouncilUtil:Export();
-    local Message = AuroraCouncilMessage:Export();
-
     local _frame = {}
 
     local frameBuffer = {};
@@ -69,7 +69,6 @@ function AuroraCouncilLootMasterFrame:Export()
                 Message:SendAddOptionRequest("Need", "RAID");
                 Message:SendAddOptionRequest("Offspec", "RAID");
                 Message:SendAddOptionRequest("Pass", "RAID");
-                Message:SendAddOptionRequest("Give Mithnar", "RAID");
             end
         end)
         itemLinkFrame:SetScript("OnEnter", function()

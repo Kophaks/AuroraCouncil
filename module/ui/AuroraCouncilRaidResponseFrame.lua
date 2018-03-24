@@ -1,8 +1,8 @@
+local Util = AuroraCouncilUtil:Export();
+
 AuroraCouncilRaidResponseFrame = {}
 
 function AuroraCouncilRaidResponseFrame:Export()
-    local Util = AuroraCouncilUtil:Export();
-
     local _frame = {}
 
     local frameBuffer = {};

@@ -1,11 +1,11 @@
+local UI = AuroraCouncilUI:Export();
+local Message = AuroraCouncilMessage:Export();
+local Util = AuroraCouncilUtil:Export();
+
 AuroraCouncil = {};
 
 function AuroraCouncil:Export()
     local _auroraCouncil = {};
-    local UI = AuroraCouncilUI:Export();
-    local Message = AuroraCouncilMessage:Export();
-    local Util = AuroraCouncilUtil:Export();
-
     local lootTable;
 
     function _auroraCouncil:LootOpened()

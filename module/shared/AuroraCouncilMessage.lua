@@ -1,6 +1,6 @@
-AuroraCouncilMessage = {};
-
 local Util = AuroraCouncilUtil:Export();
+
+AuroraCouncilMessage = {};
 
 function AuroraCouncilMessage:Export()
 
