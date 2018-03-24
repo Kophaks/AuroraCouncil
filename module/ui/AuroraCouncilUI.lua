@@ -38,6 +38,9 @@ function AuroraCouncilUI:Export()
     end
 
     function _ui:HandleLootState()
+        self.LootMasterFrame:ResetFrame();
+        self.LootOfferFrame:ResetFrame();
+        self.RaidResponseFrame:ResetFrame();
         self.LootMasterFrame:CloseFrame();
         self.LootOfferFrame:CloseFrame();
         self.RaidResponseFrame:CloseFrame();

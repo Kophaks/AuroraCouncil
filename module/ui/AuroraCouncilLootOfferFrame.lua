@@ -92,9 +92,16 @@ function AuroraCouncilLootOfferFrame:Export()
             optionFrame:SetBackdrop(optionBackground);
             optionFrame:SetBackdropColor(0,0,0,1);
             optionFrame:SetScript("OnClick", function()
+                local itemLink = AUCO_LootOfferTitleFrame.title:GetText();
                 local text = this.text:GetText();
                 if text ~= nil then
-                    Message:SendSelectOptionRequest(text, GetInventoryItemLink("player",GetInventorySlotInfo("MainHandSlot"), "RAID"));
+                    local equippedSlot = Util:GetItemEquippedSlot(itemLink);
+                    if equippedSlot then
+                        Message:SendSelectOptionRequest(text, GetInventoryItemLink("player", GetInventorySlotInfo(equippedSlot), "RAID"));
+                    else
+                        Message:SendSelectOptionRequest(text, "-", "RAID");
+                    end
+
                 end
             end)
             nextOption = nextOption + 1;

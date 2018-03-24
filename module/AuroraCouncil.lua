@@ -8,6 +8,7 @@ AuroraCouncil = {};
 function AuroraCouncil:Export()
     local _auroraCouncil = {};
     local lootTable;
+    local currentItem;
 
     function _auroraCouncil:LootOpened()
         if StateMachine.current.name == StateMachine.WATING then
@@ -32,6 +33,9 @@ function AuroraCouncil:Export()
         if prefix == Message.MASTER_IS_LOOTING then
             self:HandleMasterIsLooting();
         end
+        if prefix == Message.NO_ITEMS then
+            self:HandleNoItems();
+        end
         if prefix == Message.SESSION_START then
             self:HandleStartMessage(sender);
         end
@@ -44,39 +48,59 @@ function AuroraCouncil:Export()
         if prefix == Message.SELECT_OPTION then
             self:SelectOption(message, sender)
         end
+        if prefix == Message.GIVE_ITEM then
+            self:HandleGiveItem(message, sender)
+        end
+        if prefix == Message.ITEM_ASSIGNED then
+            self:HandleItemAssigned()
+        end
         UI:UpdateState(StateMachine);
     end
 
     function _auroraCouncil:InitializeCouncil()
-        local numItems = 0;
+        local numValidItems = 0;
         if self:CheckPreconditions() then
             Message:SendMasterIsLootingInfo("Raid");
             lootTable = {};
-            local numLoots = GetNumLootItems();
-            numItems = 0;
-            if numLoots > 0 then
+            numValidItems = self:GetValidItems();
+            if numValidItems > 0 then
                 Message:SendSessionStartRequest("Raid");
+            else
+                Message:NoValidItemsInfo("Raid");
             end
             self.items = {}
-            for itemIndex = 1, GetNumLootItems(), 1 do
-                if LootSlotIsItem(itemIndex) then
-                    numItems = numItems + 1;
-                    local itemLink = GetLootSlotLink(itemIndex);
-                    lootTable[numItems] = { itemIndex, itemLink };
-                end
-            end
+
             for key, value in pairs(lootTable) do
                 local _, itemLink = unpack(value);
                 Message:SendShowItemInfo(itemLink, "RAID");
                 UI.LootMasterFrame:SetItemEntry(key, itemLink);
             end
         end
-        return numItems;
+        return numValidItems;
     end
 
+function _auroraCouncil:GetValidItems()
+    local numValidItems = 0
+    local threshold = GetLootThreshold();
+    for itemIndex = 1, GetNumLootItems() do
+        local _, _, _, rarity, _, _, _, _ = GetLootSlotInfo(itemIndex);
+        if LootSlotIsItem(itemIndex) and rarity >= threshold then
+            numValidItems = numValidItems + 1;
+            local itemLink = GetLootSlotLink(itemIndex);
+            lootTable[numValidItems] = { itemIndex, itemLink };
+        end
+    end
+    return numValidItems;
+end
+
     function _auroraCouncil:HandleStartMessage(sender)
-        Util:Print("Loot Distribution Started!");
-        Util:Print("Loot Master: " .. sender);
+        if(currentItem == nil) then
+            Util:Print("Loot Distribution Started!");
+            Util:Print("Loot Master: " .. sender);
+        else
+            currentItem = nil;
+        end
+
         if sender == (UnitName("player")) then
             StateMachine.current:SomeLoot(true);
         else
@@ -94,6 +118,7 @@ function AuroraCouncil:Export()
     function _auroraCouncil:HandleLootMessage(offerItemRequest)
         if StateMachine.MASTER_LOOTING == StateMachine.current.name or StateMachine.AWAIT_ITEM == StateMachine.current.name then
             local itemLink, option1, option2, option3, option4, option5 = Message:SplitOfferItemRequest(offerItemRequest);
+            currentItem = itemLink;
             UI.LootOfferFrame:SetItem(itemLink);
             UI.LootOfferFrame:AddOption(option1);
             UI.LootOfferFrame:AddOption(option2);
@@ -113,9 +138,39 @@ function AuroraCouncil:Export()
         StateMachine.current:LootCorpse();
     end
 
+    function _auroraCouncil:HandleNoItems()
+        StateMachine.current:NoLoot();
+    end
+
+    function _auroraCouncil:HandleItemAssigned()
+        StateMachine.current:AssignItem();
+        self:InitializeCouncil()
+    end
+
+    function _auroraCouncil:HandleGiveItem(targetPlayer, sender)
+        for playerIndex = 1, GetNumRaidMembers() do
+            if (GetMasterLootCandidate(playerIndex) == targetPlayer) then
+                self:GiveItemTo(currentItem, playerIndex);
+            end
+        end
+    end
+
+    function _auroraCouncil:GiveItemTo(item, player)
+        for itemIndex = 1, GetNumLootItems() do
+            local itemLink = GetLootSlotLink(itemIndex);
+
+            if itemLink == item then
+                GiveMasterLoot(itemIndex, player);
+                Message:SendItemAssignedInfo("Raid");
+            end
+        end
+    end
+
     function _auroraCouncil:HandleResetMessage()
         StateMachine:Reset();
         UI:Init();
+        currentItem = nil;
+        lootTable = nil;
     end
 
     function _auroraCouncil:SelectOption(message, sender)

@@ -1,4 +1,5 @@
 local Util = AuroraCouncilUtil:Export();
+local Message = AuroraCouncilMessage:Export();
 
 AuroraCouncilRaidResponseFrame = {}
 
@@ -103,9 +104,14 @@ function AuroraCouncilRaidResponseFrame:Export()
         itemLinkFrame.item:SetWidth(PLAYER_ITEM_WIDTH)
         itemLinkFrame.item:SetPoint("LEFT", PLAYER_OPTION_WIDTH +PLAYER_NAME_WIDTH,0);
         itemLinkFrame.item:SetJustifyH("LEFT");
+        itemLinkFrame:SetScript("OnClick", function()
+            if Util:IsPlayerLootMaster() then
+                Message:SendGiveItemRequest(itemLinkFrame.player:GetText(), "Raid")
+            end
+        end)
         itemLinkFrame:SetScript("OnEnter", function()
             local text = this.item:GetText();
-            if text ~= nil then
+            if text ~= nil and text ~= "-" then
                 local itemId = Util:GetItemId(text);
                 GameTooltip:SetOwner(this, "ANCHOR_RIGHT", FRAME_TEXT_OFFSET);
                 GameTooltip:SetHyperlink(itemId);
@@ -130,6 +136,7 @@ function AuroraCouncilRaidResponseFrame:Export()
         for entry = 1, PLAYER_ENTRY_COUNT do
             self:ResetPlayerEntry(entry);
         end
+        local nextOption = 1;
     end
 
     function _frame:AddPlayerEntry(option, player, item)

@@ -8,11 +8,14 @@ function AuroraCouncilMessage:Export()
 
     _message.RESET = "AUCO_LMRES";
     _message.MASTER_IS_LOOTING = "AUCO_LMLOOT";
+    _message.NO_ITEMS = "AUCO_NOITEM";
     _message.SESSION_START = "AUCO_START";
     _message.SHOW_ITEM = "AUCO_ITEM";
     _message.OFFER_ITEM = "AUCO_OFFER";
     _message.SET_OPTIONS = "AUCO_ADDOPTION";
     _message.SELECT_OPTION = "AUCO_SELECTOPTION";
+    _message.GIVE_ITEM = "AUCO_GIVEITEM";
+    _message.ITEM_ASSIGNED = "AUCO_ASSIGNED";
 
     function _message:SendResetRequest(channel)
         SendAddonMessage(self.RESET, "-", channel);
@@ -40,6 +43,18 @@ function AuroraCouncilMessage:Export()
 
     function _message:SendSelectOptionRequest(option, currentItem, channel)
         SendAddonMessage(self.SELECT_OPTION, option .. ';' .. currentItem, channel);
+    end
+
+    function _message:NoValidItemsInfo(channel)
+        SendAddonMessage(self.NO_ITEMS, "-", channel);
+    end
+
+    function _message:SendGiveItemRequest(player, channel)
+        SendAddonMessage(self.GIVE_ITEM, player, channel);
+    end
+
+    function _message:SendItemAssignedInfo(channel)
+        SendAddonMessage(self.ITEM_ASSIGNED, "-", channel);
     end
 
     function _message:CreateOfferItemRequest(itemLink, option1, option2, option3, option4, option5)
