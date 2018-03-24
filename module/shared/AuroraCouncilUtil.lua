@@ -20,7 +20,7 @@ function AuroraCouncilUtil:Export()
         if inputString == nil then
             inputString = "nil"
         end
-        DEFAULT_CHAT_FRAME:AddMessage("|cFFFFFC59|| AC-DEBUG || |r" .. inputString);
+        DEFAULT_CHAT_FRAME:AddMessage("|cFFFF7060|| AuroraCouncil || |r" .. inputString);
     end
 
     function _util:SplitString(inputString, seperator)
@@ -32,6 +32,11 @@ function AuroraCouncilUtil:Export()
         end
         return resultArray
     end
+
+function _util:IsPlayerLootMaster()
+    local _, masterlooterPartyID, _ = GetLootMethod()
+    return masterlooterPartyID == 0;
+end
 
 
     return _util;

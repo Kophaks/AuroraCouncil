@@ -44,13 +44,15 @@ function AuroraCouncilLootMasterFrame:Export()
                 self:CreateItemEntry(entry);
             end
         else
-            self:ResetFrame();
+            self:ShowFrame();
         end
     end
 
     function _frame:CloseFrame()
-        AUCO_CouncilFrame:Hide()
-        tinsert(frameBuffer, AUCO_CouncilFrame)
+        if AUCO_CouncilFrame then
+            AUCO_CouncilFrame:Hide()
+            tinsert(frameBuffer, AUCO_CouncilFrame)
+        end
     end
 
     function _frame:ResizeFrame(itemCount)
@@ -64,11 +66,8 @@ function AuroraCouncilLootMasterFrame:Export()
         itemLinkFrame:SetScript("OnClick", function()
             local text = this.text:GetText();
             if text ~= nil then
-                Message:SendOfferItemRequest(itemLink, "RAID");
-                Message:SendAddOptionRequest("BiS", "RAID");
-                Message:SendAddOptionRequest("Need", "RAID");
-                Message:SendAddOptionRequest("Offspec", "RAID");
-                Message:SendAddOptionRequest("Pass", "RAID");
+                local request = Message:CreateOfferItemRequest(itemLink, "BiS", "Need", "Offspec", "Pass")
+                Message:SendOfferItemRequest(request, "RAID");
             end
         end)
         itemLinkFrame:SetScript("OnEnter", function()
@@ -113,11 +112,14 @@ function AuroraCouncilLootMasterFrame:Export()
         end)
     end
 
+    function _frame:ShowFrame()
+        AUCO_CouncilFrame:Show();
+    end
+
     function _frame:ResetFrame()
         for entry = 1, ITEM_ENTRY_COUNT do
-            self:ResetItemEntry(entry);
+            --self:ResetItemEntry(entry);
         end
-        AUCO_CouncilFrame:Show();
     end
 
     function _frame:CreateItemEntry(entryId)

@@ -30,7 +30,6 @@ function AuroraCouncilRaidResponseFrame:Export()
     local nextOption = 1;
 
     function _frame:OpenFrame()
-        nextOption = 1;
         if (AUCO_RaidResponseFrame ~= nil) then
             self:CloseFrame();
         end
@@ -39,17 +38,18 @@ function AuroraCouncilRaidResponseFrame:Export()
             self:CreateFrame();
             for entry = 1, PLAYER_ENTRY_COUNT do
                 self:CreatePlayerEntry(entry);
-                self:ResetPlayerEntry(entry);
             end
             self:ResizeFrame(0);
         else
-            self:ResetFrame();
+            self:ShowFrame();
         end
     end
 
     function _frame:CloseFrame()
-        AUCO_RaidResponseFrame:Hide()
-        tinsert(frameBuffer, AUCO_RaidResponseFrame)
+        if AUCO_RaidResponseFrame then
+            AUCO_RaidResponseFrame:Hide()
+            tinsert(frameBuffer, AUCO_RaidResponseFrame)
+        end
     end
 
 
@@ -77,7 +77,7 @@ function AuroraCouncilRaidResponseFrame:Export()
         end)
     end
 
-    function _frame:ResetFrame()
+    function _frame:ShowFrame()
         AUCO_RaidResponseFrame:Show();
     end
 
@@ -86,20 +86,20 @@ function AuroraCouncilRaidResponseFrame:Export()
         local curPos = (entryId * -PLAYER_ENTRY_HEIGHT) + PLAYER_ENTRY_HEIGHT - 5
         itemLinkFrame:SetWidth(FRAME_WIDTH - FRAME_TEXT_OFFSET *2);
         itemLinkFrame:SetHeight(PLAYER_ENTRY_HEIGHT);
-        itemLinkFrame:SetBackdropColor(0,0,0,1);
+        itemLinkFrame:SetBackdrop(nil);
         itemLinkFrame:SetPoint("TOP", 0, curPos);
         itemLinkFrame.option = itemLinkFrame:CreateFontString("AUCO_RaidResponseFrameOption" .. entryId, "OVERLAY", "GameFontNormalSmall");
-        itemLinkFrame.option:SetText("Need");
+        itemLinkFrame.option:SetText(nil);
         itemLinkFrame.option:SetWidth(PLAYER_OPTION_WIDTH)
         itemLinkFrame.option:SetPoint("LEFT", 0, 0);
         itemLinkFrame.option:SetJustifyH("LEFT");
         itemLinkFrame.player = itemLinkFrame:CreateFontString("AUCO_RaidResponseFramePlayer" .. entryId, "OVERLAY", "GameFontNormalSmall");
-        itemLinkFrame.player:SetText("player" .. entryId);
+        itemLinkFrame.player:SetText(nil);
         itemLinkFrame.player:SetWidth(PLAYER_NAME_WIDTH)
         itemLinkFrame.player:SetPoint("LEFT", PLAYER_OPTION_WIDTH,0);
         itemLinkFrame.player:SetJustifyH("CENTER");
         itemLinkFrame.item = itemLinkFrame:CreateFontString("AUCO_RaidResponseFrameItem" .. entryId, "OVERLAY", "GameFontNormalSmall");
-        itemLinkFrame.item:SetText(GetInventoryItemLink("player",GetInventorySlotInfo("MainHandSlot")));
+        itemLinkFrame.item:SetText(nil);
         itemLinkFrame.item:SetWidth(PLAYER_ITEM_WIDTH)
         itemLinkFrame.item:SetPoint("LEFT", PLAYER_OPTION_WIDTH +PLAYER_NAME_WIDTH,0);
         itemLinkFrame.item:SetJustifyH("LEFT");
@@ -124,6 +124,12 @@ function AuroraCouncilRaidResponseFrame:Export()
         itemLinkFrame.player:SetText(nil);
         itemLinkFrame.item:SetText(nil);
         itemLinkFrame:SetBackdrop(nil);
+    end
+
+    function _frame:ResetFrame()
+        for entry = 1, PLAYER_ENTRY_COUNT do
+            self:ResetPlayerEntry(entry);
+        end
     end
 
     function _frame:AddPlayerEntry(option, player, item)

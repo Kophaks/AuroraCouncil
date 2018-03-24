@@ -36,7 +36,6 @@ function AuroraCouncilLootOfferFrame:Export()
     local nextOption = 1;
 
     function _frame:OpenFrame()
-        nextOption = 1;
         if (AUCO_LootOfferFrame ~= nil) then
             self:CloseFrame();
         end
@@ -45,8 +44,7 @@ function AuroraCouncilLootOfferFrame:Export()
             self:CreateFrame();
             self:CreateButtons();
         else
-            self:ResetFrame();
-            self:ResetButtons();
+            self:ShowFrame();
         end
         self:ResizeFrame(0);
     end
@@ -83,23 +81,24 @@ function AuroraCouncilLootOfferFrame:Export()
         end)
     end
 
-    function _frame:ResizeFrame(options)
-        AUCO_LootOfferFrame:SetHeight(options * ITEM_ENTRY_HEIGHT + FRAME_HEIGHT_EXTRA);
+    function _frame:ResizeFrame()
+        AUCO_LootOfferFrame:SetHeight((nextOption-1) * ITEM_ENTRY_HEIGHT + FRAME_HEIGHT_EXTRA);
     end
 
     function _frame:AddOption(optionName)
-        local optionFrame = optionsBuffer[nextOption];
-        optionFrame.text:SetText(optionName);
-        optionFrame:SetBackdrop(optionBackground);
-        optionFrame:SetBackdropColor(0,0,0,1);
-        self:ResizeFrame(nextOption)
-        optionFrame:SetScript("OnClick", function()
-            local text = this.text:GetText();
-            if text ~= nil then
-                Message:SendSelectOptionRequest(text, GetInventoryItemLink("player",GetInventorySlotInfo("MainHandSlot"), "RAID"));
-            end
-        end)
-        nextOption = nextOption + 1;
+        if optionName then
+            local optionFrame = optionsBuffer[nextOption];
+            optionFrame.text:SetText(optionName);
+            optionFrame:SetBackdrop(optionBackground);
+            optionFrame:SetBackdropColor(0,0,0,1);
+            optionFrame:SetScript("OnClick", function()
+                local text = this.text:GetText();
+                if text ~= nil then
+                    Message:SendSelectOptionRequest(text, GetInventoryItemLink("player",GetInventorySlotInfo("MainHandSlot"), "RAID"));
+                end
+            end)
+            nextOption = nextOption + 1;
+        end
     end
 
     function _frame:CreateButtons()
@@ -130,14 +129,21 @@ function AuroraCouncilLootOfferFrame:Export()
         end
     end
 
-    function _frame:ResetFrame()
-        AUCO_LootOfferTitleFrame.title:SetText(nil);
+    function _frame:ShowFrame()
         AUCO_LootOfferFrame:Show();
     end
 
+    function _frame:ResetFrame()
+        AUCO_LootOfferTitleFrame.title:SetText(nil);
+        self:ResetButtons();
+        nextOption = 1;
+    end
+
     function _frame:CloseFrame()
-        AUCO_LootOfferFrame:Hide()
-        tinsert(frameBuffer, AUCO_LootOfferFrame)
+        if AUCO_LootOfferFrame then
+            AUCO_LootOfferFrame:Hide()
+            tinsert(frameBuffer, AUCO_LootOfferFrame)
+        end
     end
 
     function _frame:SetItem(itemLink)
