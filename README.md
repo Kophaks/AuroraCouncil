@@ -32,6 +32,9 @@ General Flow:
 ##### Loot overview frame
 ![Alt text](readme/overviewframe.png)
 
+## Questions? Issues? Contributions?
+If you have any questions, issues or want to contribute to the project, feel free to join the AuroraCouncil Discord:
+https://discord.gg/VmCmU
 
 ## License
 
