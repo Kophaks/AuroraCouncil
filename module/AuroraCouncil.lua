@@ -9,17 +9,24 @@ function AuroraCouncil:Export()
     local _auroraCouncil = {};
     local lootTable;
     local currentItem;
+    local enabled;
+
+    function _auroraCouncil:Enable(isEnabled)
+        if isEnabled then
+            Util:Print("enabled!");
+        else
+            Util:Print("disabled!");
+        end
+        enabled = isEnabled;
+        Message:SendResetRequest("RAID");
+    end
 
     function _auroraCouncil:LootOpened()
-        if StateMachine.current.name == StateMachine.WATING then
+        if enabled and StateMachine.current.name == StateMachine.WATING then
             Message:SendResetRequest("RAID");
             local itemCount = self:InitializeCouncil();
             UI.LootMasterFrame:ResizeFrame(itemCount);
         end
-    end
-
-    function _auroraCouncil:LootClosed()
-
     end
 
     function _auroraCouncil:Init()
@@ -30,31 +37,33 @@ function AuroraCouncil:Export()
         if prefix == Message.RESET then
             self:HandleResetMessage();
         end
-        if prefix == Message.MASTER_IS_LOOTING then
-            self:HandleMasterIsLooting();
+        if enabled then
+            if prefix == Message.MASTER_IS_LOOTING then
+                self:HandleMasterIsLooting();
+            end
+            if prefix == Message.NO_ITEMS then
+                self:HandleNoItems();
+            end
+            if prefix == Message.SESSION_START then
+                self:HandleStartMessage(sender);
+            end
+            if prefix == Message.SHOW_ITEM then
+                self:HandleItemMessage(message, sender);
+            end
+            if prefix == Message.OFFER_ITEM then
+                self:HandleLootMessage(message);
+            end
+            if prefix == Message.SELECT_OPTION then
+                self:SelectOption(message, sender)
+            end
+            if prefix == Message.GIVE_ITEM then
+                self:HandleGiveItem(message, sender)
+            end
+            if prefix == Message.ITEM_ASSIGNED then
+                self:HandleItemAssigned()
+            end
+            UI:UpdateState(StateMachine);
         end
-        if prefix == Message.NO_ITEMS then
-            self:HandleNoItems();
-        end
-        if prefix == Message.SESSION_START then
-            self:HandleStartMessage(sender);
-        end
-        if prefix == Message.SHOW_ITEM then
-            self:HandleItemMessage(message, sender);
-        end
-        if prefix == Message.OFFER_ITEM then
-            self:HandleLootMessage(message);
-        end
-        if prefix == Message.SELECT_OPTION then
-            self:SelectOption(message, sender)
-        end
-        if prefix == Message.GIVE_ITEM then
-            self:HandleGiveItem(message, sender)
-        end
-        if prefix == Message.ITEM_ASSIGNED then
-            self:HandleItemAssigned()
-        end
-        UI:UpdateState(StateMachine);
     end
 
     function _auroraCouncil:InitializeCouncil()

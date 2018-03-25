@@ -9,9 +9,11 @@ lib\AceLibrary\AceLibrary.lua
 lib\AceOO-2.0\AceOO-2.0.lua
 lib\AceAddon-2.0\AceAddon-2.0.lua
 lib\AceEvent-2.0\AceEvent-2.0.lua
+lib\AceConsole-2.0\AceConsole-2.0.lua
 
 module\shared\AuroraCouncilUtil.lua
 module\shared\AuroraCouncilMessage.lua
+module\shared\AuroraCouncilConfiguration.lua
 module\logic\AuroraCouncilStateMachine.lua
 module\ui\AuroraCouncilLootMasterFrame.lua
 module\ui\AuroraCouncilLootOfferFrame.lua
