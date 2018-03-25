@@ -1,3 +1,23 @@
+--[[
+-- Following State Transitions Exist:
+- - LootCorpse()        Loot master is looting a corpse
+- - NoLoot()            Loot master is looting a corpse without viable Loot
+- - SomeLoot(boolean)   Loot master is looting a corpse with viable Loot
+- - ChooseItem()        Loot master picks an Item to distribute
+- - ChooseOption()      Player chooses a loot option (Need/Greed/...)
+- - AssignItem()        The Item is assigned to a player
+
+-- States:
+- -  Waiting               Active while no loot distribution is in done
+- -  Loot                  A corpse is being looted
+- -  MasterLooting         Loot master is choosing an Item to distribute
+- -  MasterSelectOption    Loot master is choosing a loot option (Need/Greed/...)
+- -  MasterDecision        Loot master is deciding about who to assign the Item
+- -  AwaitItem             Player is waiting for Lootmaster to pick an item for distribution
+- -  SelectOption          Player is choosing a loot option (Need/Greed/...)
+- -  AwaitDecision         Player is waiting for loot master to assign an Item
+ ]]
+
 local Util = AuroraCouncilUtil:Export();
 
 AuroraCouncilStateMachine = {}
@@ -25,17 +45,15 @@ function AuroraCouncilStateMachine:Export()
     _state.current = AuroraCouncilStateMachine.StateWaiting;
 
     function AuroraCouncilStateMachine.StateWaiting:LootCorpse()
-        Util:Debug("Waiting -> Loot");
         _state.current = AuroraCouncilStateMachine.StateLoot;
     end
 
     function AuroraCouncilStateMachine.StateLoot:NoLoot()
-        Util:Debug("Loot -> Waiting");
         _state.current = AuroraCouncilStateMachine.StateWaiting;
     end
 
     function AuroraCouncilStateMachine.StateLoot:LootCorpse()
-        Util:Debug("Loot -> Loot");
+        -- No State Change
     end
 
     function AuroraCouncilStateMachine.StateLoot:SomeLoot(lootMaster)

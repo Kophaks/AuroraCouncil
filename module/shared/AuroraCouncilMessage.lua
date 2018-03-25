@@ -42,6 +42,7 @@ function AuroraCouncilMessage:Export()
     end
 
     function _message:SendSelectOptionRequest(option, currentItem, channel)
+        if currentItem == nil then currentItem = "-"; end
         SendAddonMessage(self.SELECT_OPTION, option .. ';' .. currentItem, channel);
     end
 
