@@ -1,8 +1,8 @@
 ## Interface: 11200
 ## Title: AuroraCouncil
-## Notes: Helps your LootCouncil do the counseling
+## Notes: Loot overview and distribution addon (Loot Council, DKP, ...)
 ## Author: Mithnar
-## Version: 0.1
+## Version: 0.2-Snapshot
        ## X-Category: Raid
 
 lib\AceLibrary\AceLibrary.lua
