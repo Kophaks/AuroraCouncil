@@ -8,7 +8,7 @@ This Addon is in an early stage, there might be breaking bugs. If you encounter 
 
 1. Close World of Warcraft
 2. Extract the "AuroraCouncil" directory into "your\path\to\World of Warcraft\Interface\AddOns\"
-3. Activate AuroraCouncil in the Character Screen under "Addons"
+3. Activate AuroraCouncil in the character selection screen under "Addons"
 
 ## Usage
 
