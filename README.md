@@ -1,8 +1,8 @@
 ## Description
 
-Loot overview and distribution addon for 1.12 World of Warcraft.
+Loot overview and distribution addon for 1.12.1 World of Warcraft.
 
-This Addon is in an early stage, there might be breaking bugs. If you encounter any breaking bugs, the addon can be resetted by the loot master entering "/console reloadui" into the ingame chat.
+This Addon is in an early stage, there might be breaking bugs. If you feel like the addon broke in some way, it can be resetted by the loot master entering "/console reloadui" into the ingame chat. The Addon will try to fix itself when the next corpse is looted by the loot master.
 
 ## Installation
 
