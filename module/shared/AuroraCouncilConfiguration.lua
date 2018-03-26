@@ -11,10 +11,10 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                 type = "toggle",
                 desc = "Enable AuroraCouncil",
                 set = function(enabled)
-                    configurationHandler:Enable(enabled)
+                    configurationHandler:Enable(enabled);
                 end,
                 get = function()
-                    return configurationHandler:IsEnabled()
+                    return configurationHandler:IsEnabled();
                 end,
             },
             reset = {
@@ -22,7 +22,7 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                 type = "execute",
                 desc = "Resets AuroraCouncil to the default state",
                 func = function()
-                    configurationHandler:Reset()
+                    configurationHandler:Reset();
                 end,
             },
             options = {
@@ -38,10 +38,10 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                         max = 6,
                         step = 1,
                         set = function(count)
-                            configurationHandler:SetEnabledOptionsCount(count)
+                            configurationHandler:SetEnabledOptionsCount(count);
                         end,
                         get = function()
-                            return configurationHandler:GetEnabledOptionsCount()
+                            return configurationHandler:GetEnabledOptionsCount();
                         end,
                     },
                     opt1 = {
@@ -54,10 +54,10 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                                 type = "toggle",
                                 desc = "Show Option in Overview",
                                 set = function(visible)
-                                    configurationHandler:SetOptionVisible(1, visible)
+                                    configurationHandler:SetOptionVisible(1, visible);
                                 end,
                                 get = function()
-                                    return configurationHandler:IsOptionVisible(1)
+                                    return configurationHandler:IsOptionVisible(1);
                                 end,
                             },
                             text = {
@@ -66,13 +66,13 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                                 desc = "Set option name",
                                 usage = "<name>",
                                 set = function(name)
-                                    configurationHandler:SetOptionText(1, name)
+                                    configurationHandler:SetOptionText(1, name);
                                 end,
                                 get = function()
-                                    return configurationHandler:GetOptionText(1)
+                                    return configurationHandler:GetOptionText(1);
                                 end,
                                 validate = function(name)
-                                    return string.find(name, "^%w+$")
+                                    return string.len(name) < 16;
                                 end
                             },
                         }
@@ -87,10 +87,10 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                                 type = "toggle",
                                 desc = "Show Option in Overview",
                                 set = function(visible)
-                                    configurationHandler:SetOptionVisible(2, visible)
+                                    configurationHandler:SetOptionVisible(2, visible);
                                 end,
                                 get = function()
-                                    return configurationHandler:IsOptionVisible(2)
+                                    return configurationHandler:IsOptionVisible(2);
                                 end,
                             },
                             text = {
@@ -99,13 +99,13 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                                 desc = "Set option name",
                                 usage = "<name>",
                                 set = function(name)
-                                    configurationHandler:SetOptionText(2, name)
+                                    configurationHandler:SetOptionText(2, name);
                                 end,
                                 get = function()
-                                    return configurationHandler:GetOptionText(2)
+                                    return configurationHandler:GetOptionText(2);
                                 end,
                                 validate = function(name)
-                                    return string.find(name, "^%w+$")
+                                    return string.len(name) < 16;
                                 end
                             },
                         }
@@ -120,10 +120,10 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                                 type = "toggle",
                                 desc = "Show Option 3 in Overview",
                                 set = function(visible)
-                                    configurationHandler:SetOptionVisible(3, visible)
+                                    configurationHandler:SetOptionVisible(3, visible);
                                 end,
                                 get = function()
-                                    return configurationHandler:IsOptionVisible(3)
+                                    return configurationHandler:IsOptionVisible(3);
                                 end,
                             },
                             text = {
@@ -132,13 +132,13 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                                 desc = "Set option name",
                                 usage = "<name>",
                                 set = function(name)
-                                    configurationHandler:SetOptionText(3, name)
+                                    configurationHandler:SetOptionText(3, name);
                                 end,
                                 get = function()
-                                    return configurationHandler:GetOptionText(3)
+                                    return configurationHandler:GetOptionText(3);
                                 end,
                                 validate = function(name)
-                                    return string.find(name, "^%w+$")
+                                    return string.len(name) < 16;
                                 end
                             },
                         }
@@ -153,10 +153,10 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                                 type = "toggle",
                                 desc = "Show Option in Overview",
                                 set = function(visible)
-                                    configurationHandler:SetOptionVisible(4, visible)
+                                    configurationHandler:SetOptionVisible(4, visible);
                                 end,
                                 get = function()
-                                    return configurationHandler:IsOptionVisible(4)
+                                    return configurationHandler:IsOptionVisible(4);
                                 end,
                             },
                             text = {
@@ -165,13 +165,13 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                                 desc = "Set option name",
                                 usage = "<name>",
                                 set = function(name)
-                                    configurationHandler:SetOptionText(4, name)
+                                    configurationHandler:SetOptionText(4, name);
                                 end,
                                 get = function()
-                                    return configurationHandler:GetOptionText(4)
+                                    return configurationHandler:GetOptionText(4);
                                 end,
                                 validate = function(name)
-                                    return string.find(name, "^%w+$")
+                                    return string.len(name) < 16;
                                 end
                             },
                         }
@@ -186,10 +186,10 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                                 type = "toggle",
                                 desc = "Show Option in Overview",
                                 set = function(visible)
-                                    configurationHandler:SetOptionVisible(5, visible)
+                                    configurationHandler:SetOptionVisible(5, visible);
                                 end,
                                 get = function()
-                                    return configurationHandler:IsOptionVisible(5)
+                                    return configurationHandler:IsOptionVisible(5);
                                 end,
                             },
                             text = {
@@ -198,13 +198,13 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                                 desc = "Set option name",
                                 usage = "<name>",
                                 set = function(name)
-                                    configurationHandler:SetOptionText(5, name)
+                                    configurationHandler:SetOptionText(5, name);
                                 end,
                                 get = function()
-                                    return configurationHandler:GetOptionText(5)
+                                    return configurationHandler:GetOptionText(5);
                                 end,
                                 validate = function(name)
-                                    return string.find(name, "^%w+$")
+                                    return string.len(name) < 16;
                                 end
                             },
                         }
@@ -219,10 +219,10 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                                 type = "toggle",
                                 desc = "Show Option in Overview",
                                 set = function(visible)
-                                    configurationHandler:SetOptionVisible(6, visible)
+                                    configurationHandler:SetOptionVisible(6, visible);
                                 end,
                                 get = function()
-                                    return configurationHandler:IsOptionVisible(6)
+                                    return configurationHandler:IsOptionVisible(6);
                                 end,
                             },
                             text = {
@@ -237,7 +237,7 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                                     return configurationHandler:GetOptionText(6)
                                 end,
                                 validate = function(name)
-                                    return string.find(name, "^%w+$")
+                                    return string.len(name) < 16;
                                 end
                             },
                         }

@@ -58,7 +58,7 @@ function AuroraCouncil:Export()
     end
 
     function _auroraCouncil:SetOptionText(optionNum, optionText)
-        lootOptions[optionNum].text = optionText;
+        lootOptions[optionNum].text = string.gsub(optionText, ";", ",");
     end
 
     function _auroraCouncil:GetOptionText(optionNum)
