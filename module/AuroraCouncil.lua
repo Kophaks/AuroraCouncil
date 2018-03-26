@@ -30,6 +30,7 @@ function AuroraCouncil:Export()
     end
 
     function _auroraCouncil:Init()
+        enabled = true;
         UI:Init();
     end
 
