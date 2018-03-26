@@ -66,8 +66,7 @@ function AuroraCouncilLootMasterFrame:Export()
         itemLinkFrame:SetScript("OnClick", function()
             local text = this.text:GetText();
             if text ~= nil then
-                local request = Message:CreateOfferItemRequest(itemLink, "BiS", "Need", "Offspec", "Pass")
-                Message:SendOfferItemRequest(request, "RAID");
+                Message:SendItemSelectedRequest(itemLink);
             end
         end)
         itemLinkFrame:SetScript("OnEnter", function()

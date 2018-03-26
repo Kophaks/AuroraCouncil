@@ -13,7 +13,7 @@ function AuroraCouncilLootOfferFrame:Export()
     local FRAME_WIDTH = 250;
     local FRAME_HEIGHT_EXTRA = 70;
 
-    local NUM_BUTTONS = 5;
+    local NUM_BUTTONS = 6;
 
     local optionBackground = {
         bgFile = "Interface/Tooltips/UI-Tooltip-Background",

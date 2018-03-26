@@ -7,22 +7,66 @@ AuroraCouncil = {};
 
 function AuroraCouncil:Export()
     local _auroraCouncil = {};
+
     local lootTable;
     local currentItem;
     local enabled;
 
+    local numLootOptions = 3;
+    local lootOptions = {};
+    lootOptions[1] = {};
+    lootOptions[1].visible = true;
+    lootOptions[1].text = "Need";
+    lootOptions[2] = {};
+    lootOptions[2].visible = true;
+    lootOptions[2].text = "Greed";
+    lootOptions[3] = {};
+    lootOptions[3].visible = true;
+    lootOptions[3].text = "Pass";
+    lootOptions[4] = {};
+    lootOptions[4].visible = true;
+    lootOptions[4].text = "option4";
+    lootOptions[5] = {};
+    lootOptions[5].visible = true;
+    lootOptions[5].text = "option5";
+    lootOptions[6] = {};
+    lootOptions[6].visible = true;
+    lootOptions[6].text = "option6";
+
     function _auroraCouncil:Enable(isEnabled)
-        if isEnabled then
-            Util:Print("enabled!");
-        else
-            Util:Print("disabled!");
-        end
         enabled = isEnabled;
-        Message:SendResetRequest("RAID");
+    end
+
+    function _auroraCouncil:IsEnabled()
+        return enabled;
+    end
+
+    function _auroraCouncil:SetEnabledOptionsCount(count)
+        numLootOptions = count;
+    end
+
+    function _auroraCouncil:GetEnabledOptionsCount()
+        return numLootOptions;
+    end
+
+    function _auroraCouncil:SetOptionVisible(optionNum, visible)
+        lootOptions[optionNum].visible = visible;
+    end
+
+    function _auroraCouncil:IsOptionVisible(optionNum)
+        return lootOptions[optionNum].visible;
+    end
+
+    function _auroraCouncil:SetOptionText(optionNum, optionText)
+        lootOptions[optionNum].text = optionText;
+    end
+
+    function _auroraCouncil:GetOptionText(optionNum)
+        return lootOptions[optionNum].text;
     end
 
     function _auroraCouncil:LootOpened()
-        if enabled and StateMachine.current.name == StateMachine.WATING then
+        if StateMachine.current.name == StateMachine.WATING then
             Message:SendResetRequest("RAID");
             local itemCount = self:InitializeCouncil();
             UI.LootMasterFrame:ResizeFrame(itemCount);
@@ -37,41 +81,15 @@ function AuroraCouncil:Export()
     end
 
     function _auroraCouncil:Init()
+        Util:Debug("Init!");
         enabled = true;
-        self:Reset();
+        if Util:IsPlayerLootMaster() then
+            Message:SendResetRequest("RAID");
+        end
     end
 
-    function _auroraCouncil:ChatMsgAddon(prefix, message, sender)
-        if prefix == Message.RESET then
-            self:Reset();
-        end
-        if enabled then
-            if prefix == Message.MASTER_IS_LOOTING then
-                self:HandleMasterIsLooting();
-            end
-            if prefix == Message.NO_ITEMS then
-                self:HandleNoItems();
-            end
-            if prefix == Message.SESSION_START then
-                self:HandleStartMessage(sender);
-            end
-            if prefix == Message.SHOW_ITEM then
-                self:HandleItemMessage(message, sender);
-            end
-            if prefix == Message.OFFER_ITEM then
-                self:HandleLootMessage(message);
-            end
-            if prefix == Message.SELECT_OPTION then
-                self:SelectOption(message, sender)
-            end
-            if prefix == Message.GIVE_ITEM then
-                self:HandleGiveItem(message, sender)
-            end
-            if prefix == Message.ITEM_ASSIGNED then
-                self:HandleItemAssigned()
-            end
-            UI:UpdateState(StateMachine);
-        end
+    function _auroraCouncil:ShowStartupMessage()
+        Util:Print("Enabled!");
     end
 
     function _auroraCouncil:InitializeCouncil()
@@ -79,36 +97,73 @@ function AuroraCouncil:Export()
         if self:CheckPreconditions() then
             Message:SendMasterIsLootingInfo("Raid");
             lootTable = {};
-            numValidItems = self:GetValidItems();
+            self.items = {}
+            numValidItems = self:FillValidItems(lootTable);
             if numValidItems > 0 then
                 Message:SendSessionStartRequest("Raid");
+                for key, value in pairs(lootTable) do
+                    local _, itemLink = unpack(value);
+                    Message:SendShowItemInfo(itemLink, "RAID");
+                    UI.LootMasterFrame:SetItemEntry(key, itemLink);
+                end
             else
                 Message:NoValidItemsInfo("Raid");
-            end
-            self.items = {}
-
-            for key, value in pairs(lootTable) do
-                local _, itemLink = unpack(value);
-                Message:SendShowItemInfo(itemLink, "RAID");
-                UI.LootMasterFrame:SetItemEntry(key, itemLink);
             end
         end
         return numValidItems;
     end
 
-function _auroraCouncil:GetValidItems()
-    local numValidItems = 0
-    local threshold = GetLootThreshold();
-    for itemIndex = 1, GetNumLootItems() do
-        local _, _, _, rarity, _, _, _, _ = GetLootSlotInfo(itemIndex);
-        if LootSlotIsItem(itemIndex) and rarity >= threshold then
-            numValidItems = numValidItems + 1;
-            local itemLink = GetLootSlotLink(itemIndex);
-            lootTable[numValidItems] = { itemIndex, itemLink };
-        end
+    function _auroraCouncil:CheckPreconditions()
+        return enabled and Util:IsPlayerLootMaster();
     end
-    return numValidItems;
-end
+
+    function _auroraCouncil:FillValidItems(lootTable)
+        local numValidItems = 0
+        local threshold = GetLootThreshold();
+        for itemIndex = 1, GetNumLootItems() do
+            local _, _, _, rarity, _, _, _, _ = GetLootSlotInfo(itemIndex);
+            if LootSlotIsItem(itemIndex) and rarity >= threshold then
+                numValidItems = numValidItems + 1;
+                local itemLink = GetLootSlotLink(itemIndex);
+                lootTable[numValidItems] = { itemIndex, itemLink };
+            end
+        end
+        return numValidItems;
+    end
+
+    function _auroraCouncil:ChatMsgAddon(prefix, message, sender)
+        if prefix == Message.RESET then
+            self:Reset();
+        end
+        if prefix == Message.MASTER_IS_LOOTING then
+            self:HandleMasterIsLooting();
+        end
+        if prefix == Message.SELECT_ITEM then
+            self:HandleItemSelectedMessage(message);
+        end
+        if prefix == Message.NO_ITEMS then
+            self:HandleNoItems();
+        end
+        if prefix == Message.SESSION_START then
+            self:HandleStartMessage(sender);
+        end
+        if prefix == Message.SHOW_ITEM then
+            self:HandleItemMessage(message, sender);
+        end
+        if prefix == Message.OFFER_ITEM then
+            self:HandleLootMessage(message);
+        end
+        if prefix == Message.SELECT_OPTION then
+            self:SelectOption(message, sender)
+        end
+        if prefix == Message.GIVE_ITEM then
+            self:HandleGiveItem(message, sender)
+        end
+        if prefix == Message.ITEM_ASSIGNED then
+            self:HandleItemAssigned()
+        end
+        UI:UpdateState(StateMachine);
+    end
 
     function _auroraCouncil:HandleStartMessage(sender)
         if(currentItem == nil) then
@@ -132,23 +187,27 @@ end
         end
     end
 
-    function _auroraCouncil:HandleLootMessage(offerItemRequest)
-        if StateMachine.MASTER_LOOTING == StateMachine.current.name or StateMachine.AWAIT_ITEM == StateMachine.current.name then
-            local itemLink, option1, option2, option3, option4, option5 = Message:SplitOfferItemRequest(offerItemRequest);
-            currentItem = itemLink;
-            UI.LootOfferFrame:SetItem(itemLink);
-            UI.LootOfferFrame:AddOption(option1);
-            UI.LootOfferFrame:AddOption(option2);
-            UI.LootOfferFrame:AddOption(option3);
-            UI.LootOfferFrame:AddOption(option4);
-            UI.LootOfferFrame:AddOption(option5);
-            UI.LootOfferFrame:ResizeFrame();
-            StateMachine.current:ChooseItem();
+    function _auroraCouncil:HandleItemSelectedMessage(itemLink)
+        if Util:IsPlayerLootMaster() then
+            local request = Message:CreateOfferItemRequest(itemLink, numLootOptions,
+                lootOptions[1].text, lootOptions[2].text, lootOptions[3].text,
+                lootOptions[4].text, lootOptions[5].text, lootOptions[6].text)
+            Message:SendOfferItemRequest(request, "RAID");
         end
     end
 
-    function _auroraCouncil:ShowStartupMessage()
-        Util:Print("Enabled!");
+    function _auroraCouncil:HandleLootMessage(offerItemRequest)
+        if StateMachine.MASTER_LOOTING == StateMachine.current.name or StateMachine.AWAIT_ITEM == StateMachine.current.name then
+            local itemLink, numOptions, option1, option2, option3, option4, option5, option6 = Message:SplitOfferItemRequest(offerItemRequest);
+            local options = {[1] = option1, [2] = option2, [3] = option3, [4] = option4, [5] = option5, [6] = option6}
+            currentItem = itemLink;
+            UI.LootOfferFrame:SetItem(itemLink);
+            for optionIndex = 1, numOptions do
+                UI.LootOfferFrame:AddOption(options[optionIndex]);
+            end
+            UI.LootOfferFrame:ResizeFrame();
+            StateMachine.current:ChooseItem();
+        end
     end
 
     function _auroraCouncil:HandleMasterIsLooting()
@@ -168,8 +227,10 @@ end
         for playerIndex = 1, GetNumRaidMembers() do
             if (GetMasterLootCandidate(playerIndex) == targetPlayer) then
                 self:GiveItemTo(currentItem, playerIndex);
+                return;
             end
         end
+        Util:Print(targetPlayer .. " not eligible for Loot")
     end
 
     function _auroraCouncil:GiveItemTo(item, player)
@@ -179,8 +240,11 @@ end
             if itemLink == item then
                 GiveMasterLoot(itemIndex, player);
                 Message:SendItemAssignedInfo("Raid");
+                return;
             end
         end
+        Util:Debug("Error: " .. item .. " could not be assigned .. not sure what happened here")
+        Util:Debug("Error: Please inform me on Discord or Github: https://github.com/Mithnar/AuroraCouncil")
     end
 
     function _auroraCouncil:SelectOption(message, sender)
@@ -191,11 +255,5 @@ end
         end
     end
 
-    function _auroraCouncil:CheckPreconditions()
-        return Util:IsPlayerLootMaster();
-    end
-
-
     return _auroraCouncil;
 end
-

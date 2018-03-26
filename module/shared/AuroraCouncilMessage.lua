@@ -11,6 +11,7 @@ function AuroraCouncilMessage:Export()
     _message.NO_ITEMS = "AUCO_NOITEM";
     _message.SESSION_START = "AUCO_START";
     _message.SHOW_ITEM = "AUCO_ITEM";
+    _message.SELECT_ITEM = "AUCO_SELECTITEM";
     _message.OFFER_ITEM = "AUCO_OFFER";
     _message.SET_OPTIONS = "AUCO_ADDOPTION";
     _message.SELECT_OPTION = "AUCO_SELECTOPTION";
@@ -31,6 +32,10 @@ function AuroraCouncilMessage:Export()
 
     function _message:SendOfferItemRequest(offerItemRequest, channel)
         SendAddonMessage(self.OFFER_ITEM, offerItemRequest, channel);
+    end
+
+    function _message:SendItemSelectedRequest(itemLink, channel)
+        SendAddonMessage(self.SELECT_ITEM, itemLink, channel);
     end
 
     function _message:SendSessionStartRequest(channel)
@@ -58,10 +63,10 @@ function AuroraCouncilMessage:Export()
         SendAddonMessage(self.ITEM_ASSIGNED, "-", channel);
     end
 
-    function _message:CreateOfferItemRequest(itemLink, option1, option2, option3, option4, option5)
+    function _message:CreateOfferItemRequest(itemLink, numOptions, option1, option2, option3, option4, option5, option6)
         local request;
 
-        request = itemLink .. ";" .. option1;
+        request = itemLink .. ";" .. numOptions .. ";" .. option1;
 
         if option2 then
             request = request .. ";" .. option2;
@@ -75,6 +80,9 @@ function AuroraCouncilMessage:Export()
         if option5 then
             request = request .. ";" .. option5;
         end
+        if option6 then
+            request = request .. ";" .. option6;
+        end
 
         return request;
     end
@@ -82,12 +90,14 @@ function AuroraCouncilMessage:Export()
     function _message:SplitOfferItemRequest(message)
         local message = Util:SplitString(message, ";")
         local itemLink = message[1];
-        local option1 = message[2];
-        local option2 = message[3];
-        local option3 = message[4];
-        local option4 = message[5];
-        local option5 = message[6];
-        return itemLink, option1, option2, option3, option4, option5;
+        local numOptions = message[2];
+        local option1 = message[3];
+        local option2 = message[4];
+        local option3 = message[5];
+        local option4 = message[6];
+        local option5 = message[7];
+        local option6 = message[8];
+        return itemLink, numOptions, option1, option2, option3, option4, option5, option6;
     end
 
     function _message:SplitSelectOptionMessage(message)
