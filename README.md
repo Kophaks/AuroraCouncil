@@ -2,7 +2,7 @@
 
 Loot overview and distribution addon for 1.12.1 World of Warcraft.
 
-This Addon is in an early stage, there might be breaking bugs. If you feel like the addon broke in some way, it can be reset by the loot master by entering "/console reloadui" into the in-game chat. The Addon will try to fix itself when the next corpse is looted by the loot master.
+This Addon is in an early stage, there might be breaking bugs. If you feel like the addon broke in some way, it can be reset by the loot master by entering "/ac reset" into the in-game chat.
 
 ## Installation
 
