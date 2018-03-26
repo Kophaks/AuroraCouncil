@@ -11,7 +11,7 @@ function Core:OnEnable()
     AuroraCouncil:ShowStartupMessage();
     self:RegisterEvent("CHAT_MSG_ADDON");
     self:RegisterEvent("LOOT_OPENED");
-    AuroraCouncil.Init();
+    AuroraCouncil:Init();
 end
 
 function Core:OnDisable()

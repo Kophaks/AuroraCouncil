@@ -29,14 +29,21 @@ function AuroraCouncil:Export()
         end
     end
 
+    function _auroraCouncil:Reset()
+        currentItem = nil;
+        lootTable = nil;
+        StateMachine:Reset();
+        UI:Init();
+    end
+
     function _auroraCouncil:Init()
         enabled = true;
-        UI:Init();
+        self:Reset();
     end
 
     function _auroraCouncil:ChatMsgAddon(prefix, message, sender)
         if prefix == Message.RESET then
-            self:HandleResetMessage();
+            self:Reset();
         end
         if enabled then
             if prefix == Message.MASTER_IS_LOOTING then
@@ -174,13 +181,6 @@ end
                 Message:SendItemAssignedInfo("Raid");
             end
         end
-    end
-
-    function _auroraCouncil:HandleResetMessage()
-        StateMachine:Reset();
-        UI:Init();
-        currentItem = nil;
-        lootTable = nil;
     end
 
     function _auroraCouncil:SelectOption(message, sender)
