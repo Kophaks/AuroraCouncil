@@ -12,7 +12,7 @@ This Addon is in an early stage, there might be breaking bugs. If you feel like 
 
 ## Usage
 
-The Addon will activate itself when you're in a Group/Raid with masterloot activated.
+The Addon will activate itself when you're in a Group/Raid with masterloot activated. Enter "/ac" into the in-game chat to see a list of available commands.
 
 General Flow:
 1. Loot master is looting a corpse.
