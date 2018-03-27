@@ -85,6 +85,8 @@ function AuroraCouncil:Export()
         enabled = true;
         if Util:IsPlayerLootMaster() then
             Message:SendResetRequest("RAID");
+        else
+            self:Reset();
         end
     end
 
@@ -224,13 +226,15 @@ function AuroraCouncil:Export()
     end
 
     function _auroraCouncil:HandleGiveItem(targetPlayer, sender)
-        for playerIndex = 1, GetNumRaidMembers() do
-            if (GetMasterLootCandidate(playerIndex) == targetPlayer) then
-                self:GiveItemTo(currentItem, playerIndex);
-                return;
+        if sender == UnitName("player") and Util:IsPlayerLootMaster() then
+            for playerIndex = 1, GetNumRaidMembers() do
+                if (GetMasterLootCandidate(playerIndex) == targetPlayer) then
+                    self:GiveItemTo(currentItem, playerIndex);
+                    return;
+                end
             end
+            Util:Print(targetPlayer .. " not eligible for Loot")
         end
-        Util:Print(targetPlayer .. " not eligible for Loot")
     end
 
     function _auroraCouncil:GiveItemTo(item, player)

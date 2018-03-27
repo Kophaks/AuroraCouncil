@@ -58,41 +58,41 @@ function AuroraCouncilStateMachine:Export()
 
     function AuroraCouncilStateMachine.StateLoot:SomeLoot(lootMaster)
         if lootMaster then
-            Util:Debug("Loot -> MasterLooting");
+            --Util:Debug("Loot -> MasterLooting");
             _state.current = AuroraCouncilStateMachine.StateMasterLooting;
         else
-            Util:Debug("Loot -> AwaitItem");
+            --Util:Debug("Loot -> AwaitItem");
             _state.current = AuroraCouncilStateMachine.StateAwaitItem;
         end
     end
 
     function AuroraCouncilStateMachine.StateMasterLooting:ChooseItem()
-        Util:Debug("MasterLooting -> MasterSelectOption");
+        --Util:Debug("MasterLooting -> MasterSelectOption");
         _state.current = AuroraCouncilStateMachine.StateMasterSelectOption;
     end
 
     function AuroraCouncilStateMachine.StateMasterSelectOption:ChooseOption()
-        Util:Debug("MasterSelectOption -> MasterDecision");
+        --Util:Debug("MasterSelectOption -> MasterDecision");
         _state.current = AuroraCouncilStateMachine.StateMasterDecision;
     end
 
     function AuroraCouncilStateMachine.StateMasterDecision:AssignItem()
-        Util:Debug("MasterDecision -> Loot");
+        --Util:Debug("MasterDecision -> Loot");
         _state.current = AuroraCouncilStateMachine.StateLoot;
     end
 
     function AuroraCouncilStateMachine.StateAwaitItem:ChooseItem()
-        Util:Debug("AwaitItem -> SelectOption");
+        --Util:Debug("AwaitItem -> SelectOption");
         _state.current = AuroraCouncilStateMachine.StateSelectOption;
     end
 
     function AuroraCouncilStateMachine.StateSelectOption:ChooseOption()
-        Util:Debug("SelectOption -> AwaitDecision");
+        --Util:Debug("SelectOption -> AwaitDecision");
         _state.current = AuroraCouncilStateMachine.StateAwaitDecision;
     end
 
     function AuroraCouncilStateMachine.StateAwaitDecision:AssignItem()
-        Util:Debug("AwaitDecision -> Loot");
+        --Util:Debug("AwaitDecision -> Loot");
         _state.current = AuroraCouncilStateMachine.StateLoot;
     end
 
