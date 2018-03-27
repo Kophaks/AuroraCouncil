@@ -34,7 +34,7 @@ General Flow:
 
 ## Questions? Issues? Contributions?
 If you have any questions, issues or want to contribute to the project, feel free to join the AuroraCouncil Discord:
-https://discord.gg/VmCmU
+https://discord.gg/qU9A5xm
 
 ## License
 
