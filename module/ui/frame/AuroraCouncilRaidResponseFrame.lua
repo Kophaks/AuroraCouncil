@@ -50,7 +50,6 @@ function AuroraCouncilRaidResponseFrame:New(Util, Message)
         end
     end
 
-
     function _frame:CreateFrame()
         CreateFrame("Frame", "AUCO_RaidResponseFrame", UIParent);
         AUCO_RaidResponseFrame:ClearAllPoints();

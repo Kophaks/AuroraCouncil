@@ -19,6 +19,10 @@ function AuroraCouncil:New()
     local isLooting = false;
     local versionCheckLast = 0;
 
+    Config:SetOnReset(function()
+        _auroraCouncil:Reset();
+    end)
+
     function _auroraCouncil:GetChatCommands()
         return Config:GetChatCommands();
     end
@@ -46,6 +50,7 @@ function AuroraCouncil:New()
     end
 
     function _auroraCouncil:Reset()
+        Util:Debug("RESET")
         currentItem = nil;
         lootTable = nil;
         StateMachine:Reset();

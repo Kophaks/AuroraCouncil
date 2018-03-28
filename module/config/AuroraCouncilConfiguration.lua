@@ -10,6 +10,8 @@ function AuroraCouncilConfiguration:New()
     local DESC_SET_OPT_VISIBLE = "Show Option in Overview";
     local DESC_SET_OPT_TEXT = "Set option name (max 10 characters)";
 
+    _configuration.onReset = nil;
+
     _configuration.enabled = true;
 
     _configuration.numLootOptions = 3;
@@ -53,7 +55,7 @@ function AuroraCouncilConfiguration:New()
                 type = "execute",
                 desc = DESC_RESET,
                 func = function()
-                    _configuration:Reset();
+                    _configuration:onReset();
                 end,
             },
             options = {
@@ -316,6 +318,10 @@ function AuroraCouncilConfiguration:New()
 
     function _configuration:GetLootOptions()
         return self.numLootOptions, self.lootOptions;
+    end
+
+    function _configuration:SetOnReset(onReset)
+        self.onReset = onReset;
     end
 
     return _configuration
