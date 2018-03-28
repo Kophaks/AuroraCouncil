@@ -1,3 +1,8 @@
+## Download
+Download the latest AuroraCouncil version here: 
+
+[AuroraCouncil 0.2](https://github.com/Mithnar/AuroraCouncil/archive/v0.2.zip)
+
 ## Description
 
 Loot overview and distribution addon for 1.12.1 World of Warcraft.
