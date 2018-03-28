@@ -9,9 +9,9 @@ function AuroraCouncil:New()
 
     local _auroraCouncil = {};
 
-    local VERSION_NUMBER = 0.3;
-    local VERSION_NAME = "0.3 - ALPHA"
-    local VERSION_CHECK_INTERVAL = 1;
+    local VERSION_NUMBER = 0.29;
+    local VERSION_NAME = "0.3-SNAPSHOT (ALPHA)"
+    local VERSION_CHECK_INTERVAL = 15;
 
     local lootTable;
     local currentItem;
@@ -150,6 +150,7 @@ function AuroraCouncil:New()
     end
 
     function _auroraCouncil:ChatMsgAddon(prefix, message, sender)
+        --Util:Debug(prefix .. ": " .. message);
         if      prefix == Message.RESET             then self:Reset()
         elseif  prefix == Message.VERSION           then self:HandleVersionInfoMessage(message)
         elseif  prefix == Message.MASTER_IS_LOOTING then self:HandleMasterIsLooting()

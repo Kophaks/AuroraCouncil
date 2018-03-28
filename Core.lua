@@ -14,6 +14,7 @@ function Core:OnEnable()
     self:RegisterEvent("LOOT_CLOSED");
     self:RegisterEvent("PARTY_LOOT_METHOD_CHANGED");
     self:RegisterEvent("PLAYER_ENTERING_WORLD");
+    AuroraCouncil:Enable(true);
     AuroraCouncil:Init();
 end
 

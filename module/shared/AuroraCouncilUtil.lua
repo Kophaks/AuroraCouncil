@@ -64,7 +64,7 @@ function AuroraCouncilUtil:New()
     end
 
     function _util:IsPlayerLootMaster()
-        local lootmode, masterlooterPartyID, _ = GetLootMethod()
+        local lootmode, masterlooterPartyID, _ = GetLootMethod();
         return masterlooterPartyID == 0 and lootmode == "master";
     end
 
