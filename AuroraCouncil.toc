@@ -2,7 +2,7 @@
 ## Title: AuroraCouncil
 ## Notes: Loot overview and distribution addon (Loot Council, DKP, ...)
 ## Author: Mithnar
-## Version: 0.2-Snapshot
+## Version: 0.2
        ## X-Category: Raid
 
 lib\AceLibrary\AceLibrary.lua
