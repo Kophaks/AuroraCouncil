@@ -1,6 +1,6 @@
 Core = AceLibrary("AceAddon-2.0"):new("AceConsole-2.0", "AceEvent-2.0")
-local AuroraCouncil = AuroraCouncil:Export();
-local Config = AuroraCouncilConfiguration:Export(AuroraCouncil);
+local AuroraCouncil = AuroraCouncil:New();
+local Config = AuroraCouncilConfiguration:New(AuroraCouncil);
 
 Core:RegisterChatCommand({"/ac"}, Config:GetOptions())
 
@@ -12,6 +12,7 @@ function Core:OnEnable()
     self:RegisterEvent("CHAT_MSG_ADDON");
     self:RegisterEvent("LOOT_OPENED");
     self:RegisterEvent("LOOT_CLOSED");
+    self:RegisterEvent("PARTY_LOOT_METHOD_CHANGED");
     AuroraCouncil:Init();
 end
 
@@ -28,4 +29,8 @@ end
 
 function Core:CHAT_MSG_ADDON(prefix, message, _, sender)
     AuroraCouncil:ChatMsgAddon(prefix, message, sender);
+end
+
+function Core:PARTY_LOOT_METHOD_CHANGED()
+    AuroraCouncil:LootMethodChanged();
 end

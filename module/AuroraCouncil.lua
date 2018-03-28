@@ -1,11 +1,12 @@
-local UI = AuroraCouncilUI:Export();
-local Message = AuroraCouncilMessage:Export();
-local Util = AuroraCouncilUtil:Export();
-local StateMachine = AuroraCouncilStateMachine:Export();
 
 AuroraCouncil = {};
 
-function AuroraCouncil:Export()
+function AuroraCouncil:New()
+    local StateMachine = AuroraCouncilStateMachine:New();
+    local Util = AuroraCouncilUtil:New();
+    local Message = AuroraCouncilMessage:New(Util);
+    local UI = AuroraCouncilUI:New(Util, Message);
+
     local _auroraCouncil = {};
 
     local lootTable;
@@ -79,6 +80,11 @@ function AuroraCouncil:Export()
         end
     end
 
+
+    function _auroraCouncil:LootMethodChanged()
+        self:Reset();
+    end
+
     function _auroraCouncil:Reset()
         currentItem = nil;
         lootTable = nil;
@@ -88,11 +94,7 @@ function AuroraCouncil:Export()
 
     function _auroraCouncil:Init()
         enabled = true;
-        if Util:IsPlayerLootMaster() then
-            Message:SendResetRequest("RAID");
-        else
-            self:Reset();
-        end
+        if Util:IsPlayerLootMaster() then Message:SendResetRequest("RAID") else self:Reset() end
     end
 
     function _auroraCouncil:ShowStartupMessage()
@@ -139,35 +141,16 @@ function AuroraCouncil:Export()
     end
 
     function _auroraCouncil:ChatMsgAddon(prefix, message, sender)
-        if prefix == Message.RESET then
-            self:Reset();
-        end
-        if prefix == Message.MASTER_IS_LOOTING then
-            self:HandleMasterIsLooting();
-        end
-        if prefix == Message.SELECT_ITEM then
-            self:HandleItemSelectedMessage(message);
-        end
-        if prefix == Message.NO_ITEMS then
-            self:HandleNoItems();
-        end
-        if prefix == Message.SESSION_START then
-            self:HandleStartMessage(sender);
-        end
-        if prefix == Message.SHOW_ITEM then
-            self:HandleItemMessage(message, sender);
-        end
-        if prefix == Message.OFFER_ITEM then
-            self:HandleLootMessage(message);
-        end
-        if prefix == Message.SELECT_OPTION then
-            self:SelectOption(message, sender)
-        end
-        if prefix == Message.GIVE_ITEM then
-            self:HandleGiveItem(message, sender)
-        end
-        if prefix == Message.ITEM_ASSIGNED then
-            self:HandleItemAssigned()
+        if      prefix == Message.RESET             then self:Reset()
+        elseif  prefix == Message.MASTER_IS_LOOTING then self:HandleMasterIsLooting()
+        elseif  prefix == Message.SELECT_ITEM       then self:HandleItemSelectedMessage(message)
+        elseif  prefix == Message.NO_ITEMS          then self:HandleNoItems()
+        elseif  prefix == Message.SESSION_START     then self:HandleStartMessage(sender)
+        elseif  prefix == Message.SHOW_ITEM         then self:HandleItemMessage(message, sender)
+        elseif  prefix == Message.OFFER_ITEM        then self:HandleLootMessage(message)
+        elseif  prefix == Message.SELECT_OPTION     then self:SelectOption(message, sender)
+        elseif  prefix == Message.GIVE_ITEM         then self:HandleGiveItem(message, sender)
+        elseif  prefix == Message.ITEM_ASSIGNED     then self:HandleItemAssigned()
         end
         UI:UpdateState(StateMachine);
     end
@@ -176,22 +159,18 @@ function AuroraCouncil:Export()
         if(currentItem == nil) then
             Util:Print("Loot Distribution Started!");
             Util:Print("Loot Master: " .. sender);
-        else
-            currentItem = nil;
+        else currentItem = nil;
         end
 
         if sender == (UnitName("player")) then
-            StateMachine.current:SomeLoot(true);
+            StateMachine.current:SomeLoot(true)
         else
             StateMachine.current:SomeLoot(false)
         end
-
     end
 
     function _auroraCouncil:HandleItemMessage(itemLink, sender)
-        if sender ~= (UnitName("player")) then
-            Util:Print("Item: " .. itemLink);
-        end
+        if sender ~= (UnitName("player")) then Util:Print("Item: " .. itemLink) end
     end
 
     function _auroraCouncil:HandleItemSelectedMessage(itemLink)
@@ -232,9 +211,7 @@ function AuroraCouncil:Export()
 
     function _auroraCouncil:HandleGiveItem(targetPlayer, sender)
         if sender == UnitName("player") and Util:IsPlayerLootMaster() then
-            if isLooting == false then
-                Util:Print("You need to be looting a Corpse to assign an item")
-            end
+            if isLooting == false then Util:Print("You need to be looting a Corpse to assign an item") end
 
             for playerIndex = 1, GetNumRaidMembers() do
                 if (GetMasterLootCandidate(playerIndex) == targetPlayer) then

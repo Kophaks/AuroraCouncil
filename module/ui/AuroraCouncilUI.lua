@@ -1,11 +1,11 @@
 AuroraCouncilUI = {};
 
-local lootMasterFrame = AuroraCouncilLootMasterFrame:Export();
-local lootOfferFrame = AuroraCouncilLootOfferFrame:Export();
-local raidResponseFrame = AuroraCouncilRaidResponseFrame:Export();
-
-function AuroraCouncilUI:Export()
+function AuroraCouncilUI:New(Util, Message)
     local _ui = {};
+
+    local lootMasterFrame = AuroraCouncilLootMasterFrame:New(Util, Message);
+    local lootOfferFrame = AuroraCouncilLootOfferFrame:New(Util, Message);
+    local raidResponseFrame = AuroraCouncilRaidResponseFrame:New(Util, Message);
 
     _ui.LootMasterFrame = lootMasterFrame;
     _ui.LootOfferFrame = lootOfferFrame;

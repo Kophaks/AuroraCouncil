@@ -15,9 +15,9 @@ module\shared\AuroraCouncilUtil.lua
 module\shared\AuroraCouncilMessage.lua
 module\shared\AuroraCouncilConfiguration.lua
 module\logic\AuroraCouncilStateMachine.lua
-module\ui\AuroraCouncilLootMasterFrame.lua
-module\ui\AuroraCouncilLootOfferFrame.lua
-module\ui\AuroraCouncilRaidResponseFrame.lua
+module\ui\frame\AuroraCouncilLootMasterFrame.lua
+module\ui\frame\AuroraCouncilLootOfferFrame.lua
+module\ui\frame\AuroraCouncilRaidResponseFrame.lua
 module\ui\AuroraCouncilUI.lua
 module\AuroraCouncil.lua
 Core.lua

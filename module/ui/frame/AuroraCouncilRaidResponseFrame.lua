@@ -1,9 +1,6 @@
-local Util = AuroraCouncilUtil:Export();
-local Message = AuroraCouncilMessage:Export();
-
 AuroraCouncilRaidResponseFrame = {}
 
-function AuroraCouncilRaidResponseFrame:Export()
+function AuroraCouncilRaidResponseFrame:New(Util, Message)
     local _frame = {}
 
     local frameBuffer = {};

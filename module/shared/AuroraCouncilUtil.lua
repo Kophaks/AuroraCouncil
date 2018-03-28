@@ -1,6 +1,6 @@
 AuroraCouncilUtil = {};
 
-function AuroraCouncilUtil:Export()
+function AuroraCouncilUtil:New()
     local _util = {};
 
     function _util:GetItemId(link)
@@ -64,8 +64,8 @@ function AuroraCouncilUtil:Export()
     end
 
     function _util:IsPlayerLootMaster()
-        local _, masterlooterPartyID, _ = GetLootMethod()
-        return masterlooterPartyID == 0;
+        local lootmode, masterlooterPartyID, _ = GetLootMethod()
+        return masterlooterPartyID == 0 and lootmode == "master";
     end
 
 

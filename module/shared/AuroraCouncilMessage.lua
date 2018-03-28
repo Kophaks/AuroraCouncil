@@ -1,9 +1,6 @@
-local Util = AuroraCouncilUtil:Export();
-
 AuroraCouncilMessage = {};
 
-function AuroraCouncilMessage:Export()
-
+function AuroraCouncilMessage:New(Util)
     local _message = {};
 
     _message.RESET = "AUCO_LMRES";

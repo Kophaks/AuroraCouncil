@@ -18,11 +18,9 @@
 - -  AwaitDecision         Player is waiting for loot master to assign an Item
  ]]
 
-local Util = AuroraCouncilUtil:Export();
-
 AuroraCouncilStateMachine = {}
 
-function AuroraCouncilStateMachine:Export()
+function AuroraCouncilStateMachine:New()
     AuroraCouncilStateMachine.StateWaiting = {}
     AuroraCouncilStateMachine.StateLoot = {}
     AuroraCouncilStateMachine.StateMasterLooting = {}

@@ -1,9 +1,6 @@
-local Util = AuroraCouncilUtil:Export();
-local Message = AuroraCouncilMessage:Export();
-
 AuroraCouncilLootMasterFrame = {};
 
-function AuroraCouncilLootMasterFrame:Export()
+function AuroraCouncilLootMasterFrame:New(Util, Message)
     local _frame = {}
 
     local frameBuffer = {};
