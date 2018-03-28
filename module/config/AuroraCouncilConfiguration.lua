@@ -1,6 +1,6 @@
 AuroraCouncilConfiguration = {};
 
-function AuroraCouncilConfiguration:New(ConfigurationHandler)
+function AuroraCouncilConfiguration:New()
     local _configuration = {}
 
     local DESC_ENABLE = "Enable AuroraCouncil";
@@ -10,7 +10,31 @@ function AuroraCouncilConfiguration:New(ConfigurationHandler)
     local DESC_SET_OPT_VISIBLE = "Show Option in Overview";
     local DESC_SET_OPT_TEXT = "Set option name (max 10 characters)";
 
-    _configuration.options = {
+    _configuration.enabled = true;
+
+    _configuration.numLootOptions = 3;
+    _configuration.lootOptions = {};
+    _configuration.lootOptions[1] = {};
+    _configuration.lootOptions[1].visible = true;
+    _configuration.lootOptions[1].text = "Need";
+    _configuration.lootOptions[2] = {};
+    _configuration.lootOptions[2].visible = true;
+    _configuration.lootOptions[2].text = "Greed";
+    _configuration.lootOptions[3] = {};
+    _configuration.lootOptions[3].visible = true;
+    _configuration.lootOptions[3].text = "Pass";
+    _configuration.lootOptions[4] = {};
+    _configuration.lootOptions[4].visible = true;
+    _configuration.lootOptions[4].text = "option4";
+    _configuration.lootOptions[5] = {};
+    _configuration.lootOptions[5].visible = true;
+    _configuration.lootOptions[5].text = "option5";
+    _configuration.lootOptions[6] = {};
+    _configuration.lootOptions[6].visible = true;
+    _configuration.lootOptions[6].text = "option6";
+
+
+    _configuration.chatCommands = {
         type='group',
         args = {
             enable = {
@@ -18,10 +42,10 @@ function AuroraCouncilConfiguration:New(ConfigurationHandler)
                 type = "toggle",
                 desc = DESC_ENABLE,
                 set = function(enabled)
-                    ConfigurationHandler:Enable(enabled);
+                    _configuration:SetEnabled(enabled);
                 end,
                 get = function()
-                    return ConfigurationHandler:IsEnabled();
+                    return _configuration:IsEnabled();
                 end,
             },
             reset = {
@@ -29,7 +53,7 @@ function AuroraCouncilConfiguration:New(ConfigurationHandler)
                 type = "execute",
                 desc = DESC_RESET,
                 func = function()
-                    ConfigurationHandler:Reset();
+                    _configuration:Reset();
                 end,
             },
             options = {
@@ -45,10 +69,10 @@ function AuroraCouncilConfiguration:New(ConfigurationHandler)
                         max = 6,
                         step = 1,
                         set = function(count)
-                            ConfigurationHandler:SetEnabledOptionsCount(count);
+                            _configuration:SetEnabledOptionsCount(count);
                         end,
                         get = function()
-                            return ConfigurationHandler:GetEnabledOptionsCount();
+                            return _configuration:GetEnabledOptionsCount();
                         end,
                     },
                     opt1 = {
@@ -61,10 +85,10 @@ function AuroraCouncilConfiguration:New(ConfigurationHandler)
                                 type = "toggle",
                                 desc = DESC_SET_OPT_VISIBLE,
                                 set = function(visible)
-                                    ConfigurationHandler:SetOptionVisible(1, visible);
+                                    _configuration:SetOptionVisible(1, visible);
                                 end,
                                 get = function()
-                                    return ConfigurationHandler:IsOptionVisible(1);
+                                    return _configuration:IsOptionVisible(1);
                                 end,
                             },
                             text = {
@@ -73,10 +97,10 @@ function AuroraCouncilConfiguration:New(ConfigurationHandler)
                                 desc = DESC_SET_OPT_TEXT,
                                 usage = "<name>",
                                 set = function(name)
-                                    ConfigurationHandler:SetOptionText(1, name);
+                                    _configuration:SetOptionText(1, name);
                                 end,
                                 get = function()
-                                    return ConfigurationHandler:GetOptionText(1);
+                                    return _configuration:GetOptionText(1);
                                 end,
                                 validate = function(name)
                                     return string.len(name) < 16;
@@ -94,10 +118,10 @@ function AuroraCouncilConfiguration:New(ConfigurationHandler)
                                 type = "toggle",
                                 desc = DESC_SET_OPT_VISIBLE,
                                 set = function(visible)
-                                    ConfigurationHandler:SetOptionVisible(2, visible);
+                                    _configuration:SetOptionVisible(2, visible);
                                 end,
                                 get = function()
-                                    return ConfigurationHandler:IsOptionVisible(2);
+                                    return _configuration:IsOptionVisible(2);
                                 end,
                             },
                             text = {
@@ -106,10 +130,10 @@ function AuroraCouncilConfiguration:New(ConfigurationHandler)
                                 desc = DESC_SET_OPT_TEXT,
                                 usage = "<name>",
                                 set = function(name)
-                                    ConfigurationHandler:SetOptionText(2, name);
+                                    _configuration:SetOptionText(2, name);
                                 end,
                                 get = function()
-                                    return ConfigurationHandler:GetOptionText(2);
+                                    return _configuration:GetOptionText(2);
                                 end,
                                 validate = function(name)
                                     return string.len(name) < 16;
@@ -127,10 +151,10 @@ function AuroraCouncilConfiguration:New(ConfigurationHandler)
                                 type = "toggle",
                                 desc = DESC_SET_OPT_VISIBLE,
                                 set = function(visible)
-                                    ConfigurationHandler:SetOptionVisible(3, visible);
+                                    _configuration:SetOptionVisible(3, visible);
                                 end,
                                 get = function()
-                                    return ConfigurationHandler:IsOptionVisible(3);
+                                    return _configuration:IsOptionVisible(3);
                                 end,
                             },
                             text = {
@@ -139,10 +163,10 @@ function AuroraCouncilConfiguration:New(ConfigurationHandler)
                                 desc = DESC_SET_OPT_TEXT,
                                 usage = "<name>",
                                 set = function(name)
-                                    ConfigurationHandler:SetOptionText(3, name);
+                                    _configuration:SetOptionText(3, name);
                                 end,
                                 get = function()
-                                    return ConfigurationHandler:GetOptionText(3);
+                                    return _configuration:GetOptionText(3);
                                 end,
                                 validate = function(name)
                                     return string.len(name) < 16;
@@ -160,10 +184,10 @@ function AuroraCouncilConfiguration:New(ConfigurationHandler)
                                 type = "toggle",
                                 desc = DESC_SET_OPT_VISIBLE,
                                 set = function(visible)
-                                    ConfigurationHandler:SetOptionVisible(4, visible);
+                                    _configuration:SetOptionVisible(4, visible);
                                 end,
                                 get = function()
-                                    return ConfigurationHandler:IsOptionVisible(4);
+                                    return _configuration:IsOptionVisible(4);
                                 end,
                             },
                             text = {
@@ -172,10 +196,10 @@ function AuroraCouncilConfiguration:New(ConfigurationHandler)
                                 desc = DESC_SET_OPT_TEXT,
                                 usage = "<name>",
                                 set = function(name)
-                                    ConfigurationHandler:SetOptionText(4, name);
+                                    _configuration:SetOptionText(4, name);
                                 end,
                                 get = function()
-                                    return ConfigurationHandler:GetOptionText(4);
+                                    return _configuration:GetOptionText(4);
                                 end,
                                 validate = function(name)
                                     return string.len(name) < 16;
@@ -193,10 +217,10 @@ function AuroraCouncilConfiguration:New(ConfigurationHandler)
                                 type = "toggle",
                                 desc = DESC_SET_OPT_VISIBLE,
                                 set = function(visible)
-                                    ConfigurationHandler:SetOptionVisible(5, visible);
+                                    _configuration:SetOptionVisible(5, visible);
                                 end,
                                 get = function()
-                                    return ConfigurationHandler:IsOptionVisible(5);
+                                    return _configuration:IsOptionVisible(5);
                                 end,
                             },
                             text = {
@@ -205,10 +229,10 @@ function AuroraCouncilConfiguration:New(ConfigurationHandler)
                                 desc = DESC_SET_OPT_TEXT,
                                 usage = "<name>",
                                 set = function(name)
-                                    ConfigurationHandler:SetOptionText(5, name);
+                                    _configuration:SetOptionText(5, name);
                                 end,
                                 get = function()
-                                    return ConfigurationHandler:GetOptionText(5);
+                                    return _configuration:GetOptionText(5);
                                 end,
                                 validate = function(name)
                                     return string.len(name) < 16;
@@ -226,10 +250,10 @@ function AuroraCouncilConfiguration:New(ConfigurationHandler)
                                 type = "toggle",
                                 desc = DESC_SET_OPT_VISIBLE,
                                 set = function(visible)
-                                    ConfigurationHandler:SetOptionVisible(6, visible);
+                                    _configuration:SetOptionVisible(6, visible);
                                 end,
                                 get = function()
-                                    return ConfigurationHandler:IsOptionVisible(6);
+                                    return _configuration:IsOptionVisible(6);
                                 end,
                             },
                             text = {
@@ -238,10 +262,10 @@ function AuroraCouncilConfiguration:New(ConfigurationHandler)
                                 desc = DESC_SET_OPT_TEXT,
                                 usage = "<name>",
                                 set = function(name)
-                                    ConfigurationHandler:SetOptionText(6, name)
+                                    _configuration:SetOptionText(6, name)
                                 end,
                                 get = function()
-                                    return ConfigurationHandler:GetOptionText(6)
+                                    return _configuration:GetOptionText(6)
                                 end,
                                 validate = function(name)
                                     return string.len(name) <= 10;
@@ -254,8 +278,44 @@ function AuroraCouncilConfiguration:New(ConfigurationHandler)
         },
     }
 
-    function _configuration:GetOptions()
-        return self.options;
+    function _configuration:SetEnabled(isEnabled)
+        self.enabled = isEnabled;
+    end
+
+    function _configuration:IsEnabled()
+        return self.enabled;
+    end
+
+    function _configuration:SetEnabledOptionsCount(count)
+        self.numLootOptions = count;
+    end
+
+    function _configuration:GetEnabledOptionsCount()
+        return self.numLootOptions;
+    end
+
+    function _configuration:SetOptionVisible(optionNum, visible)
+        self.lootOptions[optionNum].visible = visible;
+    end
+
+    function _configuration:IsOptionVisible(optionNum)
+        return self.lootOptions[optionNum].visible;
+    end
+
+    function _configuration:SetOptionText(optionNum, optionText)
+        self.lootOptions[optionNum].text = string.gsub(optionText, ";", ",");
+    end
+
+    function _configuration:GetOptionText(optionNum)
+        return self.lootOptions[optionNum].text;
+    end
+
+    function _configuration:GetChatCommands()
+        return self.chatCommands;
+    end
+
+    function _configuration:GetLootOptions()
+        return self.numLootOptions, self.lootOptions;
     end
 
     return _configuration

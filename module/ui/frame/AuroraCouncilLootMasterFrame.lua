@@ -137,6 +137,5 @@ function AuroraCouncilLootMasterFrame:New(Util, Message)
         itemLinkFrame:SetBackdrop(nil);
     end
 
-
     return _frame;
 end

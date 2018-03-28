@@ -6,6 +6,7 @@ function AuroraCouncil:New()
     local Util = AuroraCouncilUtil:New();
     local Message = AuroraCouncilMessage:New(Util);
     local UI = AuroraCouncilUI:New(Util, Message);
+    local Config = AuroraCouncilConfiguration:New();
 
     local _auroraCouncil = {};
 
@@ -15,61 +16,11 @@ function AuroraCouncil:New()
 
     local lootTable;
     local currentItem;
-    local enabled;
     local isLooting = false;
     local versionCheckLast = 0;
 
-    local numLootOptions = 3;
-    local lootOptions = {};
-    lootOptions[1] = {};
-    lootOptions[1].visible = true;
-    lootOptions[1].text = "Need";
-    lootOptions[2] = {};
-    lootOptions[2].visible = true;
-    lootOptions[2].text = "Greed";
-    lootOptions[3] = {};
-    lootOptions[3].visible = true;
-    lootOptions[3].text = "Pass";
-    lootOptions[4] = {};
-    lootOptions[4].visible = true;
-    lootOptions[4].text = "option4";
-    lootOptions[5] = {};
-    lootOptions[5].visible = true;
-    lootOptions[5].text = "option5";
-    lootOptions[6] = {};
-    lootOptions[6].visible = true;
-    lootOptions[6].text = "option6";
-
-    function _auroraCouncil:Enable(isEnabled)
-        enabled = isEnabled;
-    end
-
-    function _auroraCouncil:IsEnabled()
-        return enabled;
-    end
-
-    function _auroraCouncil:SetEnabledOptionsCount(count)
-        numLootOptions = count;
-    end
-
-    function _auroraCouncil:GetEnabledOptionsCount()
-        return numLootOptions;
-    end
-
-    function _auroraCouncil:SetOptionVisible(optionNum, visible)
-        lootOptions[optionNum].visible = visible;
-    end
-
-    function _auroraCouncil:IsOptionVisible(optionNum)
-        return lootOptions[optionNum].visible;
-    end
-
-    function _auroraCouncil:SetOptionText(optionNum, optionText)
-        lootOptions[optionNum].text = string.gsub(optionText, ";", ",");
-    end
-
-    function _auroraCouncil:GetOptionText(optionNum)
-        return lootOptions[optionNum].text;
+    function _auroraCouncil:GetChatCommands()
+        return Config:GetChatCommands();
     end
 
     function _auroraCouncil:LootClosed()
@@ -84,7 +35,6 @@ function AuroraCouncil:New()
             UI.LootMasterFrame:ResizeFrame(itemCount);
         end
     end
-
 
     function _auroraCouncil:LootMethodChanged()
         self:Reset();
@@ -132,7 +82,7 @@ function AuroraCouncil:New()
     end
 
     function _auroraCouncil:CheckPreconditions()
-        return enabled and Util:IsPlayerLootMaster();
+        return Config:IsEnabled() and Util:IsPlayerLootMaster();
     end
 
     function _auroraCouncil:FillValidItems(lootTable)
@@ -153,17 +103,48 @@ function AuroraCouncil:New()
         --Util:Debug(prefix .. ": " .. message);
         if      prefix == Message.RESET             then self:Reset()
         elseif  prefix == Message.VERSION           then self:HandleVersionInfoMessage(message)
-        elseif  prefix == Message.MASTER_IS_LOOTING then self:HandleMasterIsLooting()
+        elseif  prefix == Message.MASTER_IS_LOOTING then self:HandleMasterIsLootingMessage()
         elseif  prefix == Message.SELECT_ITEM       then self:HandleItemSelectedMessage(message)
-        elseif  prefix == Message.NO_ITEMS          then self:HandleNoItems()
+        elseif  prefix == Message.NO_ITEMS          then self:HandleNoItemsMessage()
         elseif  prefix == Message.SESSION_START     then self:HandleStartMessage(sender)
         elseif  prefix == Message.SHOW_ITEM         then self:HandleItemMessage(message, sender)
         elseif  prefix == Message.OFFER_ITEM        then self:HandleLootMessage(message)
-        elseif  prefix == Message.SELECT_OPTION     then self:SelectOption(message, sender)
-        elseif  prefix == Message.GIVE_ITEM         then self:HandleGiveItem(message, sender)
-        elseif  prefix == Message.ITEM_ASSIGNED     then self:HandleItemAssigned()
+        elseif  prefix == Message.SELECT_OPTION     then self:HandleSelectOptionMessage(message, sender)
+        elseif  prefix == Message.GIVE_ITEM         then self:HandleGiveItemMessage(message, sender)
+        elseif  prefix == Message.ITEM_ASSIGNED     then self:HandleItemAssignedMessage()
         end
         UI:UpdateState(StateMachine);
+    end
+
+    function _auroraCouncil:HandleVersionInfoMessage(message)
+        local versionNumber, versionName = Message:SplitVersionInfoMessage(message);
+        local hours,minutes = GetGameTime();
+        local time = hours*60+minutes;
+        if(time < versionCheckLast) then versionCheckLast = time end;
+        if(time-VERSION_CHECK_INTERVAL >= versionCheckLast) then
+            versionCheckLast = time;
+            if(versionNumber > VERSION_NUMBER) then
+                Util:Print("Your version is " .. VERSION_NAME .. ". version " .. versionName .. " has been released, please update to the newest version to avoid any problems.")
+            end
+        end
+    end
+
+    function _auroraCouncil:HandleMasterIsLootingMessage()
+        StateMachine.current:LootCorpse();
+    end
+
+    function _auroraCouncil:HandleItemSelectedMessage(itemLink)
+        if Util:IsPlayerLootMaster() then
+            local numLootOptions, lootOptions = Config:GetLootOptions();
+            local request = Message:CreateOfferItemRequest(itemLink, numLootOptions,
+                lootOptions[1], lootOptions[2], lootOptions[3],
+                lootOptions[4], lootOptions[5], lootOptions[6])
+            Message:SendOfferItemRequest(request, Message.CHANNEL.RAID);
+        end
+    end
+
+    function _auroraCouncil:HandleNoItemsMessage()
+        StateMachine.current:NoLoot();
     end
 
     function _auroraCouncil:HandleStartMessage(sender)
@@ -180,30 +161,8 @@ function AuroraCouncil:New()
         end
     end
 
-    function _auroraCouncil:HandleVersionInfoMessage(message)
-        local versionNumber, versionName = Message:SplitVersionInfoMessage(message);
-        local hours,minutes = GetGameTime();
-        local time = hours*60+minutes;
-        if(time < versionCheckLast) then versionCheckLast = time end;
-        if(time-VERSION_CHECK_INTERVAL >= versionCheckLast) then
-            versionCheckLast = time;
-            if(versionNumber > VERSION_NUMBER) then
-                Util:Print("Your version is " .. VERSION_NAME .. ". version " .. versionName .. " has been released, please update to the newest version to avoid any problems.")
-            end
-        end
-    end
-
     function _auroraCouncil:HandleItemMessage(itemLink, sender)
         if sender ~= (UnitName("player")) then Util:Print("Item: " .. itemLink) end
-    end
-
-    function _auroraCouncil:HandleItemSelectedMessage(itemLink)
-        if Util:IsPlayerLootMaster() then
-            local request = Message:CreateOfferItemRequest(itemLink, numLootOptions,
-                lootOptions[1], lootOptions[2], lootOptions[3],
-                lootOptions[4], lootOptions[5], lootOptions[6])
-            Message:SendOfferItemRequest(request, Message.CHANNEL.RAID);
-        end
     end
 
     function _auroraCouncil:HandleLootMessage(offerItemRequest)
@@ -220,20 +179,15 @@ function AuroraCouncil:New()
         end
     end
 
-    function _auroraCouncil:HandleMasterIsLooting()
-        StateMachine.current:LootCorpse();
+    function _auroraCouncil:HandleSelectOptionMessage(message, sender)
+        local option, item = Message:SplitSelectOptionMessage(message);
+        UI.RaidResponseFrame:AddPlayerEntry(option, sender, item)
+        if sender == (UnitName("player")) then
+            StateMachine.current:ChooseOption();
+        end
     end
 
-    function _auroraCouncil:HandleNoItems()
-        StateMachine.current:NoLoot();
-    end
-
-    function _auroraCouncil:HandleItemAssigned()
-        StateMachine.current:AssignItem();
-        self:InitializeCouncil()
-    end
-
-    function _auroraCouncil:HandleGiveItem(targetPlayer, sender)
+    function _auroraCouncil:HandleGiveItemMessage(targetPlayer, sender)
         if sender == UnitName("player") and Util:IsPlayerLootMaster() then
             if isLooting == false then Util:Print("You need to be looting a Corpse to assign an item") end
 
@@ -260,12 +214,9 @@ function AuroraCouncil:New()
         Util:Print("Item not found ... are you looting the correct corpse?")
     end
 
-    function _auroraCouncil:SelectOption(message, sender)
-        local option, item = Message:SplitSelectOptionMessage(message);
-        UI.RaidResponseFrame:AddPlayerEntry(option, sender, item)
-        if sender == (UnitName("player")) then
-            StateMachine.current:ChooseOption();
-        end
+    function _auroraCouncil:HandleItemAssignedMessage()
+        StateMachine.current:AssignItem();
+        self:InitializeCouncil()
     end
 
     return _auroraCouncil;

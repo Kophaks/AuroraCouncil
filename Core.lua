@@ -1,8 +1,7 @@
 Core = AceLibrary("AceAddon-2.0"):new("AceConsole-2.0", "AceEvent-2.0")
 local AuroraCouncil = AuroraCouncil:New();
-local Config = AuroraCouncilConfiguration:New(AuroraCouncil);
 
-Core:RegisterChatCommand({"/ac"}, Config:GetOptions())
+Core:RegisterChatCommand({"/ac"}, AuroraCouncil:GetChatCommands())
 
 function Core:OnInitialize()
 end
@@ -14,7 +13,6 @@ function Core:OnEnable()
     self:RegisterEvent("LOOT_CLOSED");
     self:RegisterEvent("PARTY_LOOT_METHOD_CHANGED");
     self:RegisterEvent("PLAYER_ENTERING_WORLD");
-    AuroraCouncil:Enable(true);
     AuroraCouncil:Init();
 end
 

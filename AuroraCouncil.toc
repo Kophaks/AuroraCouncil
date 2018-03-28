@@ -13,7 +13,7 @@ lib\AceConsole-2.0\AceConsole-2.0.lua
 
 module\shared\AuroraCouncilUtil.lua
 module\shared\AuroraCouncilMessage.lua
-module\shared\AuroraCouncilConfiguration.lua
+module\config\AuroraCouncilConfiguration.lua
 module\logic\AuroraCouncilStateMachine.lua
 module\ui\frame\AuroraCouncilLootMasterFrame.lua
 module\ui\frame\AuroraCouncilLootOfferFrame.lua

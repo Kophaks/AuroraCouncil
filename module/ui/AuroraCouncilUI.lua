@@ -94,6 +94,5 @@ function AuroraCouncilUI:New(Util, Message)
         self.RaidResponseFrame:CloseFrame();
     end
 
-
     return _ui;
 end
