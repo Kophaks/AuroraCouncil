@@ -19,6 +19,20 @@ function AuroraCouncil:New()
     local isLooting = false;
     local versionCheckLast = 0;
 
+    StaticPopupDialogs["BASIC_LOOT_CONFIRMATION"] = {
+        text = "Do you really want to give %s to %s?",
+        button1 = "Yes",
+        button2 = "No",
+        OnAccept = function(data)
+            GiveMasterLoot(data.itemIndex, data.playerIndex);
+            Message:SendItemAssignedInfo(Message.CHANNEL.RAID);
+        end,
+        timeout = 0,
+        whileDead = true,
+        hideOnEscape = true,
+        preferredIndex = 3,
+    }
+
     Config:SetOnReset(function()
         _auroraCouncil:Reset();
     end)
@@ -33,7 +47,7 @@ function AuroraCouncil:New()
 
     function _auroraCouncil:LootOpened()
         isLooting = true;
-        if StateMachine.current.name == StateMachine.WATING then
+        if Util:IsPlayerLootMaster() and StateMachine.current.name == StateMachine.WATING then
             Message:SendResetRequest(Message.CHANNEL.RAID);
             local itemCount = self:InitializeCouncil();
             UI.LootMasterFrame:ResizeFrame(itemCount);
@@ -50,7 +64,6 @@ function AuroraCouncil:New()
     end
 
     function _auroraCouncil:Reset()
-        Util:Debug("RESET")
         currentItem = nil;
         lootTable = nil;
         StateMachine:Reset();
@@ -198,7 +211,7 @@ function AuroraCouncil:New()
 
             for playerIndex = 1, GetNumRaidMembers() do
                 if (GetMasterLootCandidate(playerIndex) == targetPlayer) then
-                    self:GiveItemTo(currentItem, playerIndex);
+                    self:GiveItemTo(currentItem, playerIndex, targetPlayer);
                     return;
                 end
             end
@@ -206,13 +219,17 @@ function AuroraCouncil:New()
         end
     end
 
-    function _auroraCouncil:GiveItemTo(item, player)
+    function _auroraCouncil:GiveItemTo(item, playerIndex, playerName)
         for itemIndex = 1, GetNumLootItems() do
             local itemLink = GetLootSlotLink(itemIndex);
-
             if itemLink == item then
-                GiveMasterLoot(itemIndex, player);
-                Message:SendItemAssignedInfo(Message.CHANNEL.RAID);
+                local confirmationDialog = StaticPopup_Show("BASIC_LOOT_CONFIRMATION", item, playerName)
+                    if (confirmationDialog) then
+                        local confirmationData = {}
+                        confirmationData.itemIndex = itemIndex;
+                        confirmationData.playerIndex = playerIndex;
+                        confirmationDialog.data = confirmationData;
+                end
                 return;
             end
         end
