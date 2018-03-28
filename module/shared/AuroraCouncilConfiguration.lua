@@ -3,13 +3,20 @@ AuroraCouncilConfiguration = {};
 function AuroraCouncilConfiguration:Export(configurationHandler)
     local _configuration = {}
 
+    local DESC_ENABLE = "Enable AuroraCouncil";
+    local DESC_RESET = "Resets AuroraCouncil to the default state"
+    local DESC_OPTIONS = "Setup available options for looting";
+    local DESC_OPTIONS_COUNT = "Number of possible loot responses";
+    local DESC_SET_OPT_VISIBLE = "Show Option in Overview";
+    local DESC_SET_OPT_TEXT = "Set option name (max 10 characters)";
+
     _configuration.options = {
         type='group',
         args = {
             enable = {
                 name = "enable",
                 type = "toggle",
-                desc = "Enable AuroraCouncil",
+                desc = DESC_ENABLE,
                 set = function(enabled)
                     configurationHandler:Enable(enabled);
                 end,
@@ -20,20 +27,20 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
             reset = {
                 name = "reset",
                 type = "execute",
-                desc = "Resets AuroraCouncil to the default state",
+                desc = DESC_RESET,
                 func = function()
                     configurationHandler:Reset();
                 end,
             },
             options = {
-                type='group',
-                desc="Setup available options for looting",
-                name="options",
+                type= 'group',
+                desc= DESC_OPTIONS,
+                name= "options",
                 args= {
                     count = {
                         name = "count",
                         type = "range",
-                        desc = "Number of possible loot responses",
+                        desc = DESC_OPTIONS_COUNT,
                         min = 2,
                         max = 6,
                         step = 1,
@@ -52,7 +59,7 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                             visible = {
                                 name = "enable",
                                 type = "toggle",
-                                desc = "Show Option in Overview",
+                                desc = DESC_SET_OPT_VISIBLE,
                                 set = function(visible)
                                     configurationHandler:SetOptionVisible(1, visible);
                                 end,
@@ -63,7 +70,7 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                             text = {
                                 name = "name",
                                 type = 'text',
-                                desc = "Set option name",
+                                desc = DESC_SET_OPT_TEXT,
                                 usage = "<name>",
                                 set = function(name)
                                     configurationHandler:SetOptionText(1, name);
@@ -85,7 +92,7 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                             visible = {
                                 name = "enable",
                                 type = "toggle",
-                                desc = "Show Option in Overview",
+                                desc = DESC_SET_OPT_VISIBLE,
                                 set = function(visible)
                                     configurationHandler:SetOptionVisible(2, visible);
                                 end,
@@ -96,7 +103,7 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                             text = {
                                 name = "name",
                                 type = 'text',
-                                desc = "Set option name",
+                                desc = DESC_SET_OPT_TEXT,
                                 usage = "<name>",
                                 set = function(name)
                                     configurationHandler:SetOptionText(2, name);
@@ -118,7 +125,7 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                             visible = {
                                 name = "enable",
                                 type = "toggle",
-                                desc = "Show Option 3 in Overview",
+                                desc = DESC_SET_OPT_VISIBLE,
                                 set = function(visible)
                                     configurationHandler:SetOptionVisible(3, visible);
                                 end,
@@ -129,7 +136,7 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                             text = {
                                 name = "name",
                                 type = 'text',
-                                desc = "Set option name",
+                                desc = DESC_SET_OPT_TEXT,
                                 usage = "<name>",
                                 set = function(name)
                                     configurationHandler:SetOptionText(3, name);
@@ -151,7 +158,7 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                             visible = {
                                 name = "enable",
                                 type = "toggle",
-                                desc = "Show Option in Overview",
+                                desc = DESC_SET_OPT_VISIBLE,
                                 set = function(visible)
                                     configurationHandler:SetOptionVisible(4, visible);
                                 end,
@@ -162,7 +169,7 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                             text = {
                                 name = "name",
                                 type = 'text',
-                                desc = "Set option name",
+                                desc = DESC_SET_OPT_TEXT,
                                 usage = "<name>",
                                 set = function(name)
                                     configurationHandler:SetOptionText(4, name);
@@ -184,7 +191,7 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                             visible = {
                                 name = "enable",
                                 type = "toggle",
-                                desc = "Show Option in Overview",
+                                desc = DESC_SET_OPT_VISIBLE,
                                 set = function(visible)
                                     configurationHandler:SetOptionVisible(5, visible);
                                 end,
@@ -195,7 +202,7 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                             text = {
                                 name = "name",
                                 type = 'text',
-                                desc = "Set option name",
+                                desc = DESC_SET_OPT_TEXT,
                                 usage = "<name>",
                                 set = function(name)
                                     configurationHandler:SetOptionText(5, name);
@@ -217,7 +224,7 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                             visible = {
                                 name = "enable",
                                 type = "toggle",
-                                desc = "Show Option in Overview",
+                                desc = DESC_SET_OPT_VISIBLE,
                                 set = function(visible)
                                     configurationHandler:SetOptionVisible(6, visible);
                                 end,
@@ -228,7 +235,7 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                             text = {
                                 name = "name",
                                 type = 'text',
-                                desc = "Set option name",
+                                desc = DESC_SET_OPT_TEXT,
                                 usage = "<name>",
                                 set = function(name)
                                     configurationHandler:SetOptionText(6, name)
@@ -237,7 +244,7 @@ function AuroraCouncilConfiguration:Export(configurationHandler)
                                     return configurationHandler:GetOptionText(6)
                                 end,
                                 validate = function(name)
-                                    return string.len(name) < 16;
+                                    return string.len(name) <= 10;
                                 end
                             },
                         }

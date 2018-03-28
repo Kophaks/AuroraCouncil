@@ -136,17 +136,19 @@ function AuroraCouncilRaidResponseFrame:Export()
         for entry = 1, PLAYER_ENTRY_COUNT do
             self:ResetPlayerEntry(entry);
         end
-        local nextOption = 1;
+        nextOption = 1;
     end
 
     function _frame:AddPlayerEntry(option, player, item)
-        local entryFrame = entryBuffer[nextOption];
-        entryFrame:SetBackdropColor(0,0,0,1);
-        entryFrame.option:SetText(option);
-        entryFrame.player:SetText(player);
-        entryFrame.item:SetText(item);
-        self:ResizeFrame(nextOption)
-        nextOption = nextOption + 1;
+        if UnitName("player") == player or option.visible then
+            local entryFrame = entryBuffer[nextOption];
+            entryFrame:SetBackdropColor(0,0,0,1);
+            entryFrame.option:SetText(option.text);
+            entryFrame.player:SetText(player);
+            entryFrame.item:SetText(item);
+            self:ResizeFrame(nextOption)
+            nextOption = nextOption + 1;
+        end
     end
 
     function _frame:ResizeFrame(entryCount)

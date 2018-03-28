@@ -48,7 +48,9 @@ function AuroraCouncilMessage:Export()
 
     function _message:SendSelectOptionRequest(option, currentItem, channel)
         if currentItem == nil then currentItem = "-"; end
-        SendAddonMessage(self.SELECT_OPTION, option .. ';' .. currentItem, channel);
+        local visible = 0;
+        if option.visible then visible = 1 end;
+        SendAddonMessage(self.SELECT_OPTION, option.text .. ';' .. visible .. ';' .. currentItem, channel);
     end
 
     function _message:NoValidItemsInfo(channel)
@@ -65,23 +67,29 @@ function AuroraCouncilMessage:Export()
 
     function _message:CreateOfferItemRequest(itemLink, numOptions, option1, option2, option3, option4, option5, option6)
         local request;
-
-        request = itemLink .. ";" .. numOptions .. ";" .. option1;
+        local visible;
+        if option1.visible == true then visible = 1 else visible = 0 end;
+        request = itemLink .. ";" .. numOptions .. ";" .. option1.text .. ";" .. visible;
 
         if option2 then
-            request = request .. ";" .. option2;
+            if option2.visible == true then visible = 1 else visible = 0 end;
+            request = request .. ";".. option2.text .. ";" .. visible;
         end
         if option3 then
-            request = request .. ";" .. option3;
+            if option3.visible == true then visible = 1 else visible = 0 end;
+            request = request .. ";" .. option3.text .. ";" .. visible;
         end
         if option4 then
-            request = request .. ";" .. option4;
+            if option4.visible == true then visible = 1 else visible = 0 end;
+            request = request .. ";" .. option4.text .. ";" .. visible;
         end
         if option5 then
-            request = request .. ";" .. option5;
+            if option5.visible == true then visible = 1 else visible = 0 end;
+            request = request .. ";" .. option5.text .. ";" .. visible;
         end
         if option6 then
-            request = request .. ";" .. option6;
+            if option6.visible == true then visible = 1 else visible = 0 end;
+            request = request .. ";" .. option6.text .. ";" .. visible;
         end
 
         return request;
@@ -91,19 +99,33 @@ function AuroraCouncilMessage:Export()
         local message = Util:SplitString(message, ";")
         local itemLink = message[1];
         local numOptions = message[2];
-        local option1 = message[3];
-        local option2 = message[4];
-        local option3 = message[5];
-        local option4 = message[6];
-        local option5 = message[7];
-        local option6 = message[8];
+        local option1 = {};
+        option1.text = message[3];
+        option1.visible = message[4] == "1";
+        local option2 = {};
+        option2.text = message[5];
+        option2.visible = message[6] == "1";
+        local option3 = {};
+        option3.text = message[7];
+        option3.visible = message[8] == "1";
+        local option4 = {};
+        option4.text = message[9];
+        option4.visible = message[10] == 1;
+        local option5 = {};
+        option5.text = message[11];
+        option5.visible = message[12] == 1;
+        local option6 = {};
+        option6.text = message[13];
+        option6.visible = message[14] == 1;
         return itemLink, numOptions, option1, option2, option3, option4, option5, option6;
     end
 
     function _message:SplitSelectOptionMessage(message)
         local selectionInfo = Util:SplitString(message, ";")
-        local option = selectionInfo[1];
-        local item = selectionInfo[2];
+        local option = {}
+        option.text = selectionInfo[1];
+        option.visible = selectionInfo[2] == "1";
+        local item = selectionInfo[3];
         return option, item;
     end
 

@@ -85,21 +85,24 @@ function AuroraCouncilLootOfferFrame:Export()
         AUCO_LootOfferFrame:SetHeight((nextOption-1) * ITEM_ENTRY_HEIGHT + FRAME_HEIGHT_EXTRA);
     end
 
-    function _frame:AddOption(optionName)
-        if optionName then
+    function _frame:AddOption(option)
+        if option then
             local optionFrame = optionsBuffer[nextOption];
-            optionFrame.text:SetText(optionName);
+            optionFrame.text:SetText(option.text);
+            optionFrame.visible = option.visible;
             optionFrame:SetBackdrop(optionBackground);
             optionFrame:SetBackdropColor(0,0,0,1);
             optionFrame:SetScript("OnClick", function()
                 local itemLink = AUCO_LootOfferTitleFrame.title:GetText();
-                local text = this.text:GetText();
-                if text ~= nil then
+                local option = {};
+                option.text = this.text:GetText();
+                option.visible = optionFrame.visible;
+                if option.text ~= nil then
                     local equippedSlot = Util:GetItemEquippedSlot(itemLink);
                     if equippedSlot then
-                        Message:SendSelectOptionRequest(text, GetInventoryItemLink("player", GetInventorySlotInfo(equippedSlot), "RAID"));
+                        Message:SendSelectOptionRequest(option, GetInventoryItemLink("player", GetInventorySlotInfo(equippedSlot), "RAID"));
                     else
-                        Message:SendSelectOptionRequest(text, "-", "RAID");
+                        Message:SendSelectOptionRequest(option, "-", "RAID");
                     end
 
                 end

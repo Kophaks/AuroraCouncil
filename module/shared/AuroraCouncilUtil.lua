@@ -47,9 +47,9 @@ function AuroraCouncilUtil:Export()
     end
 
     function _util:Debug(inputString)
-        if inputString == nil then
-            inputString = "nil"
-        end
+        if inputString == nil then inputString = "nil"
+        elseif inputString == true then inputString = "true"
+        elseif inputString == false then inputString = "false" end
         DEFAULT_CHAT_FRAME:AddMessage("|cFFFF7060|| AuroraCouncil || |r" .. inputString);
     end
 

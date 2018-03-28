@@ -11,6 +11,7 @@ function AuroraCouncil:Export()
     local lootTable;
     local currentItem;
     local enabled;
+    local isLooting = false;
 
     local numLootOptions = 3;
     local lootOptions = {};
@@ -65,7 +66,12 @@ function AuroraCouncil:Export()
         return lootOptions[optionNum].text;
     end
 
+    function _auroraCouncil:LootClosed()
+        isLooting = false;
+    end
+
     function _auroraCouncil:LootOpened()
+        isLooting = true;
         if StateMachine.current.name == StateMachine.WATING then
             Message:SendResetRequest("RAID");
             local itemCount = self:InitializeCouncil();
@@ -81,7 +87,6 @@ function AuroraCouncil:Export()
     end
 
     function _auroraCouncil:Init()
-        Util:Debug("Init!");
         enabled = true;
         if Util:IsPlayerLootMaster() then
             Message:SendResetRequest("RAID");
@@ -192,8 +197,8 @@ function AuroraCouncil:Export()
     function _auroraCouncil:HandleItemSelectedMessage(itemLink)
         if Util:IsPlayerLootMaster() then
             local request = Message:CreateOfferItemRequest(itemLink, numLootOptions,
-                lootOptions[1].text, lootOptions[2].text, lootOptions[3].text,
-                lootOptions[4].text, lootOptions[5].text, lootOptions[6].text)
+                lootOptions[1], lootOptions[2], lootOptions[3],
+                lootOptions[4], lootOptions[5], lootOptions[6])
             Message:SendOfferItemRequest(request, "RAID");
         end
     end
@@ -227,6 +232,10 @@ function AuroraCouncil:Export()
 
     function _auroraCouncil:HandleGiveItem(targetPlayer, sender)
         if sender == UnitName("player") and Util:IsPlayerLootMaster() then
+            if isLooting == false then
+                Util:Print("You need to be looting a Corpse to assign an item")
+            end
+
             for playerIndex = 1, GetNumRaidMembers() do
                 if (GetMasterLootCandidate(playerIndex) == targetPlayer) then
                     self:GiveItemTo(currentItem, playerIndex);
@@ -247,8 +256,7 @@ function AuroraCouncil:Export()
                 return;
             end
         end
-        Util:Debug("Error: " .. item .. " could not be assigned .. not sure what happened here")
-        Util:Debug("Error: Please inform me on Discord or Github: https://github.com/Mithnar/AuroraCouncil")
+        Util:Print("Item not found ... are you looting the correct corpse?")
     end
 
     function _auroraCouncil:SelectOption(message, sender)

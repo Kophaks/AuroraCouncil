@@ -11,6 +11,7 @@ function Core:OnEnable()
     AuroraCouncil:ShowStartupMessage();
     self:RegisterEvent("CHAT_MSG_ADDON");
     self:RegisterEvent("LOOT_OPENED");
+    self:RegisterEvent("LOOT_CLOSED");
     AuroraCouncil:Init();
 end
 
@@ -19,6 +20,10 @@ end
 
 function Core:LOOT_OPENED()
     AuroraCouncil:LootOpened();
+end
+
+function Core:LOOT_CLOSED()
+    AuroraCouncil:LootClosed();
 end
 
 function Core:CHAT_MSG_ADDON(prefix, message, _, sender)
