@@ -9,10 +9,15 @@ function AuroraCouncil:New()
 
     local _auroraCouncil = {};
 
+    local VERSION_NUMBER = 0.3;
+    local VERSION_NAME = "0.3 - ALPHA"
+    local VERSION_CHECK_INTERVAL = 1;
+
     local lootTable;
     local currentItem;
     local enabled;
     local isLooting = false;
+    local versionCheckLast = 0;
 
     local numLootOptions = 3;
     local lootOptions = {};
@@ -74,7 +79,7 @@ function AuroraCouncil:New()
     function _auroraCouncil:LootOpened()
         isLooting = true;
         if StateMachine.current.name == StateMachine.WATING then
-            Message:SendResetRequest("RAID");
+            Message:SendResetRequest(Message.CHANNEL.RAID);
             local itemCount = self:InitializeCouncil();
             UI.LootMasterFrame:ResizeFrame(itemCount);
         end
@@ -85,6 +90,11 @@ function AuroraCouncil:New()
         self:Reset();
     end
 
+    function _auroraCouncil:PlayerEnteringWorld()
+        local versionInfo = Message:CreateVersionInfoRequest(VERSION_NUMBER, VERSION_NAME);
+        Message:SendVersionInfoRequest(versionInfo, Message.CHANNEL.RAID)
+    end
+
     function _auroraCouncil:Reset()
         currentItem = nil;
         lootTable = nil;
@@ -93,7 +103,6 @@ function AuroraCouncil:New()
     end
 
     function _auroraCouncil:Init()
-        enabled = true;
         if Util:IsPlayerLootMaster() then Message:SendResetRequest("RAID") else self:Reset() end
     end
 
@@ -104,19 +113,19 @@ function AuroraCouncil:New()
     function _auroraCouncil:InitializeCouncil()
         local numValidItems = 0;
         if self:CheckPreconditions() then
-            Message:SendMasterIsLootingInfo("Raid");
+            Message:SendMasterIsLootingInfo(Message.CHANNEL.RAID);
             lootTable = {};
             self.items = {}
             numValidItems = self:FillValidItems(lootTable);
             if numValidItems > 0 then
-                Message:SendSessionStartRequest("Raid");
+                Message:SendSessionStartRequest(Message.CHANNEL.RAID);
                 for key, value in pairs(lootTable) do
                     local _, itemLink = unpack(value);
-                    Message:SendShowItemInfo(itemLink, "RAID");
+                    Message:SendShowItemInfo(itemLink, Message.CHANNEL.RAID);
                     UI.LootMasterFrame:SetItemEntry(key, itemLink);
                 end
             else
-                Message:NoValidItemsInfo("Raid");
+                Message:NoValidItemsInfo(Message.CHANNEL.RAID);
             end
         end
         return numValidItems;
@@ -142,6 +151,7 @@ function AuroraCouncil:New()
 
     function _auroraCouncil:ChatMsgAddon(prefix, message, sender)
         if      prefix == Message.RESET             then self:Reset()
+        elseif  prefix == Message.VERSION           then self:HandleVersionInfoMessage(message)
         elseif  prefix == Message.MASTER_IS_LOOTING then self:HandleMasterIsLooting()
         elseif  prefix == Message.SELECT_ITEM       then self:HandleItemSelectedMessage(message)
         elseif  prefix == Message.NO_ITEMS          then self:HandleNoItems()
@@ -169,6 +179,19 @@ function AuroraCouncil:New()
         end
     end
 
+    function _auroraCouncil:HandleVersionInfoMessage(message)
+        local versionNumber, versionName = Message:SplitVersionInfoMessage(message);
+        local hours,minutes = GetGameTime();
+        local time = hours*60+minutes;
+        if(time < versionCheckLast) then versionCheckLast = time end;
+        if(time-VERSION_CHECK_INTERVAL >= versionCheckLast) then
+            versionCheckLast = time;
+            if(versionNumber > VERSION_NUMBER) then
+                Util:Print("Your version is " .. VERSION_NAME .. ". version " .. versionName .. " has been released, please update to the newest version to avoid any problems.")
+            end
+        end
+    end
+
     function _auroraCouncil:HandleItemMessage(itemLink, sender)
         if sender ~= (UnitName("player")) then Util:Print("Item: " .. itemLink) end
     end
@@ -178,7 +201,7 @@ function AuroraCouncil:New()
             local request = Message:CreateOfferItemRequest(itemLink, numLootOptions,
                 lootOptions[1], lootOptions[2], lootOptions[3],
                 lootOptions[4], lootOptions[5], lootOptions[6])
-            Message:SendOfferItemRequest(request, "RAID");
+            Message:SendOfferItemRequest(request, Message.CHANNEL.RAID);
         end
     end
 
@@ -229,7 +252,7 @@ function AuroraCouncil:New()
 
             if itemLink == item then
                 GiveMasterLoot(itemIndex, player);
-                Message:SendItemAssignedInfo("Raid");
+                Message:SendItemAssignedInfo(Message.CHANNEL.RAID);
                 return;
             end
         end

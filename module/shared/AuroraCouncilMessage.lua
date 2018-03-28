@@ -14,6 +14,10 @@ function AuroraCouncilMessage:New(Util)
     _message.SELECT_OPTION = "AUCO_SELECTOPTION";
     _message.GIVE_ITEM = "AUCO_GIVEITEM";
     _message.ITEM_ASSIGNED = "AUCO_ASSIGNED";
+    _message.VERSION = "AUCO_VERSION";
+
+    _message.CHANNEL = {}
+    _message.CHANNEL.RAID = "RAID";
 
     function _message:SendResetRequest(channel)
         SendAddonMessage(self.RESET, "-", channel);
@@ -60,6 +64,21 @@ function AuroraCouncilMessage:New(Util)
 
     function _message:SendItemAssignedInfo(channel)
         SendAddonMessage(self.ITEM_ASSIGNED, "-", channel);
+    end
+
+    function _message:SendVersionInfoRequest(versionInfoRequest, channel)
+        SendAddonMessage(self.VERSION, versionInfoRequest, channel);
+    end
+
+    function _message:CreateVersionInfoRequest(versionNumber, versionName)
+        return versionNumber .. ";" .. versionName;
+    end
+
+    function _message:SplitVersionInfoMessage(message)
+        local message = Util:SplitString(message, ";")
+        local versionNumber = message[1];
+        local versionName = message[2];
+        return tonumber(versionNumber), versionName;
     end
 
     function _message:CreateOfferItemRequest(itemLink, numOptions, option1, option2, option3, option4, option5, option6)
