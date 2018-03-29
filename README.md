@@ -7,20 +7,29 @@ This Addon is in an early stage, there might be breaking bugs. If you feel like 
 ## Installation
 
 1. Close World of Warcraft.
-2. Extract the "AuroraCouncil" directory into "your\path\to\World of Warcraft\Interface\AddOns\".
+2. Extract the "AuroraCouncil" directory into "...\World of Warcraft\Interface\AddOns\".
 3. Activate AuroraCouncil in the character selection screen under "Addons".
 
 ## Usage
 
-The Addon will activate itself when you're in a Group/Raid with masterloot activated. Enter "/ac" into the in-game chat to see a list of available commands.
+The Addon will activate itself when you're in a Group/Raid with masterloot activated.
 
-General Flow:
+#### General Flow:
 1. Loot master is looting a corpse.
 2. If there is loot that can be distributed via master loot, the loot distribution will start.
 3. Loot master clicks on an item to distribute, a window with loot options (need, greed etc...) will appear for everyone.
 4. After selecting a loot option by clicking on it, you will see a list of players along with their decision.
 5. The loot master can now select a player in the list to distribute the loot to.
-6. Steps 2 - 5 repeat until there is no assignable loot left.
+6. Click "Yes" to confirm the loot assignment.
+7. Steps 2 - 6 repeat until there is no assignable loot left.
+
+#### Chat Commands:
+* /ac enable -> enables/disables the addon ( only for loot master).
+* /ac reset -> resets the addon to the default state.
+* /ac options -> Sets the loot options.
+  * Format: /ac options Option1;Option2;Option3;Option4;Option5;Option6
+  * Options can be hidden in the overview by adding ~ at the front: /ac options BiS;Need;Offspec;~Pass
+  * You will always see yourself, even when the option is hidden in the overview.
 
 ## Screenshots
 ##### Loot master frame
