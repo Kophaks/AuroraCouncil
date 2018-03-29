@@ -1,38 +1,47 @@
 AuroraCouncilConfiguration = {};
 
 function AuroraCouncilConfiguration:New(Util)
-    local _configuration = {}
+
+    local _configuration = AceLibrary("AceAddon-2.0"):new("AceDB-2.0")
 
     local DESC_ENABLE = "Enable AuroraCouncil.";
     local DESC_RESET = "Resets AuroraCouncil to the default state."
     local DESC_INFO = "Show LootCouncil Homepage"
     local DESC_SET_OPTIONS = "Set all options/visibility at once, add '~' before option to hide in overview, option text max characters = 10.";
 
+    _configuration.DEFAULT_NUM_OPTIONS = 4;
+    _configuration.DEFAULT_OPTIONS = {
+    [1] = {
+    visible = true;
+    text = "Need";
+    },
+    [2] = {
+    visible = true;
+    text = "Greed";
+    },
+    [3] = {
+    visible = true;
+    text = "Pass";
+    },
+    [4] = {
+    visible = false;
+    text = "nil";
+    },
+    [5] = {
+    visible = false;
+    text = "nil";
+    },
+    [6] = {
+    visible = false;
+    text = "nil";
+    },
+    }
+
     _configuration.onReset = nil;
 
     _configuration.enabled = true;
 
-    _configuration.numLootOptions = 3;
     _configuration.lootOptions = {};
-    _configuration.lootOptions[1] = {};
-    _configuration.lootOptions[1].visible = true;
-    _configuration.lootOptions[1].text = "Need";
-    _configuration.lootOptions[2] = {};
-    _configuration.lootOptions[2].visible = true;
-    _configuration.lootOptions[2].text = "Greed";
-    _configuration.lootOptions[3] = {};
-    _configuration.lootOptions[3].visible = true;
-    _configuration.lootOptions[3].text = "Pass";
-    _configuration.lootOptions[4] = {};
-    _configuration.lootOptions[4].visible = true;
-    _configuration.lootOptions[4].text = "option4";
-    _configuration.lootOptions[5] = {};
-    _configuration.lootOptions[5].visible = true;
-    _configuration.lootOptions[5].text = "option5";
-    _configuration.lootOptions[6] = {};
-    _configuration.lootOptions[6].visible = true;
-    _configuration.lootOptions[6].text = "option6";
-
 
     _configuration.chatCommands = {
         type='group',
@@ -82,6 +91,12 @@ function AuroraCouncilConfiguration:New(Util)
         },
     }
 
+    _configuration:RegisterDB("AuroraCouncilDB", "AuroraCouncilDBPC")
+    _configuration:RegisterDefaults("char", {
+        numOptions = _configuration.DEFAULT_NUM_OPTIONS,
+        options = _configuration.DEFAULT_OPTIONS,
+    } )
+
     function _configuration:SetEnabled(isEnabled)
         self.enabled = isEnabled;
     end
@@ -97,13 +112,13 @@ function AuroraCouncilConfiguration:New(Util)
         if splitOptions[1] ~= nil and splitOptions[2] ~= nil then
             for optionIndex = 1, 6 do
                 if splitOptions[optionIndex] ~= nil then
-                    self.lootOptions[optionIndex].visible = not Util:StringStartsWith(splitOptions[optionIndex], "~")
-                    if self.lootOptions[optionIndex].visible then
-                        self.lootOptions[optionIndex].text = splitOptions[optionIndex];
+                    self.db.char.options[optionIndex].visible = not Util:StringStartsWith(splitOptions[optionIndex], "~")
+                    if self.db.char.options[optionIndex].visible then
+                        self.db.char.options[optionIndex].text = splitOptions[optionIndex];
                     else
-                        self.lootOptions[optionIndex].text = string.sub(splitOptions[optionIndex],2,string.len(splitOptions[optionIndex]))
+                        self.db.char.options[optionIndex].text = string.sub(splitOptions[optionIndex],2,string.len(splitOptions[optionIndex]))
                     end
-                    self.numLootOptions = optionIndex;
+                    self.db.char.numOptions = optionIndex;
                 end
             end
         else
@@ -125,10 +140,10 @@ function AuroraCouncilConfiguration:New(Util)
 
     function _configuration:GetOptions()
         local options = "";
-        for optionIndex = 1, self.numLootOptions do
-            if not self.lootOptions[optionIndex].visible then options = options .. "~" end
-            options = options .. self.lootOptions[optionIndex].text
-            if optionIndex ~= self.numLootOptions then options = options .. ";" end
+        for optionIndex = 1, self.db.char.numOptions do
+            if not self.db.char.options[optionIndex].visible then options = options .. "~" end
+            options = options .. self.db.char.options[optionIndex].text
+            if optionIndex ~= self.db.char.numOptions then options = options .. ";" end
         end
         return options;
     end
@@ -138,7 +153,7 @@ function AuroraCouncilConfiguration:New(Util)
     end
 
     function _configuration:GetLootOptions()
-        return self.numLootOptions, self.lootOptions;
+        return self.db.char.numOptions, self.db.char.options;
     end
 
     function _configuration:SetOnReset(onReset)

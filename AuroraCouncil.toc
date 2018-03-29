@@ -2,6 +2,8 @@
 ## Title: AuroraCouncil
 ## Notes: Loot overview and distribution addon (Loot Council, DKP, ...)
 ## Author: Mithnar
+## SavedVariables: AuroraCouncilDB
+## SavedVariablesPerCharacter: AuroraCouncilDBPC
 ## Version: 0.3-SNAPSHOT
        ## X-Category: Raid
 
@@ -10,6 +12,7 @@ lib\AceOO-2.0\AceOO-2.0.lua
 lib\AceAddon-2.0\AceAddon-2.0.lua
 lib\AceEvent-2.0\AceEvent-2.0.lua
 lib\AceConsole-2.0\AceConsole-2.0.lua
+lib\AceDB-2.0\AceDB-2.0.lua
 
 module\shared\AuroraCouncilUtil.lua
 module\shared\AuroraCouncilMessage.lua

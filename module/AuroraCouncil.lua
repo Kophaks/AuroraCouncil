@@ -241,5 +241,9 @@ function AuroraCouncil:New()
         self:InitializeCouncil()
     end
 
+    function _auroraCouncil:GetConfig()
+        return Config;
+    end
+
     return _auroraCouncil;
 end

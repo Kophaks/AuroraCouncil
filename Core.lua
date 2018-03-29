@@ -3,6 +3,7 @@ local AuroraCouncil = AuroraCouncil:New();
 
 Core:RegisterChatCommand({"/ac"}, AuroraCouncil:GetChatCommands())
 
+
 function Core:OnInitialize()
 end
 
