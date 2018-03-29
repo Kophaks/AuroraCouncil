@@ -47,7 +47,7 @@ function AuroraCouncil:New()
 
     function _auroraCouncil:LootOpened()
         isLooting = true;
-        if Util:IsPlayerLootMaster() and StateMachine.current.name == StateMachine.WATING then
+        if Util:IsPlayerLootMaster() and StateMachine.current.name == StateMachine.WAITING then
             Message:SendResetRequest(Message.CHANNEL.RAID);
             local itemCount = self:InitializeCouncil();
             UI.LootMasterFrame:ResizeFrame(itemCount);
@@ -130,6 +130,7 @@ function AuroraCouncil:New()
         elseif  prefix == Message.SELECT_OPTION     then self:HandleSelectOptionMessage(message, sender)
         elseif  prefix == Message.GIVE_ITEM         then self:HandleGiveItemMessage(message, sender)
         elseif  prefix == Message.ITEM_ASSIGNED     then self:HandleItemAssignedMessage()
+        elseif  prefix == Message.RESEND_OPTIONS     then self:HandleResendOptionsMessage()
         end
         UI:UpdateState(StateMachine);
     end
@@ -153,6 +154,7 @@ function AuroraCouncil:New()
 
     function _auroraCouncil:HandleItemSelectedMessage(itemLink)
         if Util:IsPlayerLootMaster() then
+            currentItem = itemLink;
             local numLootOptions, lootOptions = Config:GetLootOptions();
             local request = Message:CreateOfferItemRequest(itemLink, numLootOptions,
                 lootOptions[1], lootOptions[2], lootOptions[3],
@@ -172,11 +174,7 @@ function AuroraCouncil:New()
         else currentItem = nil;
         end
 
-        if sender == (UnitName("player")) then
-            StateMachine.current:SomeLoot(true)
-        else
-            StateMachine.current:SomeLoot(false)
-        end
+        StateMachine.current:SomeLoot(sender == (UnitName("player")))
     end
 
     function _auroraCouncil:HandleItemMessage(itemLink, sender)
@@ -184,7 +182,9 @@ function AuroraCouncil:New()
     end
 
     function _auroraCouncil:HandleLootMessage(offerItemRequest)
-        if StateMachine.MASTER_LOOTING == StateMachine.current.name or StateMachine.AWAIT_ITEM == StateMachine.current.name then
+        if StateMachine.MASTER_LOOTING == StateMachine.current.name or
+                StateMachine.AWAIT_ITEM == StateMachine.current.name or
+                StateMachine.WAITING == StateMachine.current.name then
             local itemLink, numOptions, option1, option2, option3, option4, option5, option6 = Message:SplitOfferItemRequest(offerItemRequest);
             local options = {[1] = option1, [2] = option2, [3] = option3, [4] = option4, [5] = option5, [6] = option6}
             currentItem = itemLink;
@@ -198,6 +198,10 @@ function AuroraCouncil:New()
     end
 
     function _auroraCouncil:HandleSelectOptionMessage(message, sender)
+        if StateMachine.WAITING == StateMachine.current.name then
+            StateMachine.current:SomeLoot(false);
+            Message:SendResendOptionsRequest(Message.CHANNEL.RAID);
+        end
         local option, item = Message:SplitSelectOptionMessage(message);
         UI.RaidResponseFrame:AddPlayerEntry(option, sender, item)
         if sender == (UnitName("player")) then
@@ -216,6 +220,16 @@ function AuroraCouncil:New()
                 end
             end
             Util:Print(targetPlayer .. " not eligible for Loot")
+        end
+    end
+
+    function _auroraCouncil:HandleResendOptionsMessage()
+        if Util:IsPlayerLootMaster() then
+            local numLootOptions, lootOptions = Config:GetLootOptions();
+            local request = Message:CreateOfferItemRequest(currentItem, numLootOptions,
+                lootOptions[1], lootOptions[2], lootOptions[3],
+                lootOptions[4], lootOptions[5], lootOptions[6])
+            Message:SendOfferItemRequest(request, Message.CHANNEL.RAID);
         end
     end
 

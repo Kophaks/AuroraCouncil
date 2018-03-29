@@ -15,6 +15,7 @@ function AuroraCouncilMessage:New(Util)
     _message.GIVE_ITEM = "AUCO_GIVEITEM";
     _message.ITEM_ASSIGNED = "AUCO_ASSIGNED";
     _message.VERSION = "AUCO_VERSION";
+    _message.RESEND_OPTIONS = "AUCO_RESENDOPT";
 
     _message.CHANNEL = {}
     _message.CHANNEL.RAID = "RAID";
@@ -41,6 +42,10 @@ function AuroraCouncilMessage:New(Util)
 
     function _message:SendSessionStartRequest(channel)
         SendAddonMessage(self.SESSION_START, "-", channel);
+    end
+
+    function _message:SendResendOptionsRequest(channel)
+        SendAddonMessage(self.RESEND_OPTIONS, "-", channel);
     end
 
     function _message:SendSetOptionsRequest(options, channel)

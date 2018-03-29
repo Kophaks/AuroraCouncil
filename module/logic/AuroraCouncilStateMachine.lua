@@ -43,7 +43,36 @@ function AuroraCouncilStateMachine:New()
     _state.current = AuroraCouncilStateMachine.StateWaiting;
 
     function AuroraCouncilStateMachine.StateWaiting:LootCorpse()
+        --Util:Debug("Waiting -> Loot");
         _state.current = AuroraCouncilStateMachine.StateLoot;
+    end
+
+    function AuroraCouncilStateMachine.StateWaiting:NoLoot()
+        -- No State Change
+    end
+
+    function AuroraCouncilStateMachine.StateWaiting:SomeLoot(lootMaster)
+        if lootMaster then
+            --Util:Debug("Waiting -> MasterLooting");
+            _state.current = AuroraCouncilStateMachine.StateMasterLooting;
+        else
+            --Util:Debug("Waiting -> AwaitItem");
+            _state.current = AuroraCouncilStateMachine.StateAwaitItem;
+        end
+    end
+
+
+    function AuroraCouncilStateMachine.StateWaiting:ChooseItem()
+        --Util:Debug("Waiting -> SelectOption");
+        _state.current = AuroraCouncilStateMachine.StateSelectOption;
+    end
+
+    function AuroraCouncilStateMachine.StateWaiting:ChooseOption()
+        -- No State Change
+    end
+
+    function AuroraCouncilStateMachine.StateWaiting:AssignItem()
+        -- No State Change
     end
 
     function AuroraCouncilStateMachine.StateLoot:NoLoot()
@@ -94,7 +123,7 @@ function AuroraCouncilStateMachine:New()
         _state.current = AuroraCouncilStateMachine.StateLoot;
     end
 
-    _state.WATING = AuroraCouncilStateMachine.StateWaiting.name
+    _state.WAITING = AuroraCouncilStateMachine.StateWaiting.name
     _state.LOOT = AuroraCouncilStateMachine.StateLoot.name
     _state.MASTER_LOOTING = AuroraCouncilStateMachine.StateMasterLooting.name
     _state.MASTER_SELECT_OPTION = AuroraCouncilStateMachine.StateMasterSelectOption.name

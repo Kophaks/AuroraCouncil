@@ -12,7 +12,7 @@ function AuroraCouncilUI:New(Util, Message)
     _ui.RaidResponseFrame = raidResponseFrame;
 
     function _ui:UpdateState(stateMachine)
-        if stateMachine.current.name == stateMachine.WATING then
+        if stateMachine.current.name == stateMachine.WAITING then
             self:HandleWaitingState();
         elseif stateMachine.current.name == stateMachine.LOOT then
             self:HandleLootState();
