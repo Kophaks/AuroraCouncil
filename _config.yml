@@ -1,2 +1,7 @@
-theme: jekyll-theme-midnight
+output: 
+  html_document:
+    includes:
+       in_header: _includes/analytics.html
 google_analytics: UA-116609572-1
+theme: jekyll-theme-midnight
+
