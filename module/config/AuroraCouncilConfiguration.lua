@@ -5,6 +5,7 @@ function AuroraCouncilConfiguration:New(Util)
 
     local DESC_ENABLE = "Enable AuroraCouncil.";
     local DESC_RESET = "Resets AuroraCouncil to the default state."
+    local DESC_INFO = "Show LootCouncil Homepage"
     local DESC_SET_OPTIONS = "Set all options/visibility at once, add '~' before option to hide in overview, option text max characters = 10.";
 
     _configuration.onReset = nil;
@@ -47,6 +48,14 @@ function AuroraCouncilConfiguration:New(Util)
                     return _configuration:IsEnabled();
                 end,
             },
+            info = {
+                name = "info",
+                type = "execute",
+                desc = DESC_INFO,
+                func = function()
+                    Util:Print("Visit https://mithnar.github.io/AuroraCouncil/ for more information");
+                end,
+            },
             reset = {
                 name = "reset",
                 type = "execute",
@@ -82,7 +91,6 @@ function AuroraCouncilConfiguration:New(Util)
     end
 
     function _configuration:SetOptions(options)
-        Util:Debug(options);
         local splitOptions = Util:SplitString(options, ";")
 
 
