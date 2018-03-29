@@ -6,7 +6,7 @@ function AuroraCouncil:New()
     local Util = AuroraCouncilUtil:New();
     local Message = AuroraCouncilMessage:New(Util);
     local UI = AuroraCouncilUI:New(Util, Message);
-    local Config = AuroraCouncilConfiguration:New();
+    local Config = AuroraCouncilConfiguration:New(Util);
 
     local _auroraCouncil = {};
 

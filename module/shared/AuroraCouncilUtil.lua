@@ -63,6 +63,11 @@ function AuroraCouncilUtil:New()
         return resultArray
     end
 
+    function _util:StringStartsWith(String,Start)
+        return string.sub(String,1,string.len(Start))==Start
+    end
+
+
     function _util:IsPlayerLootMaster()
         local lootmode, masterlooterPartyID, _ = GetLootMethod();
         return masterlooterPartyID == 0 and lootmode == "master";

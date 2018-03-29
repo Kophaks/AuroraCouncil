@@ -1,14 +1,11 @@
 AuroraCouncilConfiguration = {};
 
-function AuroraCouncilConfiguration:New()
+function AuroraCouncilConfiguration:New(Util)
     local _configuration = {}
 
-    local DESC_ENABLE = "Enable AuroraCouncil";
-    local DESC_RESET = "Resets AuroraCouncil to the default state"
-    local DESC_OPTIONS = "Setup available options for looting";
-    local DESC_OPTIONS_COUNT = "Number of possible loot responses";
-    local DESC_SET_OPT_VISIBLE = "Show Option in Overview";
-    local DESC_SET_OPT_TEXT = "Set option name (max 10 characters)";
+    local DESC_ENABLE = "Enable AuroraCouncil.";
+    local DESC_RESET = "Resets AuroraCouncil to the default state."
+    local DESC_SET_OPTIONS = "Set all options/visibility at once, add '~' before option to hide in overview, option text max characters = 10.";
 
     _configuration.onReset = nil;
 
@@ -59,223 +56,19 @@ function AuroraCouncilConfiguration:New()
                 end,
             },
             options = {
-                type= 'group',
-                desc= DESC_OPTIONS,
-                name= "options",
-                args= {
-                    count = {
-                        name = "count",
-                        type = "range",
-                        desc = DESC_OPTIONS_COUNT,
-                        min = 2,
-                        max = 6,
-                        step = 1,
-                        set = function(count)
-                            _configuration:SetEnabledOptionsCount(count);
-                        end,
-                        get = function()
-                            return _configuration:GetEnabledOptionsCount();
-                        end,
-                    },
-                    opt1 = {
-                        type='group',
-                        desc='Option 1',
-                        name="option1",
-                        args={
-                            visible = {
-                                name = "enable",
-                                type = "toggle",
-                                desc = DESC_SET_OPT_VISIBLE,
-                                set = function(visible)
-                                    _configuration:SetOptionVisible(1, visible);
-                                end,
-                                get = function()
-                                    return _configuration:IsOptionVisible(1);
-                                end,
-                            },
-                            text = {
-                                name = "name",
-                                type = 'text',
-                                desc = DESC_SET_OPT_TEXT,
-                                usage = "<name>",
-                                set = function(name)
-                                    _configuration:SetOptionText(1, name);
-                                end,
-                                get = function()
-                                    return _configuration:GetOptionText(1);
-                                end,
-                                validate = function(name)
-                                    return string.len(name) < 16;
-                                end
-                            },
-                        }
-                    },
-                    opt2 = {
-                        type='group',
-                        desc='Option 2',
-                        name="option2",
-                        args={
-                            visible = {
-                                name = "enable",
-                                type = "toggle",
-                                desc = DESC_SET_OPT_VISIBLE,
-                                set = function(visible)
-                                    _configuration:SetOptionVisible(2, visible);
-                                end,
-                                get = function()
-                                    return _configuration:IsOptionVisible(2);
-                                end,
-                            },
-                            text = {
-                                name = "name",
-                                type = 'text',
-                                desc = DESC_SET_OPT_TEXT,
-                                usage = "<name>",
-                                set = function(name)
-                                    _configuration:SetOptionText(2, name);
-                                end,
-                                get = function()
-                                    return _configuration:GetOptionText(2);
-                                end,
-                                validate = function(name)
-                                    return string.len(name) < 16;
-                                end
-                            },
-                        }
-                    },
-                    opt3 = {
-                        type='group',
-                        desc='Option 3',
-                        name="option3",
-                        args={
-                            visible = {
-                                name = "enable",
-                                type = "toggle",
-                                desc = DESC_SET_OPT_VISIBLE,
-                                set = function(visible)
-                                    _configuration:SetOptionVisible(3, visible);
-                                end,
-                                get = function()
-                                    return _configuration:IsOptionVisible(3);
-                                end,
-                            },
-                            text = {
-                                name = "name",
-                                type = 'text',
-                                desc = DESC_SET_OPT_TEXT,
-                                usage = "<name>",
-                                set = function(name)
-                                    _configuration:SetOptionText(3, name);
-                                end,
-                                get = function()
-                                    return _configuration:GetOptionText(3);
-                                end,
-                                validate = function(name)
-                                    return string.len(name) < 16;
-                                end
-                            },
-                        }
-                    },
-                    opt4 = {
-                        type='group',
-                        desc='Option 4',
-                        name="option4",
-                        args={
-                            visible = {
-                                name = "enable",
-                                type = "toggle",
-                                desc = DESC_SET_OPT_VISIBLE,
-                                set = function(visible)
-                                    _configuration:SetOptionVisible(4, visible);
-                                end,
-                                get = function()
-                                    return _configuration:IsOptionVisible(4);
-                                end,
-                            },
-                            text = {
-                                name = "name",
-                                type = 'text',
-                                desc = DESC_SET_OPT_TEXT,
-                                usage = "<name>",
-                                set = function(name)
-                                    _configuration:SetOptionText(4, name);
-                                end,
-                                get = function()
-                                    return _configuration:GetOptionText(4);
-                                end,
-                                validate = function(name)
-                                    return string.len(name) < 16;
-                                end
-                            },
-                        }
-                    },
-                    opt5 = {
-                        type='group',
-                        desc='Option 5',
-                        name="option5",
-                        args={
-                            visible = {
-                                name = "enable",
-                                type = "toggle",
-                                desc = DESC_SET_OPT_VISIBLE,
-                                set = function(visible)
-                                    _configuration:SetOptionVisible(5, visible);
-                                end,
-                                get = function()
-                                    return _configuration:IsOptionVisible(5);
-                                end,
-                            },
-                            text = {
-                                name = "name",
-                                type = 'text',
-                                desc = DESC_SET_OPT_TEXT,
-                                usage = "<name>",
-                                set = function(name)
-                                    _configuration:SetOptionText(5, name);
-                                end,
-                                get = function()
-                                    return _configuration:GetOptionText(5);
-                                end,
-                                validate = function(name)
-                                    return string.len(name) < 16;
-                                end
-                            },
-                        }
-                    },
-                    opt6 = {
-                        type='group',
-                        desc='Option 6',
-                        name="option6",
-                        args={
-                            visible = {
-                                name = "enable",
-                                type = "toggle",
-                                desc = DESC_SET_OPT_VISIBLE,
-                                set = function(visible)
-                                    _configuration:SetOptionVisible(6, visible);
-                                end,
-                                get = function()
-                                    return _configuration:IsOptionVisible(6);
-                                end,
-                            },
-                            text = {
-                                name = "name",
-                                type = 'text',
-                                desc = DESC_SET_OPT_TEXT,
-                                usage = "<name>",
-                                set = function(name)
-                                    _configuration:SetOptionText(6, name)
-                                end,
-                                get = function()
-                                    return _configuration:GetOptionText(6)
-                                end,
-                                validate = function(name)
-                                    return string.len(name) <= 10;
-                                end
-                            },
-                        }
-                    }
-                }
+                name = "name",
+                type = 'text',
+                desc = DESC_SET_OPTIONS,
+                usage = DESC_SET_OPTIONS,
+                set = function(options)
+                    _configuration:SetOptions(options);
+                end,
+                get = function()
+                    return _configuration:GetOptions();
+                end,
+                validate = function(options)
+                    return _configuration:ValidateOptionsString(options);
+                end
             }
         },
     }
@@ -288,28 +81,48 @@ function AuroraCouncilConfiguration:New()
         return self.enabled;
     end
 
-    function _configuration:SetEnabledOptionsCount(count)
-        self.numLootOptions = count;
+    function _configuration:SetOptions(options)
+        Util:Debug(options);
+        local splitOptions = Util:SplitString(options, ";")
+
+
+        if splitOptions[1] ~= nil and splitOptions[2] ~= nil then
+            for optionIndex = 1, 6 do
+                if splitOptions[optionIndex] ~= nil then
+                    self.lootOptions[optionIndex].visible = not Util:StringStartsWith(splitOptions[optionIndex], "~")
+                    if self.lootOptions[optionIndex].visible then
+                        self.lootOptions[optionIndex].text = splitOptions[optionIndex];
+                    else
+                        self.lootOptions[optionIndex].text = string.sub(splitOptions[optionIndex],2,string.len(splitOptions[optionIndex]))
+                    end
+                    self.numLootOptions = optionIndex;
+                end
+            end
+        else
+            Util:Print("You need to set at least 2 options")
+        end
     end
 
-    function _configuration:GetEnabledOptionsCount()
-        return self.numLootOptions;
+    function _configuration:ValidateOptionsString(options)
+        local splitOptions = Util:SplitString(options, ";")
+        for optionIndex = 1, 6 do
+            if splitOptions[optionIndex] ~= nil then
+                if string.len(splitOptions[optionIndex]) > 10 then
+                    return false;
+                end
+            end
+        end
+        return true;
     end
 
-    function _configuration:SetOptionVisible(optionNum, visible)
-        self.lootOptions[optionNum].visible = visible;
-    end
-
-    function _configuration:IsOptionVisible(optionNum)
-        return self.lootOptions[optionNum].visible;
-    end
-
-    function _configuration:SetOptionText(optionNum, optionText)
-        self.lootOptions[optionNum].text = string.gsub(optionText, ";", ",");
-    end
-
-    function _configuration:GetOptionText(optionNum)
-        return self.lootOptions[optionNum].text;
+    function _configuration:GetOptions()
+        local options = "";
+        for optionIndex = 1, self.numLootOptions do
+            if not self.lootOptions[optionIndex].visible then options = options .. "~" end
+            options = options .. self.lootOptions[optionIndex].text
+            if optionIndex ~= self.numLootOptions then options = options .. ";" end
+        end
+        return options;
     end
 
     function _configuration:GetChatCommands()
