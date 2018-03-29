@@ -9,32 +9,32 @@ function AuroraCouncilConfiguration:New(Util)
     local DESC_INFO = "Show LootCouncil Homepage"
     local DESC_SET_OPTIONS = "Set all options/visibility at once, add '~' before option to hide in overview, option text max characters = 10.";
 
-    _configuration.DEFAULT_NUM_OPTIONS = 4;
+    _configuration.DEFAULT_NUM_OPTIONS = 3;
     _configuration.DEFAULT_OPTIONS = {
-    [1] = {
-    visible = true;
-    text = "Need";
-    },
-    [2] = {
-    visible = true;
-    text = "Greed";
-    },
-    [3] = {
-    visible = true;
-    text = "Pass";
-    },
-    [4] = {
-    visible = false;
-    text = "nil";
-    },
-    [5] = {
-    visible = false;
-    text = "nil";
-    },
-    [6] = {
-    visible = false;
-    text = "nil";
-    },
+        [1] = {
+            visible = true;
+            text = "Need";
+        },
+        [2] = {
+            visible = true;
+            text = "Greed";
+        },
+        [3] = {
+            visible = true;
+            text = "Pass";
+        },
+        [4] = {
+            visible = false;
+            text = "nil";
+        },
+        [5] = {
+            visible = false;
+            text = "nil";
+        },
+        [6] = {
+            visible = false;
+            text = "nil";
+        },
     }
 
     _configuration.onReset = nil;

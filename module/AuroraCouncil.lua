@@ -10,8 +10,8 @@ function AuroraCouncil:New()
 
     local _auroraCouncil = {};
 
-    local VERSION_NUMBER = 0.29;
-    local VERSION_NAME = "0.3-SNAPSHOT (ALPHA)"
+    local VERSION_NUMBER = 0.3;
+    local VERSION_NAME = "0.3"
     local VERSION_CHECK_INTERVAL = 15;
 
     local lootTable;

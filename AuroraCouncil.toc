@@ -4,7 +4,7 @@
 ## Author: Mithnar
 ## SavedVariables: AuroraCouncilDB
 ## SavedVariablesPerCharacter: AuroraCouncilDBPC
-## Version: 0.3-SNAPSHOT
+## Version: 0.3
        ## X-Category: Raid
 
 lib\AceLibrary\AceLibrary.lua
